@@ -6,6 +6,9 @@ Backup_20260605/
 # Versiones deprecadas
 Deprecated/
 
+# Logos fuente (no necesarios en producción)
+Logos/
+
 # Sistema
 .DS_Store
 Thumbs.db

@@ -1291,15 +1291,18 @@ function closeLB() { document.getElementById('lightbox').classList.remove('open'
 // ═══════════════════════════════════════════════════════════
 // ADMIN PANEL
 // ═══════════════════════════════════════════════════════════
-const ADMIN_PWD = 'b2k2026';
+const ADMIN_PWD_HASH = 'f778c5399db732c09cf192f6390932e1fcb229fbe927d42973529f06cc4f2c50';
 let adminOpen = false;
 
 function openAdmin() { document.getElementById('adminOverlay').classList.add('open'); }
 function closeAdmin() { document.getElementById('adminOverlay').classList.remove('open'); }
 document.getElementById('adminOverlay').addEventListener('click', e => { if (e.target.id === 'adminOverlay') closeAdmin(); });
 
-function checkPwd() {
-  if (document.getElementById('aPwd').value === ADMIN_PWD) {
+async function checkPwd() {
+  const val = document.getElementById('aPwd').value;
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(val));
+  const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  if (hex === ADMIN_PWD_HASH) {
     document.getElementById('aLogin').style.display = 'none';
     document.getElementById('aContent').style.display = 'block';
     loadAdmin();
