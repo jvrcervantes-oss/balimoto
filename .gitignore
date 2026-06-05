@@ -1,0 +1,12 @@
+# Backups locales
+Backup_20260531/
+Backup_20260604/
+Backup_20260605/
+
+# Versiones deprecadas
+Deprecated/
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini

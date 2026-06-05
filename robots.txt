@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /Backup_20260531/
+Disallow: /Backup_20260604/
+Disallow: /video.html
+Disallow: /index_v2.html
+
+Sitemap: https://b2kepicadv.com/sitemap.xml
