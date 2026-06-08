@@ -886,7 +886,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
           <div class="mod-chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
           <div class="mod-info">
             <div class="mod-name" id="modName-all_in_insurance">Full-risk insurance</div>
-            <div class="mod-desc" id="modDesc-all_in_insurance">Pay $273 for full coverage &mdash; or put a $1,000 refundable deposit to cover the bike</div>
+            <div class="mod-desc" id="modDesc-all_in_insurance">Pay €250 for full coverage &mdash; or leave a €1,000 refundable deposit to cover the bike</div>
           </div>
           <div class="mod-adj pos" id="modAdj-all_in_insurance">+&#8364;250</div>
         </div>
@@ -897,7 +897,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
       <div class="bk-signals">
         <div class="bk-sig">
           <div class="bk-sig-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div class="bk-sig-txt" id="bk-sig-dep"><strong>Secure reservation</strong>$1,000 deposit holds your spot &mdash; balance due 60 days before</div>
+          <div class="bk-sig-txt" id="bk-sig-dep"><strong>Secure reservation</strong>€1,000 per person deposit holds your spot &mdash; balance due 60 days before</div>
         </div>
         <div class="bk-sig">
           <div class="bk-sig-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
@@ -926,12 +926,12 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
       <p class="bk-total-sub" id="t-bkTotalSub">All inclusive &middot; excl. international flights</p>
 
       <div class="bk-dep-note" id="t-depNote">
-        <strong>To reserve:</strong> pay a <strong>$1,000 deposit</strong> now. Balance due 60 days before departure. Insurance: $273 full-risk, or $1,000 refundable deposit to cover the bike.
+        <strong>To reserve:</strong> pay a <strong>€1,000 per person deposit</strong> now. Balance due 60 days before departure. Insurance: €250 full-risk, or €1,000 refundable deposit to cover the bike.
       </div>
 
       <div class="bk-ctas">
         <button class="btn-bk" id="bk-stripe" data-stripe-url="https://book.stripe.com/7sY9AS9rL59y4xQ30V0ZW00" onclick="bkBookNow()">
-          Reserve Now &mdash; Pay <span id="bk-btn-dep">$1,000</span> deposit
+          Reserve Now &mdash; Pay <span id="bk-btn-dep">€1,000 per person</span> deposit
         </button>
         <button class="btn-bk-wa" onclick="openWiseModal()" style="border:none;cursor:pointer;width:100%">
           &#127968; Pay by bank transfer (Wise)
@@ -1418,13 +1418,13 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
     var ins = Math.round(250 * rates[selCurr]);
     var S = SYMS[selCurr];
     var insDesc = document.getElementById('modDesc-all_in_insurance');
-    if (insDesc) insDesc.textContent = 'Pay ' + S + ins + ' for full coverage — or put a ' + '$' + dep.toLocaleString('en') + ' refundable deposit to cover the bike';
+    if (insDesc) insDesc.textContent = 'Pay ' + S + ins + ' for full coverage — or leave a €1,000 refundable deposit to cover the bike';
     var sigDep = document.getElementById('bk-sig-dep');
-    if (sigDep) sigDep.innerHTML = '<strong>Secure reservation<\/strong>' + '$' + dep.toLocaleString('en') + ' deposit holds your spot — balance due 60 days before';
+    if (sigDep) sigDep.innerHTML = '<strong>Secure reservation<\/strong>€1,000 per person deposit holds your spot — balance due 60 days before';
     var dn = document.getElementById('t-depNote');
-    if (dn) dn.innerHTML = '<strong>To reserve:<\/strong> pay a <strong>' + '$' + dep.toLocaleString('en') + ' deposit<\/strong> now. Balance due 60 days before departure. Insurance: ' + S + ins + ' full-risk, or ' + '$' + dep.toLocaleString('en') + ' refundable deposit to cover the bike.';
+    if (dn) dn.innerHTML = '<strong>To reserve:<\/strong> pay a <strong>€1,000 per person deposit<\/strong> now. Balance due 60 days before departure. Insurance: ' + S + ins + ' full-risk, or €1,000 refundable deposit to cover the bike.';
     var stripeBtn = document.getElementById('bk-stripe');
-    if (stripeBtn) stripeBtn.textContent = 'Reserve Now — Pay ' + '$' + dep.toLocaleString('en') + ' deposit';
+    if (stripeBtn) stripeBtn.textContent = 'Reserve Now — Pay €1,000 per person deposit';
   }
 
   window.bkSelectPkg = function(id) {
@@ -1456,13 +1456,13 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
     var S = SYMS[selCurr];
     var refCode = 'B2K-' + selPkg.toUpperCase();
     var el = document.getElementById('wiseDepAmt');
-    if (el) el.textContent = '$' + dep.toLocaleString('en');
+    if (el) el.textContent = '€1,000 per person';
     var pn = document.getElementById('wisePkgNote');
     if (pn) pn.textContent = pkg.name + ' package · balance due 60 days before departure';
     var rf = document.getElementById('wiseRef');
     if (rf) rf.textContent = refCode;
     var mods = Object.keys(selMods).filter(function(k){return selMods[k];}).map(function(k){return MODS[k].name;}).join(' + ');
-    var waMsg = 'Hi! I just made a bank transfer to reserve the Bali to Komodo Challenge.\nPackage: ' + pkg.name + (mods ? '\nOptions: ' + mods : '') + '\nDeposit: ' + '$' + dep.toLocaleString('en') + '\nReference: ' + refCode + '\nPlease confirm my reservation. Thanks!';
+    var waMsg = 'Hi! I just made a bank transfer to reserve the Bali to Komodo Challenge.\nPackage: ' + pkg.name + (mods ? '\nOptions: ' + mods : '') + '\nDeposit: €1,000 per person\nReference: ' + refCode + '\nPlease confirm my reservation. Thanks!';
     var waBtn = document.getElementById('wiseWaBtn');
     if (waBtn) waBtn.href = 'https://wa.me/62881037978255?text=' + encodeURIComponent(waMsg);
   }
