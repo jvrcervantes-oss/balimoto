@@ -900,7 +900,7 @@ footer{background:#070e08;color:rgba(255,255,255,.4);padding:3rem 5vw 2rem}
       <div class="bk-signals">
         <div class="bk-sig">
           <div class="bk-sig-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div class="bk-sig-txt" id="bk7-sig-dep"><strong>Secure reservation</strong>€1,000 per person deposit holds your spot &mdash; balance due 60 days before</div>
+          <div class="bk-sig-txt" id="bk7-sig-dep"><strong>Secure reservation</strong>$1,000 per person deposit holds your spot &mdash; balance due 60 days before</div>
         </div>
         <div class="bk-sig">
           <div class="bk-sig-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
@@ -924,11 +924,11 @@ footer{background:#070e08;color:rgba(255,255,255,.4);padding:3rem 5vw 2rem}
       </div>
       <p class="bk-total-sub">All inclusive &middot; excl. international flights</p>
       <div class="bk-dep-note" id="t7-depNote">
-        <strong>To reserve:</strong> pay a <strong>€1,000 per person deposit</strong> now. Balance due 60 days before departure. Insurance: €250 full-risk, or €1,000 refundable deposit to cover the bike.
+        <strong>To reserve:</strong> pay a <strong>$1,000 per person deposit</strong> now. Balance due 60 days before departure. Insurance: ~$275 full-risk, or $1,000 refundable deposit to cover the bike.
       </div>
       <div class="bk-ctas">
         <button class="btn-bk" id="bk7-stripe" data-stripe-url="https://book.stripe.com/7sY9AS9rL59y4xQ30V0ZW00" onclick="bk7BookNow()">
-          Reserve Now &mdash; Pay <span id="bk7-btn-dep">€1,000 per person</span> deposit
+          Reserve Now &mdash; Pay <span id="bk7-btn-dep">$1,000 per person</span> deposit
         </button>
         <button class="btn-bk-wa" onclick="open7WiseModal()" style="border:none;cursor:pointer;width:100%">
           &#127968; Pay by bank transfer (Wise)
@@ -1192,13 +1192,13 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
     if (bd) bd.innerHTML = '<div class="bk-br-row"><span class="bk-br-label">' + pkg.name + ' &mdash; ' + pkg.desc + '</span><span class="bk-br-val">' + fmt(total) + '</span></div>';
 
     var dn = document.getElementById('t7-depNote');
-    if (dn) dn.innerHTML = '<strong>To reserve:</strong> pay a <strong>€1,000 per person deposit</strong> now. Balance due 60 days before departure. Insurance: ' + S + Math.round(250 * rates[selCurr]) + ' full-risk, or €1,000 refundable deposit to cover the bike.';
+    if (dn) dn.innerHTML = '<strong>To reserve:</strong> pay a <strong>$1,000 per person deposit</strong> now. Balance due 60 days before departure. Insurance: ' + S + Math.round(250 * rates[selCurr]) + ' full-risk, or $1,000 refundable deposit to cover the bike.';
 
     var stripeBtn = document.getElementById('bk7-stripe');
-    if (stripeBtn) stripeBtn.textContent = 'Reserve Now — Pay €1,000 per person deposit';
+    if (stripeBtn) stripeBtn.textContent = 'Reserve Now — Pay $1,000 per person deposit';
 
     var sigDep = document.getElementById('bk7-sig-dep');
-    if (sigDep) sigDep.innerHTML = '<strong>Secure reservation</strong>€1,000 per person deposit holds your spot — balance due 60 days before';
+    if (sigDep) sigDep.innerHTML = '<strong>Secure reservation</strong>$1,000 per person deposit holds your spot — balance due 60 days before';
 
     var mods = selPkg;
     var msg = 'Hi! I am interested in the 7 Islands Hopping Tour.\nTransport: ' + pkg.name + '\nEstimated total: ' + fmt(total) + '\nWhen can we speak?';
@@ -1228,12 +1228,12 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
     var S = SYMS[selCurr];
     var refCode = '7ISL-' + selPkg.toUpperCase();
     var el = document.getElementById('wiseDepAmt7');
-    if (el) el.textContent = '€1,000 per person';
+    if (el) el.textContent = '$1,000 per person';
     var pn = document.getElementById('wisePkgNote7');
     if (pn) pn.textContent = pkg.name + ' · balance due 60 days before departure';
     var rf = document.getElementById('wiseRef7');
     if (rf) rf.textContent = refCode;
-    var msg = 'Hi! I just made a bank transfer to reserve the 7 Islands Hopping Tour.\nTransport: ' + pkg.name + '\nDeposit: €1,000 per person\nReference: ' + refCode + '\nPlease confirm my reservation. Thanks!';
+    var msg = 'Hi! I just made a bank transfer to reserve the 7 Islands Hopping Tour.\nTransport: ' + pkg.name + '\nDeposit: $1,000 per person\nReference: ' + refCode + '\nPlease confirm my reservation. Thanks!';
     var waBtn = document.getElementById('wiseWaBtn7');
     if (waBtn) waBtn.href = 'https://wa.me/62881037978255?text=' + encodeURIComponent(msg);
   }
