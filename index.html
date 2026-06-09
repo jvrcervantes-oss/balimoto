@@ -109,6 +109,9 @@ nav{position:sticky;top:.8rem;z-index:200;background:#faf6ef;backdrop-filter:blu
 .tours-grid .tour-card:nth-child(2){transition-delay:.12s}
 .tours-grid .tour-card:nth-child(3){transition-delay:.24s}
 .tour-card:hover{box-shadow:0 24px 60px rgba(28,43,30,.18),0 0 0 6px rgba(240,236,226,.9),0 0 0 7px var(--orange);transform:translateY(-8px)}
+/* Featured (Best Seller): más ancho, mismo alto — los 3 tours siguen visibles en una fila */
+.tour-card-feat{width:min(480px,100%)}
+.tour-card-feat .tc-name{font-size:40px}
 .tc-img{height:260px;overflow:hidden;position:relative}
 .tc-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease}
 .tour-card:hover .tc-img img{transform:scale(1.06)}
@@ -754,7 +757,7 @@ function renderTours(tours) {
     const diffHtml = t.diff ? '<span class="tc-diff ' + getDiffClass(t.diff) + '">' + t.diff + '</span>' : '';
     const pills = [t.days ? t.days + ' Days' : '', t.islands ? t.islands + ' Islands' : '', t.km ? t.km + ' km' : ''].filter(Boolean);
     const spotsHtml = t.spots ? `<div class="tc-spots"><div class="spot-dot"></div>${t.spots}</div>` : '';
-    return `<div class="tour-card" style="transition-delay:${i*0.12}s">
+    return `<div class="tour-card${i===0?' tour-card-feat':''}" style="transition-delay:${i*0.12}s">
       <div class="tc-img">
         <img src="${src}" alt="${t.name}" onerror="this.style.display='none'">
         <span class="tc-badge ${t.badgeType}">${t.badge}</span>
