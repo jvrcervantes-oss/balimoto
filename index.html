@@ -101,38 +101,46 @@ nav{position:sticky;top:.8rem;z-index:200;background:#faf6ef;backdrop-filter:blu
 .ttl.lt{color:#fff}
 /* TOURS */
 .tours{padding:8rem 5vw;background:var(--cream)}
-.tours-hd{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-bottom:4rem;align-items:end}
-.tours-sub{font-family:'Instrument Serif',serif;font-style:italic;color:var(--ink-soft);font-size:18px;line-height:1.65}
+.tours-hd{margin-bottom:4rem}
+.tours-sub{font-family:'Instrument Serif',serif;font-style:italic;color:var(--ink-soft);font-size:18px;line-height:1.65;max-width:520px;margin-top:1.2rem}
 .tours-grid{display:flex;flex-wrap:wrap;gap:20px;justify-content:center}
-.tour-card{background:#fff;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 12px rgba(28,43,30,.06),0 0 0 6px rgba(240,236,226,.9),0 0 0 7px rgba(200,217,192,.45);transition:box-shadow .35s cubic-bezier(0.23,1,0.32,1),transform .35s cubic-bezier(0.23,1,0.32,1);opacity:0;transform:translateY(40px);width:min(340px,100%)}
+/* Cards cinemáticas: foto full-bleed, contenido sobre gradiente */
+.tour-card{position:relative;height:520px;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;box-shadow:0 2px 12px rgba(28,43,30,.06),0 0 0 6px rgba(240,236,226,.9),0 0 0 7px rgba(200,217,192,.45);transition:box-shadow .35s cubic-bezier(0.23,1,0.32,1),transform .35s cubic-bezier(0.23,1,0.32,1);opacity:0;transform:translateY(40px);width:min(340px,100%)}
 .tour-card.vis{opacity:1;transform:translateY(0)}
 .tours-grid .tour-card:nth-child(2){transition-delay:.12s}
 .tours-grid .tour-card:nth-child(3){transition-delay:.24s}
 .tour-card:hover{box-shadow:0 24px 60px rgba(28,43,30,.18),0 0 0 6px rgba(240,236,226,.9),0 0 0 7px var(--orange);transform:translateY(-8px)}
 /* Featured (Best Seller): más ancho, mismo alto — los 3 tours siguen visibles en una fila */
 .tour-card-feat{width:min(480px,100%)}
-.tour-card-feat .tc-name{font-size:40px}
-.tc-img{height:260px;overflow:hidden;position:relative}
+.tour-card-feat .tc-name{font-size:48px}
+.tc-img{position:absolute;inset:0;overflow:hidden}
 .tc-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease}
 .tour-card:hover .tc-img img{transform:scale(1.06)}
-.tc-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(28,43,30,.55) 0%,transparent 55%)}
-.tc-badge{position:absolute;top:1rem;left:1rem;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:100px;z-index:1}
-.tc-badge.hot{background:rgba(232,73,10,.9);color:#fff}
-.tc-badge.new{background:rgba(45,122,74,.9);color:#fff}
-.tc-badge.soon{background:rgba(28,43,30,.8);color:rgba(255,255,255,.7)}
-.tc-spots{position:absolute;bottom:1rem;right:1rem;display:flex;align-items:center;gap:.4rem;background:rgba(0,0,0,.55);color:#fff;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 10px;border-radius:100px;z-index:1}
+.tc-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,18,11,.94) 0%,rgba(10,18,11,.55) 26%,rgba(10,18,11,.12) 52%,rgba(10,18,11,0) 68%,rgba(10,18,11,.28) 100%)}
+.tc-num{position:absolute;top:1rem;left:1.2rem;z-index:1;font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1;color:rgba(255,255,255,.55);text-shadow:0 2px 10px rgba(10,20,12,.45)}
+.tc-badge{position:absolute;top:1.2rem;right:1.2rem;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:100px;z-index:1}
+.tc-badge.hot{background:rgba(232,73,10,.92);color:#fff}
+.tc-badge.new{background:rgba(45,122,74,.92);color:#fff}
+.tc-badge.soon{background:rgba(28,43,30,.85);color:rgba(255,255,255,.8)}
+.tc-spots{display:inline-flex;align-items:center;gap:.4rem;background:rgba(0,0,0,.55);color:#fff;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 10px;border-radius:100px;align-self:flex-start}
 .spot-dot{width:6px;height:6px;background:#ff4444;border-radius:50%;animation:blink 1.5s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.tc-body{padding:1.5rem;flex:1;display:flex;flex-direction:column;gap:.8rem}
-.tc-pills{display:flex;gap:.4rem;flex-wrap:wrap}
-.tc-pill{background:var(--parchment);color:var(--ink-soft);font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:100px}.tc-diff{background:rgba(232,73,10,.08);color:var(--orange);border:1px solid rgba(232,73,10,.2);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:100px;margin-left:4px}
-.tc-name{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1;color:var(--ink)}
-.tc-desc{font-size:13px;color:var(--ink-soft);line-height:1.65;flex:1}
-.tc-foot{display:flex;align-items:center;justify-content:space-between;padding-top:.8rem;border-top:1px solid var(--sand);margin-top:auto}
-.tc-from{font-size:11px;color:var(--ink-soft)}
-.tc-price{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--orange);line-height:1}
-.tc-link{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;transition:gap .2s}
-.tc-link:hover{gap:.7rem}
+.tc-body{position:relative;z-index:1;padding:1.6rem;display:flex;flex-direction:column;gap:.7rem}
+.tc-specs{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.85);text-shadow:0 1px 8px rgba(10,20,12,.5)}
+.tc-sep{color:#ff7a3d;font-weight:700}
+.tc-diff{background:rgba(10,18,11,.5);color:#ffb38a;border:1px solid rgba(255,179,138,.35);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:100px;margin-left:2px}
+.tour-card .diff-beginner{color:#8fd6a4;background:rgba(10,18,11,.5);border-color:rgba(143,214,164,.4)}
+.tour-card .diff-intermediate{color:#8fd0f0;background:rgba(10,18,11,.5);border-color:rgba(143,208,240,.4)}
+.tour-card .diff-expert{color:#f29d9d;background:rgba(10,18,11,.5);border-color:rgba(242,157,157,.4)}
+.tc-name{font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:.95;color:#fff;text-shadow:0 2px 14px rgba(10,20,12,.4)}
+.tc-desc{display:none;font-size:13px;color:rgba(255,255,255,.8);line-height:1.65;max-width:420px;text-shadow:0 1px 8px rgba(10,20,12,.5)}
+.tour-card-feat .tc-desc{display:block}
+.tc-foot{display:flex;align-items:center;justify-content:space-between;padding-top:.9rem;border-top:1px solid rgba(255,255,255,.22);margin-top:.3rem}
+.tc-from{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.tc-price{font-family:'Bebas Neue',sans-serif;font-size:32px;color:#ff7a3d;line-height:1}
+.tc-link{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;transition:gap .2s,color .2s}
+.tc-link:hover{gap:.7rem;color:#ff7a3d}
+@media(max-width:600px){.tour-card{height:470px}.tour-card-feat .tc-name{font-size:38px}}
 /* PARALLAX */
 /* â”€â”€ VIDEO 4-CARD SECTION (video.html layout) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 /* VID-EDITORIAL */
@@ -765,18 +773,20 @@ function renderTours(tours) {
     const diffHtml = t.diff ? '<span class="tc-diff ' + getDiffClass(t.diff) + '">' + t.diff + '</span>' : '';
     const pills = [t.days ? t.days + ' Days' : '', t.islands ? t.islands + ' Islands' : '', t.km ? t.km + ' km' : ''].filter(Boolean);
     const spotsHtml = t.spots ? `<div class="tc-spots"><div class="spot-dot"></div>${t.spots}</div>` : '';
+    const isYear = /^\s*20\d{2}\s*$/.test(String(t.price || ''));
     return `<div class="tour-card${i===0?' tour-card-feat':''}" style="transition-delay:${i*0.12}s">
       <div class="tc-img">
         <img src="${src}" alt="${t.name}" onerror="this.style.display='none'">
-        <span class="tc-badge ${t.badgeType}">${t.badge}</span>
-        ${spotsHtml}
       </div>
+      <span class="tc-num">0${i+1}</span>
+      <span class="tc-badge ${t.badgeType}">${t.badge}</span>
       <div class="tc-body">
-        <div class="tc-pills">${pills.map(p => `<span class="tc-pill">${p}</span>`).join('')} ${diffHtml}</div>
         <h3 class="tc-name">${t.name}</h3>
+        <div class="tc-specs">${pills.join(' <span class="tc-sep">·</span> ')}${diffHtml ? ' ' + diffHtml : ''}</div>
         <p class="tc-desc">${t.desc}</p>
+        ${spotsHtml}
         <div class="tc-foot">
-          <div><div class="tc-from">From</div><div class="tc-price">${t.price}</div></div>
+          <div><div class="tc-from">${isYear ? 'Opens' : 'From'}</div><div class="tc-price">${t.price}</div></div>
           <a href="${t.link}" class="tc-link">More info →</a>
         </div>
       </div>
