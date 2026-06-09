@@ -190,6 +190,13 @@ nav.nav-out{opacity:0;pointer-events:none}
 .bk-total-sub{font-size:11px;color:var(--ink-soft);margin-bottom:1.2rem}
 .bk-dep-note{background:rgba(232,73,10,.06);border:1px solid rgba(232,73,10,.18);border-radius:8px;padding:.65rem .85rem;font-size:11px;color:var(--ink-soft);margin-bottom:1.2rem;line-height:1.5}
 .bk-dep-note strong{color:var(--ink)}
+.bk-riders{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding:.6rem .85rem;background:rgba(232,73,10,.03);border:1px solid rgba(232,73,10,.12);border-radius:8px}
+.bk-riders-lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+.bk-riders-ctrl{display:flex;align-items:center;gap:.6rem}
+.bk-riders-btn{width:26px;height:26px;border:1.5px solid var(--sand);border-radius:6px;background:transparent;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink);font-weight:700;transition:border-color .2s}
+.bk-riders-btn:hover{border-color:var(--orange)}
+.bk-riders-num{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--ink);min-width:20px;text-align:center}
+.bk-riders-dep{font-size:11px;color:var(--orange);font-weight:700}
 .bk-ctas{display:flex;flex-direction:column;gap:.55rem}
 .btn-bk{background:var(--orange);color:#fff;padding:14px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-radius:8px;text-align:center;display:block;transition:background .2s;border:none;cursor:pointer;width:100%;font-family:inherit}
 .btn-bk:hover{background:var(--orange-dark)}.btn-bk:active{transform:scale(0.97);transition-duration:100ms}
@@ -926,9 +933,18 @@ footer{background:#070e08;color:rgba(255,255,255,.4);padding:3rem 5vw 2rem}
       <div class="bk-dep-note" id="t7-depNote">
         <strong>To reserve:</strong> pay a <strong>$1,000 per person deposit</strong> now. Balance due 60 days before departure. Insurance: ~$275 full-risk, or $1,000 refundable deposit to cover the bike.
       </div>
+      <div class="bk-riders">
+        <span class="bk-riders-lbl">Riders</span>
+        <div class="bk-riders-ctrl">
+          <button class="bk-riders-btn" onclick="bk7ChangeRiders(-1)" aria-label="Fewer riders">−</button>
+          <span class="bk-riders-num" id="bk7-riders-num">1</span>
+          <button class="bk-riders-btn" onclick="bk7ChangeRiders(1)" aria-label="More riders">+</button>
+        </div>
+        <span class="bk-riders-dep" id="bk7-riders-dep">$1,000 deposit</span>
+      </div>
       <div class="bk-ctas">
-        <button class="btn-bk" id="bk7-stripe" data-stripe-url="https://book.stripe.com/7sY9AS9rL59y4xQ30V0ZW00" onclick="bk7BookNow()">
-          Reserve Now &mdash; Pay <span id="bk7-btn-dep">$1,000 per person</span> deposit
+        <button class="btn-bk" id="bk7-stripe" onclick="bk7BookNow()">
+          Reserve Now &mdash; Pay <span id="bk7-btn-dep">$1,000</span> deposit
         </button>
         <button class="btn-bk-wa" onclick="open7WiseModal()" style="border:none;cursor:pointer;width:100%">
           &#127968; Pay by bank transfer (Wise)
@@ -1244,15 +1260,25 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
     document.body.style.overflow = 'hidden';
   };
 
+  var numRiders7 = 1;
+  window.bk7ChangeRiders = function(delta) {
+    numRiders7 = Math.max(1, Math.min(12, numRiders7 + delta));
+    document.getElementById('bk7-riders-num').textContent = numRiders7;
+    var total = numRiders7 * 1000;
+    document.getElementById('bk7-riders-dep').textContent = numRiders7 > 1
+      ? numRiders7 + ' × $1,000 = $' + total.toLocaleString() + ' deposit'
+      : '$1,000 deposit';
+    document.getElementById('bk7-btn-dep').textContent = numRiders7 > 1
+      ? '$' + total.toLocaleString() + ' (' + numRiders7 + ' riders)'
+      : '$1,000';
+  };
+
   window.bk7BookNow = function() {
     if (typeof fbq !== 'undefined') {
       fbq('track', 'InitiateCheckout', {content_name: '7 Islands Hopping', currency: selCurr, value: Math.round(PKGS[selPkg].price * rates[selCurr])});
     }
-    var baseUrl7 = document.getElementById('bk7-stripe').dataset.stripeUrl;
-    if (baseUrl7) {
-      var ref7 = '7ISL-' + selPkg.toUpperCase();
-      window.open(baseUrl7 + '?client_reference_id=' + encodeURIComponent(ref7), '_blank');
-    } else { open7WiseModal(); }
+    var ref7 = '7ISL-' + selPkg.toUpperCase();
+    window.location.href = 'checkout.php?riders=' + numRiders7 + '&ref=' + encodeURIComponent(ref7);
   };
 
   window.close7WiseModal = function() {
