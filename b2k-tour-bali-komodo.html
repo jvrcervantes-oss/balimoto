@@ -829,20 +829,6 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
           </div>
         </div>
 
-        <!-- EXTREME -->
-        <div class="pkg-card" data-pkg="extreme" onclick="bkSelectPkg('extreme')">
-          <div class="pkg-sel-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <div class="pkg-name">Extreme</div>
-          <div class="pkg-price-tag" id="pkgTag-extreme">&#8364;3,650</div>
-          <div class="pkg-meta">1,826 km &middot; Standard hotels<br>7&ndash;9 h/day &middot; Ferry</div>
-          <div class="pkg-perks">
-            <span class="pkg-perk">Guide</span>
-            <span class="pkg-perk">Mechanic</span>
-            <span class="pkg-perk">Gear</span>
-            <span class="pkg-perk">Meals</span>
-          </div>
-        </div>
-
         <!-- DELUXE -->
         <div class="pkg-card" data-pkg="deluxe" onclick="bkSelectPkg('deluxe')">
           <div class="pkg-sel-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -1346,7 +1332,6 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
 (function() {
   var PKGS = {
     roundtrip: {name: 'Roundtrip', price: 2950, km: 1458},
-    extreme:   {name: 'Extreme',   price: 3650, km: 1826},
     deluxe:    {name: 'Deluxe',    price: 3950, km: 1259}
   };
   var MODS = {
@@ -1396,7 +1381,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
     if (hfp) hfp.textContent = fmt(2450);
     var bbfp = document.getElementById('bbFromPrice');
     if (bbfp) bbfp.textContent = 'From ' + fmt(2450);
-    var pkgPrices = {roundtrip: 2950, extreme: 3650, deluxe: 3950};
+    var pkgPrices = {roundtrip: 2950, deluxe: 3950};
     Object.keys(pkgPrices).forEach(function(id) {
       var ptag = document.getElementById('pkgTag-' + id);
       if (ptag) ptag.textContent = fmt(pkgPrices[id]);
