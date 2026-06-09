@@ -1,0 +1,9 @@
+# Block direct access to sensitive files
+<Files ".passhash">
+    Order deny,allow
+    Deny from all
+</Files>
+<Files "config.php">
+    Order deny,allow
+    Deny from all
+</Files>

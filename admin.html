@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2K · Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1c2b1e;--ink-soft:#3d5c42;--orange:#e8490a;--orange-d:#c03d08;--green:#2d7a4a;
+  --cream:#faf6ef;--parch:#f0ece2;--sand:#c8d9c0;--muted:#8a9e8c;
+  --danger:#9b2c2c;--warn-bg:#fffbeb;--warn:#b45309;--ok-bg:#f0fdf4;--ok:#166534;
+  --r:6px;--sh:0 1px 6px rgba(0,0,0,.1);--sh-lg:0 4px 24px rgba(0,0,0,.14);--hh:60px;
+}
+body{font-family:'Instrument Sans',sans-serif;font-size:14px;background:var(--cream);color:var(--ink);line-height:1.5}
+.hidden{display:none!important}
+.muted{color:var(--muted);font-size:12px}
+input,textarea,select{font-family:'Instrument Sans',sans-serif;font-size:13px}
+
+/* LOGIN */
+#login-screen{position:fixed;inset:0;background:var(--ink);display:flex;align-items:center;justify-content:center;z-index:100}
+.login-box{width:320px;text-align:center}
+.login-mark{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--cream);letter-spacing:.18em;margin-bottom:4px}
+.login-mark span{color:var(--orange)}
+.login-sub{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:36px}
+.login-box input{width:100%;padding:14px 16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:var(--r);color:#fff;font-size:15px;font-family:'Instrument Sans',sans-serif;margin-bottom:12px;outline:none;transition:border-color .15s}
+.login-box input:focus{border-color:var(--orange)}
+.login-box input::placeholder{color:rgba(255,255,255,.3)}
+.login-btn{width:100%;padding:14px;background:var(--orange);color:#fff;border:none;border-radius:var(--r);font-family:'Instrument Sans',sans-serif;font-size:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.login-btn:hover{background:var(--orange-d)}
+.login-error{margin-top:14px;font-size:13px;color:#f9a8a8}
+
+/* APP */
+#admin-app{display:flex;flex-direction:column;min-height:100vh}
+.app-header{position:sticky;top:0;z-index:50;height:var(--hh);background:#fff;border-bottom:1px solid #e8e2d8;display:flex;align-items:center;padding:0 24px;gap:20px}
+.app-brand{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.14em;color:var(--ink);flex-shrink:0}
+.app-brand span{color:var(--orange)}
+.app-tabs{display:flex;gap:2px;flex:1}
+.tab{padding:8px 16px;border:none;background:transparent;border-radius:var(--r);font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:background .15s,color .15s}
+.tab:hover{background:var(--parch);color:var(--ink)}
+.tab.active{background:var(--parch);color:var(--orange);font-weight:600}
+.app-right{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0}
+#btn-publish{padding:8px 18px;background:var(--orange);color:#fff;border:none;border-radius:var(--r);font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .2s}
+#btn-publish:disabled{opacity:.35;cursor:default}
+#btn-publish:not(:disabled):hover{background:var(--orange-d)}
+.btn-logout{padding:8px 14px;background:transparent;border:1px solid #e0dbd0;border-radius:var(--r);font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--muted);cursor:pointer}
+.btn-logout:hover{border-color:var(--muted);color:var(--ink)}
+#dirty-banner{background:var(--warn-bg);border-bottom:1px solid #fde68a;padding:9px 24px;font-size:13px;color:var(--warn);text-align:center}
+
+/* PANELS */
+.panel{display:none;padding:32px 32px 80px;max-width:980px;margin:0 auto;width:100%}
+.panel.active{display:block}
+.panel-bar{display:flex;align-items:baseline;gap:14px;margin-bottom:24px;flex-wrap:wrap}
+.panel-bar h2{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.06em;color:var(--ink)}
+.panel-bar .muted{font-size:13px}
+.panel-bar .btn-primary{margin-left:auto}
+
+/* BUTTONS */
+.btn-primary{padding:9px 20px;background:var(--orange);color:#fff;border:none;border-radius:var(--r);font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn-primary:hover{background:var(--orange-d)}
+.btn-secondary{padding:8px 16px;background:var(--parch);color:var(--green);border:1px solid var(--sand);border-radius:var(--r);font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer}
+.btn-secondary:hover{background:#e8e4d8}
+.btn-ghost{padding:8px 16px;background:transparent;color:var(--ink);border:1px solid #e0dbd0;border-radius:var(--r);font-family:'Instrument Sans',sans-serif;font-size:13px;cursor:pointer}
+.btn-ghost:hover{border-color:var(--muted)}
+.btn-danger{padding:7px 12px;background:transparent;color:var(--danger);border:1px solid #f5c6c6;border-radius:var(--r);font-family:'Instrument Sans',sans-serif;font-size:12px;cursor:pointer}
+.btn-danger:hover{background:#fff5f5}
+
+/* TOURS TABLE */
+.data-table{width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:var(--sh);border:1px solid #e8e2d8}
+.data-table-head{display:grid;grid-template-columns:1fr 100px 80px 80px 120px;padding:10px 16px;background:var(--parch);border-bottom:1px solid #e8e2d8;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);gap:12px}
+.data-row{display:grid;grid-template-columns:1fr 100px 80px 80px 120px;padding:14px 16px;border-bottom:1px solid #f5f0e8;align-items:center;gap:12px;transition:background .12s}
+.data-row:last-child{border-bottom:none}
+.data-row:hover{background:var(--parch)}
+.row-name{font-weight:600;font-size:14px}
+.row-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.badge-pill{display:inline-block;padding:2px 8px;border-radius:30px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.badge-hot{background:rgba(232,73,10,.1);color:var(--orange)}
+.badge-new{background:rgba(45,122,74,.1);color:var(--green)}
+.badge-soon{background:rgba(100,116,139,.1);color:#64748b}
+.row-actions{display:flex;gap:6px}
+
+/* TOUR SLIDE-OVER */
+.slide-overlay{position:fixed;inset:0;background:rgba(28,43,30,.5);z-index:200;opacity:0;pointer-events:none;transition:opacity .25s}
+.slide-overlay.open{opacity:1;pointer-events:all}
+.slide-panel{position:fixed;top:0;right:0;bottom:0;width:520px;max-width:100vw;background:#fff;box-shadow:var(--sh-lg);z-index:201;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);overflow-y:auto}
+.slide-overlay.open .slide-panel{transform:translateX(0)}
+.slide-head{position:sticky;top:0;background:#fff;border-bottom:1px solid #e8e2d8;padding:16px 20px;display:flex;align-items:center;gap:12px;z-index:1}
+.slide-head h3{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.06em;flex:1}
+.slide-body{padding:24px 20px}
+.slide-footer{position:sticky;bottom:0;background:#fff;border-top:1px solid #e8e2d8;padding:14px 20px;display:flex;justify-content:flex-end;gap:10px}
+
+/* FORM */
+.form-section{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--parch)}
+.form-section:last-child{border-bottom:none}
+.form-section h4{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-row.full{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.form-group label{font-size:12px;font-weight:600;color:var(--ink-soft);letter-spacing:.04em}
+.form-group input,.form-group select,.form-group textarea{padding:9px 12px;border:1px solid #e0dbd0;border-radius:var(--r);font-size:13px;outline:none;transition:border-color .15s;background:#fff;color:var(--ink)}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--orange)}
+.form-group textarea{resize:vertical;min-height:80px}
+
+/* IMAGE INPUT */
+.img-input-row{display:flex;gap:8px;align-items:flex-start}
+.img-input-row input{flex:1}
+.img-preview{width:80px;height:56px;border-radius:var(--r);object-fit:cover;border:1px solid #e0dbd0;background:var(--parch)}
+
+/* GALLERY GRID */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;margin-bottom:20px}
+.gallery-card{background:#fff;border-radius:10px;overflow:hidden;border:1px solid #e8e2d8;box-shadow:var(--sh)}
+.gallery-img{width:100%;height:120px;object-fit:cover;display:block}
+.gallery-card-body{padding:10px}
+.gallery-card-body input{width:100%;border:none;border-bottom:1px solid #e8e2d8;padding:4px 0;font-size:12px;outline:none;background:transparent;margin-bottom:6px}
+.gallery-card-body input:focus{border-bottom-color:var(--orange)}
+.gallery-card-actions{display:flex;gap:6px;align-items:center}
+
+/* REVIEWS TABLE */
+.rev-table{display:flex;flex-direction:column;gap:12px}
+.rev-card{background:#fff;border-radius:10px;border:1px solid #e8e2d8;padding:16px;display:flex;gap:14px;align-items:flex-start}
+.rev-initials{width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rev-content{flex:1}
+.rev-q{font-style:italic;color:var(--ink);font-size:13px;line-height:1.55;margin-bottom:6px}
+.rev-meta{font-size:12px;color:var(--muted);font-weight:600}
+.rev-actions{display:flex;gap:6px}
+
+/* SETTINGS */
+.settings-section{background:#fff;border-radius:10px;border:1px solid #e8e2d8;padding:20px;margin-bottom:20px}
+.settings-section h3{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+
+/* IMAGES */
+.upload-zone{border:2px dashed var(--sand);border-radius:10px;padding:40px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;margin-bottom:20px}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--orange);background:rgba(232,73,10,.03)}
+.upload-zone p{color:var(--muted);font-size:13px;margin-top:8px}
+.upload-zone input{display:none}
+.img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.img-card{background:#fff;border-radius:var(--r);overflow:hidden;border:1px solid #e8e2d8;position:relative;cursor:pointer}
+.img-card img{width:100%;height:100px;object-fit:cover;display:block}
+.img-card-name{padding:6px 8px;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.img-card-copy{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:4px;font-size:11px;padding:3px 7px;cursor:pointer;opacity:0;transition:opacity .15s}
+.img-card:hover .img-card-copy{opacity:1}
+
+/* IMAGE PICKER MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center}
+.modal{background:#fff;border-radius:12px;width:600px;max-width:95vw;max-height:80vh;overflow:hidden;display:flex;flex-direction:column}
+.modal-head{padding:16px 20px;border-bottom:1px solid #e8e2d8;display:flex;align-items:center;justify-content:space-between}
+.modal-head h3{font-size:15px;font-weight:600}
+.modal-head button{background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted)}
+.modal-body{padding:20px;overflow-y:auto;flex:1}
+.picker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.picker-item{border-radius:var(--r);overflow:hidden;border:2px solid transparent;cursor:pointer;transition:border-color .15s}
+.picker-item:hover,.picker-item.selected{border-color:var(--orange)}
+.picker-item img{width:100%;height:85px;object-fit:cover;display:block}
+.picker-item-name{padding:4px 6px;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;padding:12px 18px;border-radius:var(--r);font-size:13px;font-weight:500;box-shadow:var(--sh-lg);z-index:999;max-width:320px}
+.toast.ok{background:var(--ok-bg);color:var(--ok);border:1px solid #a7f3d0}
+.toast.err{background:#fff5f5;color:var(--danger);border:1px solid #fca5a5}
+.toast.info{background:var(--warn-bg);color:var(--warn);border:1px solid #fde68a}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-mark">Bali <span>Moto</span></div>
+    <div class="login-sub">Admin Panel</div>
+    <input type="password" id="login-pass" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Enter</button>
+    <div id="login-error" class="login-error hidden"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="admin-app" class="hidden">
+  <header class="app-header">
+    <div class="app-brand">Bali <span>Moto</span> Admin</div>
+    <nav class="app-tabs">
+      <button class="tab active" data-panel="tours"   onclick="showPanel('tours')">Tours</button>
+      <button class="tab"        data-panel="gallery" onclick="showPanel('gallery')">Gallery</button>
+      <button class="tab"        data-panel="reviews" onclick="showPanel('reviews')">Reviews</button>
+      <button class="tab"        data-panel="settings"onclick="showPanel('settings')">Settings</button>
+      <button class="tab"        data-panel="images"  onclick="showPanel('images')">Images</button>
+    </nav>
+    <div class="app-right">
+      <button id="btn-publish" onclick="publishData()" disabled>Publish changes</button>
+      <button class="btn-logout" onclick="doLogout()">Log out</button>
+    </div>
+  </header>
+  <div id="dirty-banner" class="hidden">Unsaved changes — click <strong>Publish changes</strong> to go live.</div>
+
+  <!-- TOURS -->
+  <div class="panel active" id="panel-tours">
+    <div class="panel-bar">
+      <h2>Tours</h2>
+      <span class="muted" id="tours-count"></span>
+      <button class="btn-primary" onclick="openTourForm(null)">+ New tour</button>
+    </div>
+    <div class="data-table">
+      <div class="data-table-head">
+        <div>Tour</div><div>Badge</div><div>Diff</div><div>Price</div><div>Actions</div>
+      </div>
+      <div id="tours-list"></div>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="panel" id="panel-gallery">
+    <div class="panel-bar">
+      <h2>Gallery</h2>
+      <span class="muted" id="gallery-count"></span>
+      <button class="btn-primary" onclick="addGalleryItem()">+ Add photo</button>
+    </div>
+    <div class="gallery-grid" id="gallery-grid"></div>
+  </div>
+
+  <!-- REVIEWS -->
+  <div class="panel" id="panel-reviews">
+    <div class="panel-bar">
+      <h2>Reviews</h2>
+      <span class="muted" id="reviews-count"></span>
+      <button class="btn-primary" onclick="openReviewForm(null)">+ Add review</button>
+    </div>
+    <div class="rev-table" id="reviews-list"></div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="panel" id="panel-settings">
+    <div class="panel-bar"><h2>Settings</h2></div>
+
+    <div class="settings-section">
+      <h3>Announcement bar</h3>
+      <div class="form-group">
+        <label>Bar date text</label>
+        <input type="text" id="s-barDate" placeholder="4th November 2026">
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h3>Hero section</h3>
+      <div class="form-row">
+        <div class="form-group"><label>Word 1</label><input type="text" id="s-hw1" placeholder="Ride"></div>
+        <div class="form-group"><label>Word 2 (orange)</label><input type="text" id="s-hw2" placeholder="Indonesia"></div>
+      </div>
+      <div class="form-group"><label>Word 3</label><input type="text" id="s-hw3" placeholder="Your Way"></div>
+      <div class="form-group"><label>Subtitle</label><textarea id="s-hSub" rows="3"></textarea></div>
+      <div class="form-group">
+        <label>Hero image URL</label>
+        <div class="img-input-row">
+          <input type="text" id="s-heroImg" placeholder="images/HERO_INDEX.JPG">
+          <button class="btn-ghost" onclick="openImagePicker('s-heroImg')">Pick</button>
+          <img id="s-heroImg-preview" class="img-preview" src="" onerror="this.style.display='none'" style="display:none">
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h3>Contact</h3>
+      <div class="form-row">
+        <div class="form-group"><label>WhatsApp primary</label><input type="text" id="s-wa" placeholder="62881037978255"></div>
+        <div class="form-group"><label>WhatsApp secondary</label><input type="text" id="s-wa2" placeholder="6281138309862"></div>
+      </div>
+      <div class="form-group"><label>Email</label><input type="text" id="s-email" placeholder="ride@balimotoadventures.com"></div>
+    </div>
+
+    <div class="settings-section">
+      <h3>Change password</h3>
+      <div class="form-row">
+        <div class="form-group"><label>New password</label><input type="password" id="s-newpass" placeholder="Min 8 characters"></div>
+        <div class="form-group"><label>Confirm</label><input type="password" id="s-newpass2" placeholder="Repeat password"></div>
+      </div>
+      <button class="btn-secondary" onclick="changePassword()">Update password</button>
+    </div>
+
+    <button class="btn-primary" onclick="saveSettings()">Save settings</button>
+  </div>
+
+  <!-- IMAGES -->
+  <div class="panel" id="panel-images">
+    <div class="panel-bar"><h2>Images</h2><span class="muted">Upload photos to use in tours, gallery and hero.</span></div>
+    <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto;display:block;color:var(--muted)"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <p>Drag & drop or click to upload · JPG, PNG, WebP · Max 8 MB</p>
+      <input type="file" id="file-input" accept="image/*" multiple onchange="handleFileSelect(this.files)">
+    </div>
+    <div class="img-grid" id="images-grid"></div>
+  </div>
+</div>
+
+<!-- TOUR SLIDE-OVER -->
+<div class="slide-overlay" id="tour-overlay" onclick="if(event.target===this)closeTourForm()">
+  <div class="slide-panel">
+    <div class="slide-head">
+      <h3 id="tour-form-title">Edit Tour</h3>
+      <button class="btn-ghost" onclick="closeTourForm()">✕</button>
+    </div>
+    <div class="slide-body">
+      <input type="hidden" id="f-tour-id">
+      <div class="form-section">
+        <h4>Identity</h4>
+        <div class="form-group"><label>Tour name</label><input type="text" id="f-name" placeholder="Bali to Komodo Challenge"></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Badge label</label>
+            <input type="text" id="f-badge" placeholder="Best Seller">
+          </div>
+          <div class="form-group">
+            <label>Badge type</label>
+            <select id="f-badgeType">
+              <option value="hot">Hot (orange)</option>
+              <option value="new">New (green)</option>
+              <option value="soon">Coming soon (grey)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Difficulty</label>
+          <select id="f-diff">
+            <option value="">— none —</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Initiation">Initiation</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+            <option value="Expert">Expert</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h4>Stats</h4>
+        <div class="form-row">
+          <div class="form-group"><label>Days</label><input type="text" id="f-days" placeholder="12"></div>
+          <div class="form-group"><label>Islands</label><input type="text" id="f-islands" placeholder="4"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>KM</label><input type="text" id="f-km" placeholder="1,259"></div>
+          <div class="form-group"><label>Starting price</label><input type="text" id="f-price" placeholder="$2,671"></div>
+        </div>
+        <div class="form-group"><label>Spots label <span class="muted">leave empty if no urgency</span></label><input type="text" id="f-spots" placeholder="3 spots left"></div>
+      </div>
+
+      <div class="form-section">
+        <h4>Content</h4>
+        <div class="form-group"><label>Description <span class="muted">2–3 sentences for the card</span></label><textarea id="f-desc" rows="3"></textarea></div>
+        <div class="form-group"><label>Link (URL or wa.me)</label><input type="text" id="f-link" placeholder="b2k-tour-bali-komodo.html"></div>
+      </div>
+
+      <div class="form-section">
+        <h4>Card image</h4>
+        <div class="img-input-row">
+          <input type="text" id="f-imgSrc" placeholder="images/b2k-tour-komodo.webp" oninput="updateTourImgPreview()">
+          <button class="btn-ghost" onclick="openImagePicker('f-imgSrc',updateTourImgPreview)">Pick</button>
+        </div>
+        <img id="f-imgSrc-preview" class="img-preview" style="margin-top:10px;width:100%;height:140px;display:none" onerror="this.style.display='none'">
+      </div>
+    </div>
+    <div class="slide-footer">
+      <button class="btn-ghost" onclick="closeTourForm()">Cancel</button>
+      <button class="btn-primary" onclick="saveTour()">Save tour</button>
+    </div>
+  </div>
+</div>
+
+<!-- REVIEW SLIDE-OVER -->
+<div class="slide-overlay" id="review-overlay" onclick="if(event.target===this)closeReviewForm()">
+  <div class="slide-panel">
+    <div class="slide-head">
+      <h3 id="review-form-title">Edit Review</h3>
+      <button class="btn-ghost" onclick="closeReviewForm()">✕</button>
+    </div>
+    <div class="slide-body">
+      <input type="hidden" id="f-rev-idx">
+      <div class="form-group"><label>Quote</label><textarea id="f-rev-q" rows="4" placeholder="One of the best experiences of my life..."></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Name</label><input type="text" id="f-rev-name" placeholder="Tyler B."></div>
+        <div class="form-group"><label>Initials</label><input type="text" id="f-rev-initials" placeholder="TB" maxlength="3"></div>
+      </div>
+      <div class="form-group"><label>Detail <span class="muted">Tour · Year · Country</span></label><input type="text" id="f-rev-detail" placeholder="7 Islands Hopping, 2025 · USA"></div>
+    </div>
+    <div class="slide-footer">
+      <button class="btn-ghost" onclick="closeReviewForm()">Cancel</button>
+      <button class="btn-primary" onclick="saveReview()">Save review</button>
+    </div>
+  </div>
+</div>
+
+<!-- IMAGE PICKER MODAL -->
+<div id="img-picker" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Pick an image</h3>
+      <button onclick="closeImagePicker()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="picker-grid" class="picker-grid"></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script>
+'use strict';
+
+var DATA      = null;
+var DIRTY     = false;
+var EDIT_TOUR = null;
+var EDIT_REV  = null;
+var PICK_TARGET = null;
+var PICK_CB   = null;
+var IMGS_CACHE= [];
+
+/* ─── INIT ──────────────────────────────────────────────────── */
+window.addEventListener('DOMContentLoaded', async function() {
+  try {
+    var r = await fetch('api/auth.php', { credentials:'include' });
+    var d = await r.json();
+    if (d.ok) { showApp(); await loadData(); }
+  } catch(e) {}
+
+  var zone = document.getElementById('upload-zone');
+  zone.addEventListener('dragover',  function(e){ e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', function(){ zone.classList.remove('drag-over'); });
+  zone.addEventListener('drop', function(e){ e.preventDefault(); zone.classList.remove('drag-over'); handleFileSelect(e.dataTransfer.files); });
+});
+
+function showApp() {
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('admin-app').classList.remove('hidden');
+}
+
+/* ─── AUTH ──────────────────────────────────────────────────── */
+async function doLogin() {
+  var pass = document.getElementById('login-pass').value;
+  var err  = document.getElementById('login-error');
+  if (!pass) return;
+  try {
+    var r = await fetch('api/auth.php', {
+      method:'POST', credentials:'include',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ password: pass })
+    });
+    var d = await r.json();
+    if (d.ok) { showApp(); err.classList.add('hidden'); await loadData(); }
+    else { err.textContent = 'Incorrect password.'; err.classList.remove('hidden'); }
+  } catch(e) { var err2 = document.getElementById('login-error'); err2.textContent = 'Cannot connect to server.'; err2.classList.remove('hidden'); }
+}
+
+async function doLogout() {
+  await fetch('api/auth.php', {
+    method:'POST', credentials:'include',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ action:'logout' })
+  }).catch(function(){});
+  location.reload();
+}
+
+/* ─── DATA ──────────────────────────────────────────────────── */
+async function loadData() {
+  var r = await fetch('data.json?_=' + Date.now());
+  DATA = await r.json();
+  renderTours(); renderGallery(); renderReviews(); renderSettings();
+}
+
+async function publishData() {
+  try {
+    var r = await fetch('api/save.php', {
+      method:'POST', credentials:'include',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(DATA)
+    });
+    var d = await r.json();
+    if (d.ok) {
+      DIRTY = false;
+      document.getElementById('btn-publish').disabled = true;
+      document.getElementById('dirty-banner').classList.add('hidden');
+      toast('Changes published — website updated.', 'ok');
+    } else { toast('Save failed: ' + (d.error || 'server error'), 'err'); }
+  } catch(e) { toast('Connection error. Try again.', 'err'); }
+}
+
+function markDirty() {
+  DIRTY = true;
+  document.getElementById('btn-publish').disabled = false;
+  document.getElementById('dirty-banner').classList.remove('hidden');
+}
+
+/* ─── NAVIGATION ────────────────────────────────────────────── */
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('panel-' + name).classList.add('active');
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.panel === name); });
+  if (name === 'images') loadImages();
+}
+
+/* ─── TOAST ─────────────────────────────────────────────────── */
+var _tt = null;
+function toast(msg, type) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast ' + (type || 'info');
+  el.classList.remove('hidden');
+  if (_tt) clearTimeout(_tt);
+  _tt = setTimeout(function(){ el.classList.add('hidden'); }, 3500);
+}
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ─── TOURS ─────────────────────────────────────────────────── */
+function renderTours() {
+  var list = document.getElementById('tours-list');
+  var tours = DATA.tours || [];
+  document.getElementById('tours-count').textContent = tours.length + ' tours';
+  list.innerHTML = tours.map(function(t, i) {
+    return '<div class="data-row">' +
+      '<div><div class="row-name">' + esc(t.name) + '</div><div class="row-sub">' + [t.days ? t.days+' days' : '', t.km ? t.km+' km' : ''].filter(Boolean).join(' · ') + '</div></div>' +
+      '<div><span class="badge-pill badge-' + esc(t.badgeType) + '">' + esc(t.badge) + '</span></div>' +
+      '<div style="font-size:12px;color:var(--muted)">' + esc(t.diff||'—') + '</div>' +
+      '<div style="font-weight:600;font-size:13px">' + esc(t.price) + '</div>' +
+      '<div class="row-actions"><button class="btn-secondary" onclick="openTourForm(' + i + ')">Edit</button><button class="btn-danger" onclick="deleteTour(' + i + ')">Del</button></div>' +
+    '</div>';
+  }).join('');
+}
+
+function openTourForm(idx) {
+  EDIT_TOUR = idx;
+  var t = idx === null ? {} : DATA.tours[idx];
+  document.getElementById('tour-form-title').textContent = idx === null ? 'New Tour' : 'Edit Tour';
+  document.getElementById('f-tour-id').value   = t.id || 't' + Date.now();
+  document.getElementById('f-name').value      = t.name || '';
+  document.getElementById('f-badge').value     = t.badge || '';
+  document.getElementById('f-badgeType').value = t.badgeType || 'hot';
+  document.getElementById('f-diff').value      = t.diff || '';
+  document.getElementById('f-days').value      = t.days || '';
+  document.getElementById('f-islands').value   = t.islands || '';
+  document.getElementById('f-km').value        = t.km || '';
+  document.getElementById('f-price').value     = t.price || '';
+  document.getElementById('f-spots').value     = t.spots || '';
+  document.getElementById('f-desc').value      = t.desc || '';
+  document.getElementById('f-link').value      = t.link || '';
+  document.getElementById('f-imgSrc').value    = t.imgSrc || '';
+  updateTourImgPreview();
+  document.getElementById('tour-overlay').classList.add('open');
+}
+
+function closeTourForm() { document.getElementById('tour-overlay').classList.remove('open'); }
+
+function updateTourImgPreview() {
+  var src = document.getElementById('f-imgSrc').value.trim();
+  var preview = document.getElementById('f-imgSrc-preview');
+  if (src) { preview.src = src; preview.style.display = 'block'; }
+  else { preview.style.display = 'none'; }
+}
+
+function saveTour() {
+  var t = {
+    id:        document.getElementById('f-tour-id').value,
+    name:      document.getElementById('f-name').value.trim(),
+    badge:     document.getElementById('f-badge').value.trim(),
+    badgeType: document.getElementById('f-badgeType').value,
+    diff:      document.getElementById('f-diff').value,
+    days:      document.getElementById('f-days').value.trim(),
+    islands:   document.getElementById('f-islands').value.trim(),
+    km:        document.getElementById('f-km').value.trim(),
+    price:     document.getElementById('f-price').value.trim(),
+    spots:     document.getElementById('f-spots').value.trim(),
+    desc:      document.getElementById('f-desc').value.trim(),
+    link:      document.getElementById('f-link').value.trim(),
+    imgSrc:    document.getElementById('f-imgSrc').value.trim()
+  };
+  if (!t.name) { toast('Tour name is required.', 'err'); return; }
+  if (!DATA.tours) DATA.tours = [];
+  if (EDIT_TOUR === null) DATA.tours.push(t);
+  else DATA.tours[EDIT_TOUR] = t;
+  closeTourForm(); renderTours(); markDirty();
+  toast('Tour saved. Click Publish to go live.', 'info');
+}
+
+function deleteTour(idx) {
+  if (!confirm('Delete "' + DATA.tours[idx].name + '"?')) return;
+  DATA.tours.splice(idx, 1);
+  renderTours(); markDirty();
+}
+
+/* ─── GALLERY ───────────────────────────────────────────────── */
+function renderGallery() {
+  var grid = document.getElementById('gallery-grid');
+  var items = DATA.gallery || [];
+  document.getElementById('gallery-count').textContent = items.length + ' photos';
+  grid.innerHTML = items.map(function(g, i) {
+    return '<div class="gallery-card">' +
+      '<img class="gallery-img" src="' + esc(g.src) + '" onerror="this.src=\'\';" loading="lazy">' +
+      '<div class="gallery-card-body">' +
+        '<input type="text" value="' + esc(g.caption) + '" placeholder="Caption..." onchange="updateGalleryCaption(' + i + ',this.value)">' +
+        '<div class="gallery-card-actions">' +
+          '<button class="btn-ghost" style="font-size:11px;padding:4px 8px" onclick="pickGalleryImage(' + i + ')">Change</button>' +
+          '<button class="btn-danger" style="font-size:11px;padding:4px 8px" onclick="deleteGalleryItem(' + i + ')">Remove</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function addGalleryItem() {
+  if (!DATA.gallery) DATA.gallery = [];
+  DATA.gallery.push({ imgId: 'gi' + DATA.gallery.length, src: '', caption: '' });
+  renderGallery(); markDirty();
+}
+
+function updateGalleryCaption(idx, val) {
+  DATA.gallery[idx].caption = val;
+  markDirty();
+}
+
+function pickGalleryImage(idx) {
+  openImagePicker(null, function(url) {
+    DATA.gallery[idx].src = url;
+    renderGallery(); markDirty();
+  });
+}
+
+function deleteGalleryItem(idx) {
+  if (!confirm('Remove this photo from the gallery?')) return;
+  DATA.gallery.splice(idx, 1);
+  renderGallery(); markDirty();
+}
+
+/* ─── REVIEWS ───────────────────────────────────────────────── */
+function renderReviews() {
+  var list = document.getElementById('reviews-list');
+  var revs = DATA.reviews || [];
+  document.getElementById('reviews-count').textContent = revs.length + ' reviews';
+  list.innerHTML = revs.map(function(r, i) {
+    return '<div class="rev-card">' +
+      '<div class="rev-initials">' + esc(r.initials) + '</div>' +
+      '<div class="rev-content"><p class="rev-q">"' + esc(r.q) + '"</p><p class="rev-meta">' + esc(r.name) + ' · ' + esc(r.detail) + '</p></div>' +
+      '<div class="rev-actions"><button class="btn-ghost" onclick="openReviewForm(' + i + ')">Edit</button><button class="btn-danger" onclick="deleteReview(' + i + ')">Del</button></div>' +
+    '</div>';
+  }).join('');
+}
+
+function openReviewForm(idx) {
+  EDIT_REV = idx;
+  var r = idx === null ? {} : DATA.reviews[idx];
+  document.getElementById('review-form-title').textContent = idx === null ? 'New Review' : 'Edit Review';
+  document.getElementById('f-rev-idx').value     = idx === null ? '' : idx;
+  document.getElementById('f-rev-q').value       = r.q || '';
+  document.getElementById('f-rev-name').value    = r.name || '';
+  document.getElementById('f-rev-initials').value= r.initials || '';
+  document.getElementById('f-rev-detail').value  = r.detail || '';
+  document.getElementById('review-overlay').classList.add('open');
+}
+
+function closeReviewForm() { document.getElementById('review-overlay').classList.remove('open'); }
+
+function saveReview() {
+  var r = {
+    q:        document.getElementById('f-rev-q').value.trim(),
+    name:     document.getElementById('f-rev-name').value.trim(),
+    initials: document.getElementById('f-rev-initials').value.trim().toUpperCase(),
+    detail:   document.getElementById('f-rev-detail').value.trim()
+  };
+  if (!r.q || !r.name) { toast('Quote and name are required.', 'err'); return; }
+  if (!DATA.reviews) DATA.reviews = [];
+  if (EDIT_REV === null) DATA.reviews.push(r);
+  else DATA.reviews[EDIT_REV] = r;
+  closeReviewForm(); renderReviews(); markDirty();
+  toast('Review saved.', 'info');
+}
+
+function deleteReview(idx) {
+  if (!confirm('Delete this review?')) return;
+  DATA.reviews.splice(idx, 1);
+  renderReviews(); markDirty();
+}
+
+/* ─── SETTINGS ──────────────────────────────────────────────── */
+function renderSettings() {
+  document.getElementById('s-barDate').value = DATA.barDate || '';
+  document.getElementById('s-hw1').value     = DATA.hw1 || '';
+  document.getElementById('s-hw2').value     = DATA.hw2 || '';
+  document.getElementById('s-hw3').value     = DATA.hw3 || '';
+  document.getElementById('s-hSub').value    = DATA.hSub || '';
+  document.getElementById('s-wa').value      = DATA.wa || '';
+  document.getElementById('s-wa2').value     = DATA.wa2 || '';
+  document.getElementById('s-email').value   = DATA.email || '';
+  var heroImg = DATA.heroImg || '';
+  document.getElementById('s-heroImg').value = heroImg;
+  if (heroImg) {
+    var p = document.getElementById('s-heroImg-preview');
+    p.src = heroImg; p.style.display = 'block';
+  }
+}
+
+function saveSettings() {
+  DATA.barDate = document.getElementById('s-barDate').value.trim();
+  DATA.hw1     = document.getElementById('s-hw1').value.trim();
+  DATA.hw2     = document.getElementById('s-hw2').value.trim();
+  DATA.hw3     = document.getElementById('s-hw3').value.trim();
+  DATA.hSub    = document.getElementById('s-hSub').value.trim();
+  DATA.wa      = document.getElementById('s-wa').value.trim();
+  DATA.wa2     = document.getElementById('s-wa2').value.trim();
+  DATA.email   = document.getElementById('s-email').value.trim();
+  DATA.heroImg = document.getElementById('s-heroImg').value.trim();
+  markDirty();
+  toast('Settings saved. Click Publish to go live.', 'info');
+}
+
+async function changePassword() {
+  var p1 = document.getElementById('s-newpass').value;
+  var p2 = document.getElementById('s-newpass2').value;
+  if (!p1) { toast('Enter a new password.', 'err'); return; }
+  if (p1 !== p2) { toast('Passwords do not match.', 'err'); return; }
+  if (p1.length < 8) { toast('Password must be at least 8 characters.', 'err'); return; }
+  try {
+    var r = await fetch('api/change-password.php', {
+      method:'POST', credentials:'include',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ password: p1 })
+    });
+    var d = await r.json();
+    if (d.ok) {
+      document.getElementById('s-newpass').value  = '';
+      document.getElementById('s-newpass2').value = '';
+      toast('Password changed successfully.', 'ok');
+    } else { toast('Error: ' + (d.error||'unknown'), 'err'); }
+  } catch(e) { toast('Connection error.', 'err'); }
+}
+
+/* ─── IMAGES ────────────────────────────────────────────────── */
+async function loadImages() {
+  try {
+    var r = await fetch('api/list-images.php', { credentials:'include' });
+    var d = await r.json();
+    if (d.ok) { IMGS_CACHE = d.files; renderImagesGrid(d.files); }
+  } catch(e) {}
+}
+
+function renderImagesGrid(files) {
+  var grid = document.getElementById('images-grid');
+  grid.innerHTML = files.map(function(f) {
+    return '<div class="img-card" onclick="copyUrl(\'' + esc(f.url) + '\')">' +
+      '<img src="' + esc(f.url) + '" loading="lazy" alt="">' +
+      '<div class="img-card-name">' + esc(f.name) + '</div>' +
+      '<button class="img-card-copy" onclick="event.stopPropagation();copyUrl(\'' + esc(f.url) + '\')">Copy URL</button>' +
+    '</div>';
+  }).join('');
+}
+
+function copyUrl(url) {
+  navigator.clipboard.writeText(url).then(function(){ toast('URL copied to clipboard.', 'ok'); });
+}
+
+async function handleFileSelect(files) {
+  if (!files || !files.length) return;
+  var uploaded = 0;
+  for (var i = 0; i < files.length; i++) {
+    var fd = new FormData();
+    fd.append('image', files[i]);
+    try {
+      var r = await fetch('api/upload.php', { method:'POST', credentials:'include', body:fd });
+      var d = await r.json();
+      if (d.ok) { uploaded++; IMGS_CACHE.unshift({ name: d.name, url: d.url, size: 0 }); }
+      else { toast('Upload failed: ' + (d.error||'unknown'), 'err'); }
+    } catch(e) { toast('Upload error.', 'err'); }
+  }
+  if (uploaded) { renderImagesGrid(IMGS_CACHE); toast(uploaded + ' image(s) uploaded.', 'ok'); }
+}
+
+/* ─── IMAGE PICKER ──────────────────────────────────────────── */
+function openImagePicker(targetId, cb) {
+  PICK_TARGET = targetId;
+  PICK_CB = cb || null;
+  var grid = document.getElementById('picker-grid');
+  if (!IMGS_CACHE.length) {
+    fetch('api/list-images.php', { credentials:'include' })
+      .then(function(r){ return r.json(); })
+      .then(function(d){ if(d.ok){ IMGS_CACHE = d.files; renderPickerGrid(); } });
+  } else { renderPickerGrid(); }
+  document.getElementById('img-picker').classList.remove('hidden');
+}
+
+function renderPickerGrid() {
+  var grid = document.getElementById('picker-grid');
+  grid.innerHTML = IMGS_CACHE.map(function(f) {
+    return '<div class="picker-item" onclick="selectPickedImage(\'' + esc(f.url) + '\')">' +
+      '<img src="' + esc(f.url) + '" loading="lazy" alt="">' +
+      '<div class="picker-item-name">' + esc(f.name) + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function selectPickedImage(url) {
+  if (PICK_TARGET) {
+    document.getElementById(PICK_TARGET).value = url;
+    var preview = document.getElementById(PICK_TARGET + '-preview');
+    if (preview) { preview.src = url; preview.style.display = 'block'; }
+  }
+  if (PICK_CB) PICK_CB(url);
+  closeImagePicker();
+}
+
+function closeImagePicker() { document.getElementById('img-picker').classList.add('hidden'); }
+</script>
+</body>
+</html>
