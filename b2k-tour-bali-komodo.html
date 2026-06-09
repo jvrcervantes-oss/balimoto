@@ -1128,11 +1128,14 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
 </script>
 <script>
 // BOOKING CALCULATOR
-(function() {
+(async function() {
+  var _kp = {};
+  try { var _r = await fetch('data.json?_='+Date.now()); if(_r.ok){var _j=await _r.json();_kp=_j.komodo||{};} } catch(e){}
   var PKGS = {
-    roundtrip: {name: 'Roundtrip', price: 2950, km: 1458},
-    deluxe:    {name: 'Deluxe',    price: 3950, km: 1259}
+    roundtrip: {name: 'Roundtrip', price: _kp.pkgRoundtrip||2950, km: 1458},
+    deluxe:    {name: 'Deluxe',    price: _kp.pkgDeluxe||3950,   km: 1259}
   };
+  var FROM_EUR = _kp.priceFrom || 2671;
   var MODS = {
     self_guided:      {name: 'Self-guided',         adj: -500, neg: true},
     pillion:          {name: 'Pillion (passenger)',  adj: -350, neg: true},
@@ -1175,12 +1178,12 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
     if (el) el.textContent = fmt(eur);
 
     var fp = document.getElementById('bkFromPrice');
-    if (fp) fp.textContent = fmt(2450);
+    if (fp) fp.textContent = fmt(FROM_EUR);
     var hfp = document.getElementById('heroFromPrice');
-    if (hfp) hfp.textContent = fmt(2450);
+    if (hfp) hfp.textContent = fmt(FROM_EUR);
     var bbfp = document.getElementById('bbFromPrice');
-    if (bbfp) bbfp.textContent = 'From ' + fmt(2450);
-    var pkgPrices = {roundtrip: 2950, deluxe: 3950};
+    if (bbfp) bbfp.textContent = 'From ' + fmt(FROM_EUR);
+    var pkgPrices = {roundtrip: PKGS.roundtrip.price, deluxe: PKGS.deluxe.price};
     Object.keys(pkgPrices).forEach(function(id) {
       var ptag = document.getElementById('pkgTag-' + id);
       if (ptag) ptag.textContent = fmt(pkgPrices[id]);

@@ -184,6 +184,7 @@ input,textarea,select{font-family:'Instrument Sans',sans-serif;font-size:13px}
       <button class="tab"        data-panel="gallery" onclick="showPanel('gallery')">Gallery</button>
       <button class="tab"        data-panel="reviews" onclick="showPanel('reviews')">Reviews</button>
       <button class="tab"        data-panel="settings"onclick="showPanel('settings')">Settings</button>
+      <button class="tab"        data-panel="pricing" onclick="showPanel('pricing')">Pricing</button>
       <button class="tab"        data-panel="images"  onclick="showPanel('images')">Images</button>
     </nav>
     <div class="app-right">
@@ -277,6 +278,35 @@ input,textarea,select{font-family:'Instrument Sans',sans-serif;font-size:13px}
     </div>
 
     <button class="btn-primary" onclick="saveSettings()">Save settings</button>
+  </div>
+
+  <!-- PRICING -->
+  <div class="panel" id="panel-pricing">
+    <div class="panel-bar"><h2>Tour Pricing</h2><span class="muted">Prices in EUR — automatically converted to USD, AUD, CAD on the pages.</span></div>
+
+    <div class="settings-section">
+      <h3>Bali to Komodo Challenge</h3>
+      <div class="form-row">
+        <div class="form-group"><label>Roundtrip (EUR)</label><input type="number" id="p-komodo-roundtrip" placeholder="2950"></div>
+        <div class="form-group"><label>Deluxe (EUR)</label><input type="number" id="p-komodo-deluxe" placeholder="3950"></div>
+      </div>
+      <div class="form-group" style="max-width:260px"><label>"From" price shown in hero (EUR)</label><input type="number" id="p-komodo-from" placeholder="2671"></div>
+    </div>
+
+    <div class="settings-section">
+      <h3>7 Islands Hopping</h3>
+      <div class="form-row">
+        <div class="form-group"><label>Bike × 2 (EUR)</label><input type="number" id="p-7isl-bike2" placeholder="1718"></div>
+        <div class="form-group"><label>Bike × 1 (EUR)</label><input type="number" id="p-7isl-bike1" placeholder="1787"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Car self-drive (EUR)</label><input type="number" id="p-7isl-carself" placeholder="1925"></div>
+        <div class="form-group"><label>Car + driver (EUR)</label><input type="number" id="p-7isl-cardriver" placeholder="2195"></div>
+      </div>
+      <div class="form-group" style="max-width:260px"><label>"From" price shown in hero (EUR)</label><input type="number" id="p-7isl-from" placeholder="1718"></div>
+    </div>
+
+    <button class="btn-primary" onclick="savePricing()">Save pricing</button>
   </div>
 
   <!-- IMAGES -->
@@ -463,7 +493,7 @@ async function doLogout() {
 async function loadData() {
   var r = await fetch('data.json?_=' + Date.now());
   DATA = await r.json();
-  renderTours(); renderGallery(); renderReviews(); renderSettings();
+  renderTours(); renderGallery(); renderReviews(); renderSettings(); renderPricing();
 }
 
 async function publishData() {
@@ -805,6 +835,37 @@ function selectPickedImage(url) {
 }
 
 function closeImagePicker() { document.getElementById('img-picker').classList.add('hidden'); }
+
+/* ─── PRICING ───────────────────────────────────────────────── */
+function renderPricing() {
+  var k = DATA.komodo   || {};
+  var s = DATA.islands7 || {};
+  document.getElementById('p-komodo-roundtrip').value = k.pkgRoundtrip  || 2950;
+  document.getElementById('p-komodo-deluxe').value    = k.pkgDeluxe     || 3950;
+  document.getElementById('p-komodo-from').value      = k.priceFrom     || 2671;
+  document.getElementById('p-7isl-bike2').value       = s.pkgBike2      || 1718;
+  document.getElementById('p-7isl-bike1').value       = s.pkgBike1      || 1787;
+  document.getElementById('p-7isl-carself').value     = s.pkgCarSelf    || 1925;
+  document.getElementById('p-7isl-cardriver').value   = s.pkgCarDriver  || 2195;
+  document.getElementById('p-7isl-from').value        = s.priceFrom     || 1718;
+}
+
+function savePricing() {
+  DATA.komodo = {
+    pkgRoundtrip: parseFloat(document.getElementById('p-komodo-roundtrip').value) || 2950,
+    pkgDeluxe:    parseFloat(document.getElementById('p-komodo-deluxe').value)    || 3950,
+    priceFrom:    parseFloat(document.getElementById('p-komodo-from').value)      || 2671
+  };
+  DATA.islands7 = {
+    pkgBike2:     parseFloat(document.getElementById('p-7isl-bike2').value)     || 1718,
+    pkgBike1:     parseFloat(document.getElementById('p-7isl-bike1').value)     || 1787,
+    pkgCarSelf:   parseFloat(document.getElementById('p-7isl-carself').value)   || 1925,
+    pkgCarDriver: parseFloat(document.getElementById('p-7isl-cardriver').value) || 2195,
+    priceFrom:    parseFloat(document.getElementById('p-7isl-from').value)      || 1718
+  };
+  markDirty();
+  toast('Pricing saved. Click Publish to go live.', 'info');
+}
 </script>
 </body>
 </html>

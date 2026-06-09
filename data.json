@@ -81,6 +81,18 @@
     { "imgId": "gi7", "src": "images/8.jpg",  "caption": "Moyo · Sumbawa" },
     { "imgId": "gi8", "src": "images/9.jpg",  "caption": "The crew · B2K" }
   ],
+  "komodo": {
+    "pkgRoundtrip": 2950,
+    "pkgDeluxe": 3950,
+    "priceFrom": 2671
+  },
+  "islands7": {
+    "pkgBike2": 1718,
+    "pkgBike1": 1787,
+    "pkgCarSelf": 1925,
+    "pkgCarDriver": 2195,
+    "priceFrom": 1718
+  },
   "reviews": [
     { "q": "Thirteen days, seven islands, zero regrets. I have done trips across Southeast Asia but nothing comes close to this. B2K made it look easy.", "name": "Tyler B.", "detail": "7 Islands Hopping, 2025 · USA", "initials": "TB" },
     { "q": "I was skeptical about a guided motorcycle tour but this converted me. Small group, world-class roads, genuinely off-the-beaten-path. Already planning the Komodo route.", "name": "Sarah K.", "detail": "7 Islands Hopping, 2025 · Canada", "initials": "SK" },

@@ -23,7 +23,6 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://balimotoadventures.com/images/HERO_7ISL.jpg">
-<link rel="canonical" href="https://balimotoadventures.com/b2k-tour-7-islands.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <!-- Meta Pixel Code -->
@@ -1161,13 +1160,16 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
 
 <script>
 // BOOKING CALCULATOR
-(function() {
+(async function() {
+  var _7p = {};
+  try { var _r = await fetch('data.json?_='+Date.now()); if(_r.ok){var _j=await _r.json();_7p=_j.islands7||{};} } catch(e){}
   var PKGS = {
-    bike2:     {name: 'Bike × 2',  price: 1718, desc: 'Shared motorcycle'},
-    bike1:     {name: 'Bike × 1',  price: 1787, desc: 'Solo motorcycle'},
-    carself:   {name: 'Car Self',        price: 1925, desc: 'Self-drive car'},
-    cardriver: {name: 'Car + Driver',    price: 2195, desc: 'Private car & driver'}
+    bike2:     {name: 'Bike × 2',     price: _7p.pkgBike2||1718,     desc: 'Shared motorcycle'},
+    bike1:     {name: 'Bike × 1',     price: _7p.pkgBike1||1787,     desc: 'Solo motorcycle'},
+    carself:   {name: 'Car Self',     price: _7p.pkgCarSelf||1925,   desc: 'Self-drive car'},
+    cardriver: {name: 'Car + Driver', price: _7p.pkgCarDriver||2195, desc: 'Private car & driver'}
   };
+  var FROM_EUR7 = _7p.priceFrom || 1718;
   var SYMS = {EUR: '€', USD: '$', AUD: 'AU$', CAD: 'CA$'};
   var FALLBACK = {EUR: 1, USD: 1.09, AUD: 1.66, CAD: 1.48};
   var rates = {EUR: 1, USD: 1.09, AUD: 1.66, CAD: 1.48};
@@ -1197,14 +1199,14 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
     if (el) el.textContent = fmt(total);
 
     var fp = document.getElementById('bkFromPrice7');
-    if (fp) fp.textContent = fmt(1718);
+    if (fp) fp.textContent = fmt(FROM_EUR7);
 
     var bbfp = document.getElementById('bbFromPrice7');
-    if (bbfp) bbfp.textContent = 'From ' + fmt(1718);
+    if (bbfp) bbfp.textContent = 'From ' + fmt(FROM_EUR7);
     var hfp = document.getElementById('heroFromPrice7');
-    if (hfp) hfp.textContent = fmt(1718);
+    if (hfp) hfp.textContent = fmt(FROM_EUR7);
 
-    var pkgPrices = {bike2: 1718, bike1: 1787, carself: 1925, cardriver: 2195};
+    var pkgPrices = {bike2: PKGS.bike2.price, bike1: PKGS.bike1.price, carself: PKGS.carself.price, cardriver: PKGS.cardriver.price};
     Object.keys(pkgPrices).forEach(function(id) {
       var ptag = document.getElementById('pkgTag7-' + id);
       if (ptag) ptag.textContent = fmt(pkgPrices[id]);
