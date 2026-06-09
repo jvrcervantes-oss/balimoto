@@ -1,10 +1,14 @@
 # Credenciales — nunca al repo
 private/
+bot-config/
 
-# Backups locales
-Backup_20260531/
-Backup_20260604/
-Backup_20260605/
+# Backups locales (cualquier fecha)
+Backup_*/
+
+# Trabajo local — no desplegar
+indexv2.html
+scripts/
+b2kepicadv-redirect/
 
 # Versiones deprecadas
 Deprecated/
