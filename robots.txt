@@ -1,7 +1,12 @@
 User-agent: *
 Disallow: /Backup_20260531/
 Disallow: /Backup_20260604/
+Disallow: /Backup_20260608/
+Disallow: /Backup_20260608_1812/
+Disallow: /Backup_20260609_1044/
+Disallow: /Backup_20260609_auditoria/
+Disallow: /Deprecated/
 Disallow: /video.html
 Disallow: /index_v2.html
 
-Sitemap: https://b2kepicadv.com/sitemap.xml
+Sitemap: https://balimotoadventures.com/sitemap.xml

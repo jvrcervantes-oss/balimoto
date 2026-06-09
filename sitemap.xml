@@ -43,4 +43,24 @@
     <priority>0.8</priority>
   </url>
 
+  <!-- Legal pages -->
+  <url>
+    <loc>https://balimotoadventures.com/privacy-policy.html</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://balimotoadventures.com/terms.html</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://balimotoadventures.com/data-deletion.html</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
+
 </urlset>
