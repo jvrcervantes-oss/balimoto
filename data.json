@@ -13,14 +13,14 @@
       "id": "t1",
       "name": "Bali to Komodo",
       "days": "12",
-      "islands": "4",
+      "islands": "6",
       "km": "1,259",
       "badge": "Best Seller",
       "badgeType": "hot",
-      "diff": "Advanced",
+      "diff": "Intermediate",
       "price": "$2,671",
       "spots": "3 spots left",
-      "desc": "The ride that defines us. 12 days across 4 islands — from Bali's spiritual heart to the prehistoric shores of Komodo.",
+      "desc": "The ride that defines us. 12 days across 6 islands — from Bali's spiritual heart to the prehistoric shores of Komodo.",
       "link": "b2k-tour-bali-komodo.html",
       "imgSrc": "images/b2k-tour-komodo.webp"
     },
@@ -62,7 +62,7 @@
       "km": "",
       "badge": "Coming Soon",
       "badgeType": "soon",
-      "diff": "Advanced",
+      "diff": "Beginner",
       "price": "2026",
       "spots": "",
       "desc": "Cross the Ring of Fire. Fourteen days through Java's volcanic spine — ancient temples, jungle roads and the crossing from paradise to the capital.",
@@ -197,7 +197,7 @@
     "heroNote": "self-guided · all inclusive · excl. intl. flights",
     "pills": [
       "12 Days",
-      "4 Islands",
+      "6 Islands",
       "1,259 km",
       "Max 12 riders"
     ],
@@ -250,13 +250,13 @@
       },
       {
         "label": "3x massages",
-        "type": "yes",
-        "tag": ""
+        "type": "cond",
+        "tag": "Deluxe only"
       },
       {
         "label": "Helicopter tour",
-        "type": "yes",
-        "tag": ""
+        "type": "cond",
+        "tag": "Deluxe only"
       },
       {
         "label": "Fuel",
@@ -425,7 +425,7 @@
     "faq": [
       {
         "q": "What is the Bali to Komodo Challenge?",
-        "a": "A 12-day, 11-night motorcycle adventure covering 1,259 kilometers across 6 major islands: Bali, Lombok, Sumbawa, Flores, Moyo and Komodo. Designed as a deep cultural and geological exploration, crossing the famous Wallace Line and concluding with a visit to the Komodo Dragons."
+        "a": "A 12-day, 11-night motorcycle adventure covering 1,259 kilometers across 6 major islands: Bali, Lombok, Gili T, Sumbawa, Flores and Komodo. Designed as a deep cultural and geological exploration, crossing the famous Wallace Line and concluding with a visit to the Komodo Dragons."
       },
       {
         "q": "What riding experience do I need?",
