@@ -9,6 +9,7 @@ Backup_*/
 indexv2.html
 scripts/
 b2kepicadv-redirect/
+*.md
 
 # Versiones deprecadas
 Deprecated/

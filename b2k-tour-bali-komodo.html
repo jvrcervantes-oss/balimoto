@@ -1334,5 +1334,100 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
 </script>
 <script>document.querySelectorAll('a[href*="wa.me"],a[href^="mailto:"]').forEach(function(a){a.addEventListener('click',function(){if(typeof fbq!=='undefined')fbq('track','Contact');});});</script>
 
+<script>
+// CMS LOADER — contenido editable desde admin.html (data.json → komodoPage)
+// Si data.json no tiene komodoPage, la página mantiene su HTML estático.
+(async function() {
+  var P = {};
+  try {
+    var r = await fetch('data.json?_=' + Date.now());
+    if (!r.ok) return;
+    var j = await r.json();
+    P = j.komodoPage || {};
+    if (j.barDate) { var bd = document.getElementById('barDate'); if (bd) bd.textContent = j.barDate; }
+  } catch(e) { return; }
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function setText(id, v) { if (!v) return; var el = document.getElementById(id); if (el) el.textContent = v; }
+
+  setText('t-eyebrow', P.heroEyebrow);
+  if (P.heroTitle) { var ht = document.getElementById('t-heroTitle'); if (ht) ht.innerHTML = P.heroTitle; }
+  setText('t-heroFromNote', P.heroNote);
+  if (P.heroImg) { var hb = document.getElementById('heroBg'); if (hb) hb.src = P.heroImg; }
+  if (P.barSpots) { var ba = document.querySelector('.bar a'); if (ba) ba.textContent = P.barSpots; }
+  if (P.pills && P.pills.length) {
+    document.querySelectorAll('.th-pills .th-pill').forEach(function(el, i) {
+      if (!P.pills[i]) return;
+      var svg = el.querySelector('svg');
+      el.textContent = '';
+      if (svg) el.appendChild(svg);
+      el.appendChild(document.createTextNode(P.pills[i]));
+    });
+  }
+
+  if (P.included && P.included.length) {
+    var grid = document.querySelector('.ov-inc .inc-grid');
+    if (grid) {
+      var CHECK = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+      var CROSS = '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+      grid.innerHTML = P.included.map(function(it) {
+        var tag = it.tag ? '<span class="inc-tag">' + esc(it.tag) + '</span>' : '';
+        return '<div class="inc-item ' + esc(it.type || 'yes') + '">' + (it.type === 'no' ? CROSS : CHECK) + esc(it.label) + tag + '</div>';
+      }).join('');
+    }
+  }
+
+  if (P.itinerary && P.itinerary.length) {
+    var N = P.itinerary.length;
+    var tabsEl = document.getElementById('dayTabs');
+    var panelsEl = document.getElementById('dayPanels');
+    if (tabsEl && panelsEl) {
+      tabsEl.innerHTML = P.itinerary.map(function(_, i) {
+        return '<button class="dt' + (i === 0 ? ' active' : '') + '" data-day="' + i + '" onclick="switchDay(' + i + ')">' + String(i + 1).padStart(2, '0') + '</button>';
+      }).join('');
+      panelsEl.innerHTML = P.itinerary.map(function(d, i) {
+        var acts = (d.acts || []).map(function(a) { return '<div class="dp-act"><span>→</span><span>' + esc(a) + '</span></div>'; }).join('');
+        var img = d.img ? '<img src="' + esc(d.img) + '" alt="' + esc(d.imgAlt || d.route) + '" class="dp-img" loading="lazy" onerror="this.style.display=\'none\'">' : '';
+        return '<div class="day-panel" id="dp' + i + '" style="display:' + (i === 0 ? 'grid' : 'none') + '">' +
+          '<div class="dp-img-wrap">' + img + (d.island ? '<div class="dp-island-tag">' + esc(d.island) + '</div>' : '') + '</div>' +
+          '<div class="dp-body"><div class="dp-num">' + String(i + 1).padStart(2, '0') + '</div>' +
+          '<h3 class="dp-route">' + esc(d.route) + '</h3>' +
+          (d.km ? '<span class="dp-km">' + esc(d.km) + '</span>' : '') +
+          '<p class="dp-summary">' + esc(d.summary) + '</p>' +
+          (acts ? '<div class="dp-acts-title">Activities</div><div class="dp-acts">' + acts + '</div>' : '') +
+          '</div></div>';
+      }).join('');
+      window.switchDay = function(idx) {
+        var tabs2 = tabsEl.querySelectorAll('.dt');
+        var panels2 = panelsEl.querySelectorAll('.day-panel');
+        if (!tabs2[idx] || !panels2[idx]) return;
+        tabs2.forEach(function(t) { t.classList.remove('active'); });
+        panels2.forEach(function(p) { p.style.display = 'none'; });
+        tabs2[idx].classList.add('active');
+        panels2[idx].style.display = 'grid';
+        var pf = document.getElementById('progFill'), pl = document.getElementById('progLabel');
+        if (pf) pf.style.width = ((idx + 1) / N * 100).toFixed(1) + '%';
+        if (pl) pl.textContent = 'Day ' + (idx + 1) + ' of ' + N;
+        tabs2[idx].scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+      };
+      var pl0 = document.getElementById('progLabel'); if (pl0) pl0.textContent = 'Day 1 of ' + N;
+      var pf0 = document.getElementById('progFill'); if (pf0) pf0.style.width = (100 / N).toFixed(1) + '%';
+    }
+  }
+
+  if (P.faq && P.faq.length) {
+    var cols = document.querySelector('.faq-cols');
+    if (cols) {
+      var half = Math.ceil(P.faq.length / 2);
+      var item = function(f) {
+        return '<div class="faq-item" onclick="toggleFaq(this)">' +
+          '<div class="faq-q"><span class="faq-qt">' + esc(f.q) + '</span><svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>' +
+          '<div class="faq-a">' + esc(f.a) + '</div></div>';
+      };
+      cols.innerHTML = '<div>' + P.faq.slice(0, half).map(item).join('') + '</div><div>' + P.faq.slice(half).map(item).join('') + '</div>';
+    }
+  }
+})();
+</script>
+
 </body>
 </html>

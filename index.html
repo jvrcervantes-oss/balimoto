@@ -854,10 +854,12 @@ function applyAll() {
   // Apply hero image from data.json
   const heroImgSrc = SITE_DATA && SITE_DATA.heroImg ? SITE_DATA.heroImg : lsGet('heroImg');
   if (heroImgSrc) { const hb = document.getElementById('heroBg'); if (hb) hb.src = heroImgSrc; }
-  const whyMain = lsGet('whyImgMain');
+  const whyData = (SITE_DATA && SITE_DATA.why) || {};
+  const whyMain = whyData.imgMain || lsGet('whyImgMain');
   if (whyMain) { const wm = document.querySelector('.why-img-main'); if (wm) wm.src = whyMain; }
-  const whyAcc = lsGet('whyImgAcc');
+  const whyAcc = whyData.imgAcc || lsGet('whyImgAcc');
   if (whyAcc) { const wa2 = document.querySelector('.why-img-acc'); if (wa2) wa2.src = whyAcc; }
+  if (whyData.tag) { const wt = document.querySelector('.why-tag'); if (wt) wt.textContent = whyData.tag; }
   // Render dynamic sections
   renderTours(getData('tours'));
   updateVeDiffs(getData('tours'));

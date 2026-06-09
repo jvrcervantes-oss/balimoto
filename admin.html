@@ -185,6 +185,8 @@ input,textarea,select{font-family:'Instrument Sans',sans-serif;font-size:13px}
       <button class="tab"        data-panel="reviews" onclick="showPanel('reviews')">Reviews</button>
       <button class="tab"        data-panel="settings"onclick="showPanel('settings')">Settings</button>
       <button class="tab"        data-panel="pricing" onclick="showPanel('pricing')">Pricing</button>
+      <button class="tab"        data-panel="komodo"  onclick="showPanel('komodo')">Komodo Page</button>
+      <button class="tab"        data-panel="islands7" onclick="showPanel('islands7')">7 Islands Page</button>
       <button class="tab"        data-panel="images"  onclick="showPanel('images')">Images</button>
     </nav>
     <div class="app-right">
@@ -260,6 +262,29 @@ input,textarea,select{font-family:'Instrument Sans',sans-serif;font-size:13px}
     </div>
 
     <div class="settings-section">
+      <h3>Why section — "We Don't Do Generic Tours" (homepage)</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Main image (large)</label>
+          <div class="img-input-row">
+            <input type="text" id="s-whyImgMain" placeholder="images/b2k-why-main.webp">
+            <button class="btn-ghost" onclick="openImagePicker('s-whyImgMain')">Pick</button>
+            <img id="s-whyImgMain-preview" class="img-preview" src="" onerror="this.style.display='none'" style="display:none">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Accent image (small, overlapping)</label>
+          <div class="img-input-row">
+            <input type="text" id="s-whyImgAcc" placeholder="images/b2k-why-acc.webp">
+            <button class="btn-ghost" onclick="openImagePicker('s-whyImgAcc')">Pick</button>
+            <img id="s-whyImgAcc-preview" class="img-preview" src="" onerror="this.style.display='none'" style="display:none">
+          </div>
+        </div>
+      </div>
+      <div class="form-group" style="max-width:300px"><label>Tag over the images</label><input type="text" id="s-whyTag" placeholder="🏍️ Since 2018"></div>
+    </div>
+
+    <div class="settings-section">
       <h3>Contact</h3>
       <div class="form-row">
         <div class="form-group"><label>WhatsApp primary</label><input type="text" id="s-wa" placeholder="62881037978255"></div>
@@ -307,6 +332,18 @@ input,textarea,select{font-family:'Instrument Sans',sans-serif;font-size:13px}
     </div>
 
     <button class="btn-primary" onclick="savePricing()">Save pricing</button>
+  </div>
+
+  <!-- KOMODO PAGE -->
+  <div class="panel" id="panel-komodo">
+    <div class="panel-bar"><h2>Komodo Page</h2><span class="muted">Content of b2k-tour-bali-komodo.html — edits go live on Publish.</span></div>
+    <div id="pe-komodoPage"></div>
+  </div>
+
+  <!-- 7 ISLANDS PAGE -->
+  <div class="panel" id="panel-islands7">
+    <div class="panel-bar"><h2>7 Islands Page</h2><span class="muted">Content of b2k-tour-7-islands.html — edits go live on Publish.</span></div>
+    <div id="pe-islands7Page"></div>
   </div>
 
   <!-- IMAGES -->
@@ -493,7 +530,7 @@ async function doLogout() {
 async function loadData() {
   var r = await fetch('data.json?_=' + Date.now());
   DATA = await r.json();
-  renderTours(); renderGallery(); renderReviews(); renderSettings(); renderPricing();
+  renderTours(); renderGallery(); renderReviews(); renderSettings(); renderPricing(); renderPageEditors();
 }
 
 async function publishData() {
@@ -710,6 +747,14 @@ function deleteReview(idx) {
 
 /* ─── SETTINGS ──────────────────────────────────────────────── */
 function renderSettings() {
+  var why = DATA.why || {};
+  document.getElementById('s-whyImgMain').value = why.imgMain || '';
+  document.getElementById('s-whyImgAcc').value  = why.imgAcc || '';
+  document.getElementById('s-whyTag').value     = why.tag || '';
+  ['s-whyImgMain', 's-whyImgAcc'].forEach(function(id) {
+    var v = document.getElementById(id).value;
+    if (v) { var p = document.getElementById(id + '-preview'); p.src = v; p.style.display = 'block'; }
+  });
   document.getElementById('s-barDate').value = DATA.barDate || '';
   document.getElementById('s-hw1').value     = DATA.hw1 || '';
   document.getElementById('s-hw2').value     = DATA.hw2 || '';
@@ -736,6 +781,11 @@ function saveSettings() {
   DATA.wa2     = document.getElementById('s-wa2').value.trim();
   DATA.email   = document.getElementById('s-email').value.trim();
   DATA.heroImg = document.getElementById('s-heroImg').value.trim();
+  DATA.why = {
+    imgMain: document.getElementById('s-whyImgMain').value.trim(),
+    imgAcc:  document.getElementById('s-whyImgAcc').value.trim(),
+    tag:     document.getElementById('s-whyTag').value.trim()
+  };
   markDirty();
   toast('Settings saved. Click Publish to go live.', 'info');
 }
@@ -799,6 +849,116 @@ async function handleFileSelect(files) {
     } catch(e) { toast('Upload error.', 'err'); }
   }
   if (uploaded) { renderImagesGrid(IMGS_CACHE); toast(uploaded + ' image(s) uploaded.', 'ok'); }
+}
+
+/* ─── TOUR PAGE EDITORS (Komodo / 7 Islands) ────────────────── */
+var PAGE_DEFS = {
+  komodoPage:   { mount: 'pe-komodoPage',   hasBar: false },
+  islands7Page: { mount: 'pe-islands7Page', hasBar: false }
+};
+
+function pg(key) { if (!DATA[key]) DATA[key] = {}; return DATA[key]; }
+
+function renderPageEditors() { Object.keys(PAGE_DEFS).forEach(renderPageEditor); }
+
+function renderPageEditor(key) {
+  var def = PAGE_DEFS[key];
+  var el = document.getElementById(def.mount);
+  if (!el) return;
+  var P = pg(key);
+  P.pills = P.pills || []; P.included = P.included || []; P.itinerary = P.itinerary || []; P.faq = P.faq || [];
+  var K = "'" + key + "'";
+  function on(fn, args) { return 'onchange="' + fn + '(' + K + ',' + args + ')"'; }
+  var h = '';
+
+  /* HERO */
+  h += '<div class="settings-section"><h3>Hero</h3>'
+    + '<div class="form-row">'
+    + '<div class="form-group"><label>Eyebrow</label><input type="text" value="' + esc(P.heroEyebrow) + '" ' + on('pgSet', "'heroEyebrow',this.value") + '></div>'
+    + '<div class="form-group"><label>"From" price note</label><input type="text" value="' + esc(P.heroNote) + '" ' + on('pgSet', "'heroNote',this.value") + '></div>'
+    + '</div>'
+    + '<div class="form-group"><label>Title — supports &lt;br&gt; and &lt;em&gt; (em = orange)</label><textarea rows="2" ' + on('pgSet', "'heroTitle',this.value") + '>' + esc(P.heroTitle) + '</textarea></div>'
+    + '<div class="form-group"><label>Hero image</label><div class="img-input-row">'
+    + '<input type="text" value="' + esc(P.heroImg) + '" ' + on('pgSet', "'heroImg',this.value") + '>'
+    + '<button class="btn-ghost" onclick="pgPick(' + K + ',\'heroImg\',null)">Pick</button></div></div>'
+    + '<div class="form-row">'
+    + P.pills.map(function(p, i) {
+        return '<div class="form-group"><label>Hero pill ' + (i + 1) + '</label><input type="text" value="' + esc(p) + '" ' + on('pgArr', "'pills'," + i + ',this.value') + '></div>';
+      }).join('')
+    + '</div>'
+    + (def.hasBar ? '<div class="form-group" style="max-width:420px"><label>Announcement bar — spots/urgency text</label><input type="text" value="' + esc(P.barSpots) + '" ' + on('pgSet', "'barSpots',this.value") + '></div>' : '')
+    + '</div>';
+
+  /* INCLUDED */
+  h += '<div class="settings-section"><h3 style="display:flex;justify-content:space-between;align-items:center">What&apos;s included <button class="btn-primary" onclick="pgAdd(' + K + ',\'included\')">+ Add item</button></h3>'
+    + P.included.map(function(it, i) {
+        return '<div class="form-row" style="align-items:flex-end;gap:10px">'
+          + '<div class="form-group" style="flex:2"><label>Item ' + (i + 1) + '</label><input type="text" value="' + esc(it.label) + '" ' + on('pgItem', "'included'," + i + ",'label',this.value") + '></div>'
+          + '<div class="form-group"><label>Type</label><select ' + on('pgItem', "'included'," + i + ",'type',this.value") + '>'
+          + '<option value="yes"' + (it.type === 'yes' ? ' selected' : '') + '>Included</option>'
+          + '<option value="cond"' + (it.type === 'cond' ? ' selected' : '') + '>Conditional</option>'
+          + '<option value="no"' + (it.type === 'no' ? ' selected' : '') + '>Not included</option>'
+          + '</select></div>'
+          + '<div class="form-group"><label>Tag (optional)</label><input type="text" value="' + esc(it.tag) + '" placeholder="Deluxe only" ' + on('pgItem', "'included'," + i + ",'tag',this.value") + '></div>'
+          + '<button class="btn-danger" style="margin-bottom:16px" onclick="pgDel(' + K + ',\'included\',' + i + ')">Del</button>'
+          + '</div>';
+      }).join('')
+    + '</div>';
+
+  /* ITINERARY */
+  h += '<div class="settings-section"><h3 style="display:flex;justify-content:space-between;align-items:center">Itinerary — day by day <button class="btn-primary" onclick="pgAdd(' + K + ',\'itinerary\')">+ Add day</button></h3>'
+    + P.itinerary.map(function(d, i) {
+        return '<div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px;margin-bottom:12px">'
+          + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>Day ' + String(i + 1).padStart(2, '0') + '</strong><button class="btn-danger" onclick="pgDel(' + K + ',\'itinerary\',' + i + ')">Del</button></div>'
+          + '<div class="form-row">'
+          + '<div class="form-group"><label>Route / place</label><input type="text" value="' + esc(d.route) + '" ' + on('pgItem', "'itinerary'," + i + ",'route',this.value") + '></div>'
+          + '<div class="form-group"><label>Km / day note</label><input type="text" value="' + esc(d.km) + '" ' + on('pgItem', "'itinerary'," + i + ",'km',this.value") + '></div>'
+          + '<div class="form-group"><label>Island tag</label><input type="text" value="' + esc(d.island) + '" ' + on('pgItem', "'itinerary'," + i + ",'island',this.value") + '></div>'
+          + '</div>'
+          + '<div class="form-group"><label>Day image</label><div class="img-input-row">'
+          + '<input type="text" value="' + esc(d.img) + '" ' + on('pgItem', "'itinerary'," + i + ",'img',this.value") + '>'
+          + '<button class="btn-ghost" onclick="pgPick(' + K + ',\'itinerary\',' + i + ')">Pick</button></div></div>'
+          + '<div class="form-group"><label>Summary</label><textarea rows="2" ' + on('pgItem', "'itinerary'," + i + ",'summary',this.value") + '>' + esc(d.summary) + '</textarea></div>'
+          + '<div class="form-group"><label>Activities / highlights — one per line</label><textarea rows="3" ' + on('pgActs', i + ',this.value') + '>' + esc((d.acts || []).join('\n')) + '</textarea></div>'
+          + '</div>';
+      }).join('')
+    + '</div>';
+
+  /* FAQ */
+  h += '<div class="settings-section"><h3 style="display:flex;justify-content:space-between;align-items:center">FAQ <button class="btn-primary" onclick="pgAdd(' + K + ',\'faq\')">+ Add question</button></h3>'
+    + P.faq.map(function(f, i) {
+        return '<div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px;margin-bottom:12px">'
+          + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>Q' + (i + 1) + '</strong><button class="btn-danger" onclick="pgDel(' + K + ',\'faq\',' + i + ')">Del</button></div>'
+          + '<div class="form-group"><label>Question</label><input type="text" value="' + esc(f.q) + '" ' + on('pgItem', "'faq'," + i + ",'q',this.value") + '></div>'
+          + '<div class="form-group"><label>Answer</label><textarea rows="3" ' + on('pgItem', "'faq'," + i + ",'a',this.value") + '>' + esc(f.a) + '</textarea></div>'
+          + '</div>';
+      }).join('')
+    + '</div>';
+
+  el.innerHTML = h;
+}
+
+function pgSet(key, f, v) { pg(key)[f] = v; markDirty(); }
+function pgArr(key, f, i, v) { var a = pg(key)[f] || []; a[i] = v; pg(key)[f] = a; markDirty(); }
+function pgItem(key, f, i, prop, v) { pg(key)[f][i][prop] = v; markDirty(); }
+function pgActs(key, i, v) { pg(key).itinerary[i].acts = v.split('\n').map(function(s) { return s.trim(); }).filter(Boolean); markDirty(); }
+function pgDel(key, f, i) {
+  if (!confirm('Delete this item?')) return;
+  pg(key)[f].splice(i, 1); markDirty(); renderPageEditor(key);
+}
+function pgAdd(key, f) {
+  var P = pg(key); P[f] = P[f] || [];
+  if (f === 'included') P[f].push({ label: '', type: 'yes', tag: '' });
+  else if (f === 'itinerary') P[f].push({ img: '', imgAlt: '', island: '', route: '', km: '', summary: '', acts: [] });
+  else P[f].push({ q: '', a: '' });
+  markDirty(); renderPageEditor(key);
+}
+function pgPick(key, f, idx) {
+  openImagePicker(null, function(url) {
+    if (idx === null) pg(key)[f] = url;
+    else pg(key)[f][idx].img = url;
+    markDirty(); renderPageEditor(key);
+  });
 }
 
 /* ─── IMAGE PICKER ──────────────────────────────────────────── */

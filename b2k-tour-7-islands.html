@@ -1320,5 +1320,97 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
 })();
 </script>
 
+<script>
+// CMS LOADER — contenido editable desde admin.html (data.json → islands7Page)
+// Si data.json no tiene islands7Page, la página mantiene su HTML estático.
+(async function() {
+  var P = {};
+  try {
+    var r = await fetch('data.json?_=' + Date.now());
+    if (!r.ok) return;
+    var j = await r.json();
+    P = j.islands7Page || {};
+  } catch(e) { return; }
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  if (P.heroEyebrow) { var ey = document.querySelector('.th-eyebrow'); if (ey) ey.textContent = P.heroEyebrow; }
+  if (P.heroTitle) { var ht = document.querySelector('.th-title'); if (ht) ht.innerHTML = P.heroTitle; }
+  if (P.heroNote) { var hn = document.querySelector('.th-from-note'); if (hn) hn.textContent = P.heroNote; }
+  if (P.heroImg) { var hb = document.getElementById('heroBg7'); if (hb) hb.src = P.heroImg; }
+  if (P.pills && P.pills.length) {
+    document.querySelectorAll('.th-pills .th-pill').forEach(function(el, i) {
+      if (!P.pills[i]) return;
+      var svg = el.querySelector('svg');
+      el.textContent = '';
+      if (svg) el.appendChild(svg);
+      el.appendChild(document.createTextNode(P.pills[i]));
+    });
+  }
+
+  if (P.included && P.included.length) {
+    var grid = document.querySelector('.ov-inc .inc-grid');
+    if (grid) {
+      var CHECK = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+      var CROSS = '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+      grid.innerHTML = P.included.map(function(it) {
+        var tag = it.tag ? '<span class="inc-tag">' + esc(it.tag) + '</span>' : '';
+        return '<div class="inc-item ' + esc(it.type || 'yes') + '">' + (it.type === 'no' ? CROSS : CHECK) + esc(it.label) + tag + '</div>';
+      }).join('');
+    }
+  }
+
+  if (P.itinerary && P.itinerary.length) {
+    var N = P.itinerary.length;
+    var tabsEl = document.getElementById('dayTabs7');
+    var panelsEl = document.getElementById('dayPanels7');
+    if (tabsEl && panelsEl) {
+      tabsEl.innerHTML = P.itinerary.map(function(_, i) {
+        return '<button class="dt' + (i === 0 ? ' active' : '') + '" onclick="switchDay7(' + i + ')">Day ' + String(i + 1).padStart(2, '0') + '</button>';
+      }).join('');
+      panelsEl.innerHTML = P.itinerary.map(function(d, i) {
+        var acts = (d.acts || []).map(function(a) { return '<div class="dp-act"><span>●</span>' + esc(a) + '</div>'; }).join('');
+        var img = d.img ? '<img class="dp-img" src="' + esc(d.img) + '" alt="' + esc(d.imgAlt || d.route) + '" onerror="this.style.display=\'none\'" loading="lazy">' : '';
+        return '<div class="day-panel" id="dp7-' + i + '" style="display:' + (i === 0 ? 'grid' : 'none') + '">' +
+          '<div class="dp-img-wrap">' + img + (d.island ? '<div class="dp-island-tag">' + esc(d.island) + '</div>' : '') + '</div>' +
+          '<div><div class="dp-num">' + String(i + 1).padStart(2, '0') + '</div>' +
+          '<div class="dp-route">' + esc(d.route) + '</div>' +
+          (d.km ? '<div class="dp-km">● ' + esc(d.km) + '</div>' : '') +
+          '<p class="dp-summary">' + esc(d.summary) + '</p>' +
+          (acts ? '<p class="dp-acts-title">Today\'s Highlights</p><div class="dp-acts">' + acts + '</div>' : '') +
+          '</div></div>';
+      }).join('');
+      window.switchDay7 = function(idx) {
+        var tabs2 = tabsEl.querySelectorAll('.dt');
+        var panels2 = panelsEl.querySelectorAll('.day-panel');
+        if (!tabs2[idx] || !panels2[idx]) return;
+        tabs2.forEach(function(t) { t.classList.remove('active'); });
+        panels2.forEach(function(p) { p.style.display = 'none'; });
+        tabs2[idx].classList.add('active');
+        panels2[idx].style.display = 'grid';
+        var pf = document.getElementById('progFill7'), pl = document.getElementById('progLabel7');
+        if (pf) pf.style.width = ((idx + 1) / N * 100).toFixed(1) + '%';
+        if (pl) pl.textContent = 'Day ' + (idx + 1) + ' of ' + N;
+        tabs2[idx].scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+      };
+      var pl0 = document.getElementById('progLabel7'); if (pl0) pl0.textContent = 'Day 1 of ' + N;
+      var pf0 = document.getElementById('progFill7'); if (pf0) pf0.style.width = (100 / N).toFixed(1) + '%';
+    }
+  }
+
+  if (P.faq && P.faq.length) {
+    var cols = document.querySelector('.faq-cols');
+    if (cols) {
+      var half = Math.ceil(P.faq.length / 2);
+      var item = function(f) {
+        return '<div class="faq-item" onclick="toggleFaq(this)">' +
+          '<div class="faq-q"><span class="faq-qt">' + esc(f.q) + '</span><svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>' +
+          '<div class="faq-a">' + esc(f.a) + '</div></div>';
+      };
+      cols.innerHTML = '<div>' + P.faq.slice(0, half).map(item).join('') + '</div><div>' + P.faq.slice(half).map(item).join('') + '</div>';
+    }
+  }
+})();
+</script>
+
 </body>
 </html>
