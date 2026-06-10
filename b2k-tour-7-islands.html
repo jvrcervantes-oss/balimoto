@@ -1214,7 +1214,7 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
       }
     }).catch(function() {});
 
-  function fmt(eur) { return SYMS[selCurr] + Math.round(eur * rates[selCurr]).toLocaleString('en'); }
+  function fmt(eur) { return SYMS[selCurr] + Math.ceil(eur * rates[selCurr]).toLocaleString('en'); }
 
   function updateUI7() {
     var pkg = PKGS[selPkg];
@@ -1243,7 +1243,7 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
     if (bd) bd.innerHTML = '<div class="bk-br-row"><span class="bk-br-label">' + pkg.name + ' &mdash; ' + pkg.desc + '</span><span class="bk-br-val">' + fmt(total) + '</span></div>';
 
     var dn = document.getElementById('t7-depNote');
-    if (dn) dn.innerHTML = '<strong>To reserve:</strong> pay a <strong>$1,000 per person deposit</strong> now. Balance due 60 days before departure. Insurance: ' + S + Math.round(275 * rates[selCurr]) + ' full-risk, or $1,000 refundable deposit to cover the bike.';
+    if (dn) dn.innerHTML = '<strong>To reserve:</strong> pay a <strong>$1,000 per person deposit</strong> now. Balance due 60 days before departure. Insurance: ' + S + Math.ceil(275 * rates[selCurr]) + ' full-risk, or $1,000 refundable deposit to cover the bike.';
 
     var stripeBtn = document.getElementById('bk7-stripe');
     if (stripeBtn) stripeBtn.textContent = 'Reserve Now — Pay $1,000 per person deposit';
@@ -1310,7 +1310,7 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
 
   window.bk7BookNow = function() {
     if (typeof fbq !== 'undefined') {
-      fbq('track', 'InitiateCheckout', {content_name: '7 Islands Hopping', currency: selCurr, value: Math.round(PKGS[selPkg].price * rates[selCurr])});
+      fbq('track', 'InitiateCheckout', {content_name: '7 Islands Hopping', currency: selCurr, value: Math.ceil(PKGS[selPkg].price * rates[selCurr])});
     }
     var ref7 = '7ISL-' + selPkg.toUpperCase();
     window.location.href = 'checkout.php?riders=' + numRiders7 + '&ref=' + encodeURIComponent(ref7);

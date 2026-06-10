@@ -1189,7 +1189,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
     }).catch(function() {});
 
   function fmt(eur) {
-    return SYMS[selCurr] + Math.round(eur * rates[selCurr]).toLocaleString('en');
+    return SYMS[selCurr] + Math.ceil(eur * rates[selCurr]).toLocaleString('en');
   }
 
   function calcEur() {
@@ -1220,7 +1220,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
       var m = MODS[k];
       var adj = document.getElementById('modAdj-' + k);
       if (adj) {
-        var converted = Math.round(Math.abs(m.adj) * rates[selCurr]);
+        var converted = Math.ceil(Math.abs(m.adj) * rates[selCurr]);
         var sign = m.adj < 0 ? '−' : '+';
         adj.textContent = sign + SYMS[selCurr] + converted.toLocaleString('en');
       }
@@ -1232,7 +1232,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
       Object.keys(selMods).forEach(function(k) {
         if (!selMods[k]) return;
         var m = MODS[k];
-        var abs = Math.round(Math.abs(m.adj) * rates[selCurr]);
+        var abs = Math.ceil(Math.abs(m.adj) * rates[selCurr]);
         var sign = m.adj < 0 ? '−' + SYMS[selCurr] : '+' + SYMS[selCurr];
         var cls = m.neg ? 'neg' : 'pos';
         html += '<div class="bk-br-row ' + cls + '"><span class="bk-br-label">' + m.name + '</span><span class="bk-br-val">' + sign + abs.toLocaleString('en') + '</span></div>';
@@ -1246,7 +1246,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
     if (wa) wa.href = 'https://wa.me/62881037978255?text=' + encodeURIComponent(msg);
 
     var dep = 1000;
-    var ins = Math.round(275 * rates[selCurr]);
+    var ins = Math.ceil(275 * rates[selCurr]);
     var S = SYMS[selCurr];
     var insDesc = document.getElementById('modDesc-all_in_insurance');
     if (insDesc) insDesc.textContent = 'Pay ' + S + ins + ' for full coverage — or leave a $1,000 refundable deposit to cover the bike';
