@@ -341,6 +341,29 @@ footer{background:#070e08;color:rgba(255,255,255,.4);padding:3rem 5vw 2rem}
 .reel-modal-close:hover{opacity:1}
 @media(max-width:768px){.reel-inner{flex-direction:column;gap:32px}.reel-left{width:100%;padding-left:20px}.reel-foot{padding:0 20px}.reel-track{padding-right:20px}}
 </style>
+<style id="btn-hover-polish">
+/* === Hover polish de botones — JC Capital / Diseño (emil-design-eng) ===
+   Elevación + sombra de marca en hover; press apoyado con scale(0.97).
+   Gated en dispositivos con hover real + respeto a prefers-reduced-motion. */
+@media (hover:hover) and (pointer:fine){
+  .btn-p,.btn-bb,.btn-bk,.nav-cta{transition:background .2s ease,transform 180ms cubic-bezier(.23,1,.32,1),box-shadow 180ms cubic-bezier(.23,1,.32,1)}
+  .btn-p:hover,.btn-bb:hover,.btn-bk:hover,.nav-cta:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(232,73,10,.32)}
+  .btn-p:active,.btn-bb:active,.btn-bk:active,.nav-cta:active{transform:translateY(0) scale(.97);box-shadow:0 2px 8px rgba(232,73,10,.22);transition-duration:110ms}
+  .btn-g{transition:border-color .2s ease,background .2s ease,transform 180ms cubic-bezier(.23,1,.32,1)}
+  .btn-g:hover{border-color:#fff;background:rgba(255,255,255,.08);transform:translateY(-2px)}
+  .btn-g:active{transform:translateY(0) scale(.97);transition-duration:110ms}
+  .btn-bk-wa{transition:border-color .2s ease,transform 180ms cubic-bezier(.23,1,.32,1),box-shadow 180ms cubic-bezier(.23,1,.32,1)}
+  .btn-bk-wa:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:0 6px 18px rgba(28,43,30,.14)}
+  .btn-bk-wa:active{transform:translateY(0) scale(.97);transition-duration:110ms}
+  .btn-bb-wa{transition:background .2s ease,transform 180ms cubic-bezier(.23,1,.32,1),box-shadow 180ms cubic-bezier(.23,1,.32,1)}
+  .btn-bb-wa:hover{background:#1da851;transform:translateY(-2px);box-shadow:0 6px 18px rgba(37,211,102,.32)}
+  .btn-bb-wa:active{transform:translateY(0) scale(.97);transition-duration:110ms}
+}
+@media (prefers-reduced-motion:reduce){
+  .btn-p:hover,.btn-bb:hover,.btn-bk:hover,.nav-cta:hover,
+  .btn-g:hover,.btn-bk-wa:hover,.btn-bb-wa:hover{transform:none}
+}
+</style>
 </head>
 <body>
 
@@ -1167,23 +1190,24 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
   var _7p = {};
   try { var _r = await fetch('data.json?_='+Date.now()); if(_r.ok){var _j=await _r.json();_7p=_j.islands7||{};} } catch(e){}
   var PKGS = {
-    bike2:     {name: 'Bike × 2',     price: _7p.pkgBike2||1718,     desc: 'Shared motorcycle'},
-    bike1:     {name: 'Bike × 1',     price: _7p.pkgBike1||1787,     desc: 'Solo motorcycle'},
-    carself:   {name: 'Car Self',     price: _7p.pkgCarSelf||1925,   desc: 'Self-drive car'},
-    cardriver: {name: 'Car + Driver', price: _7p.pkgCarDriver||2195, desc: 'Private car & driver'}
+    bike2:     {name: 'Bike × 2',     price: _7p.pkgBike2||1873,     desc: 'Shared motorcycle'},
+    bike1:     {name: 'Bike × 1',     price: _7p.pkgBike1||1948,     desc: 'Solo motorcycle'},
+    carself:   {name: 'Car Self',     price: _7p.pkgCarSelf||2098,   desc: 'Self-drive car'},
+    cardriver: {name: 'Car + Driver', price: _7p.pkgCarDriver||2393, desc: 'Private car & driver'}
   };
-  var FROM_EUR7 = _7p.priceFrom || 1718;
-  var SYMS = {EUR: '€', USD: '$', AUD: 'AU$', CAD: 'CA$'};
-  var FALLBACK = {EUR: 1, USD: 1.09, AUD: 1.66, CAD: 1.48};
-  var rates = {EUR: 1, USD: 1.09, AUD: 1.66, CAD: 1.48};
+  var FROM_USD7 = _7p.priceFrom || 1873;
+  // Base currency = USD. Las demás monedas se derivan del USD (rates relativos a 1 USD).
+  var SYMS = {USD: '$', EUR: '€', AUD: 'AU$', CAD: 'CA$'};
+  var FALLBACK = {USD: 1, EUR: 0.92, AUD: 1.52, CAD: 1.36};
+  var rates = {USD: 1, EUR: 0.92, AUD: 1.52, CAD: 1.36};
   var selPkg = 'bike2';
   var selCurr = 'USD';
 
-  fetch('https://api.frankfurter.app/latest?from=EUR&to=USD,AUD,CAD')
+  fetch('https://api.frankfurter.app/latest?from=USD&to=EUR,AUD,CAD')
     .then(function(r) { return r.json(); })
     .then(function(d) {
       if (d && d.rates) {
-        rates.USD = d.rates.USD || FALLBACK.USD;
+        rates.EUR = d.rates.EUR || FALLBACK.EUR;
         rates.AUD = d.rates.AUD || FALLBACK.AUD;
         rates.CAD = d.rates.CAD || FALLBACK.CAD;
         updateUI7();
@@ -1202,12 +1226,12 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
     if (el) el.textContent = fmt(total);
 
     var fp = document.getElementById('bkFromPrice7');
-    if (fp) fp.textContent = fmt(FROM_EUR7);
+    if (fp) fp.textContent = fmt(FROM_USD7);
 
     var bbfp = document.getElementById('bbFromPrice7');
-    if (bbfp) bbfp.textContent = 'From ' + fmt(FROM_EUR7);
+    if (bbfp) bbfp.textContent = 'From ' + fmt(FROM_USD7);
     var hfp = document.getElementById('heroFromPrice7');
-    if (hfp) hfp.textContent = fmt(FROM_EUR7);
+    if (hfp) hfp.textContent = fmt(FROM_USD7);
 
     var pkgPrices = {bike2: PKGS.bike2.price, bike1: PKGS.bike1.price, carself: PKGS.carself.price, cardriver: PKGS.cardriver.price};
     Object.keys(pkgPrices).forEach(function(id) {
@@ -1219,7 +1243,7 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { clo
     if (bd) bd.innerHTML = '<div class="bk-br-row"><span class="bk-br-label">' + pkg.name + ' &mdash; ' + pkg.desc + '</span><span class="bk-br-val">' + fmt(total) + '</span></div>';
 
     var dn = document.getElementById('t7-depNote');
-    if (dn) dn.innerHTML = '<strong>To reserve:</strong> pay a <strong>$1,000 per person deposit</strong> now. Balance due 60 days before departure. Insurance: ' + S + Math.round(250 * rates[selCurr]) + ' full-risk, or $1,000 refundable deposit to cover the bike.';
+    if (dn) dn.innerHTML = '<strong>To reserve:</strong> pay a <strong>$1,000 per person deposit</strong> now. Balance due 60 days before departure. Insurance: ' + S + Math.round(275 * rates[selCurr]) + ' full-risk, or $1,000 refundable deposit to cover the bike.';
 
     var stripeBtn = document.getElementById('bk7-stripe');
     if (stripeBtn) stripeBtn.textContent = 'Reserve Now — Pay $1,000 per person deposit';

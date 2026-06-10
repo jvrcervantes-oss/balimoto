@@ -307,28 +307,28 @@ input,textarea,select{font-family:'Instrument Sans',sans-serif;font-size:13px}
 
   <!-- PRICING -->
   <div class="panel" id="panel-pricing">
-    <div class="panel-bar"><h2>Tour Pricing</h2><span class="muted">Prices in EUR — automatically converted to USD, AUD, CAD on the pages.</span></div>
+    <div class="panel-bar"><h2>Tour Pricing</h2><span class="muted">Prices in USD — automatically converted to EUR, AUD, CAD on the pages.</span></div>
 
     <div class="settings-section">
       <h3>Bali to Komodo Challenge</h3>
       <div class="form-row">
-        <div class="form-group"><label>Roundtrip (EUR)</label><input type="number" id="p-komodo-roundtrip" placeholder="2950"></div>
-        <div class="form-group"><label>Deluxe (EUR)</label><input type="number" id="p-komodo-deluxe" placeholder="3950"></div>
+        <div class="form-group"><label>Roundtrip (USD)</label><input type="number" id="p-komodo-roundtrip" placeholder="3200"></div>
+        <div class="form-group"><label>Deluxe (USD)</label><input type="number" id="p-komodo-deluxe" placeholder="4300"></div>
       </div>
-      <div class="form-group" style="max-width:260px"><label>"From" price shown in hero (EUR)</label><input type="number" id="p-komodo-from" placeholder="2450"></div>
+      <div class="form-group" style="max-width:260px"><label>"From" price shown in hero (USD)</label><input type="number" id="p-komodo-from" placeholder="2650"></div>
     </div>
 
     <div class="settings-section">
       <h3>7 Islands Hopping</h3>
       <div class="form-row">
-        <div class="form-group"><label>Bike × 2 (EUR)</label><input type="number" id="p-7isl-bike2" placeholder="1718"></div>
-        <div class="form-group"><label>Bike × 1 (EUR)</label><input type="number" id="p-7isl-bike1" placeholder="1787"></div>
+        <div class="form-group"><label>Bike × 2 (USD)</label><input type="number" id="p-7isl-bike2" placeholder="1873"></div>
+        <div class="form-group"><label>Bike × 1 (USD)</label><input type="number" id="p-7isl-bike1" placeholder="1948"></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label>Car self-drive (EUR)</label><input type="number" id="p-7isl-carself" placeholder="1925"></div>
-        <div class="form-group"><label>Car + driver (EUR)</label><input type="number" id="p-7isl-cardriver" placeholder="2195"></div>
+        <div class="form-group"><label>Car self-drive (USD)</label><input type="number" id="p-7isl-carself" placeholder="2098"></div>
+        <div class="form-group"><label>Car + driver (USD)</label><input type="number" id="p-7isl-cardriver" placeholder="2393"></div>
       </div>
-      <div class="form-group" style="max-width:260px"><label>"From" price shown in hero (EUR)</label><input type="number" id="p-7isl-from" placeholder="1718"></div>
+      <div class="form-group" style="max-width:260px"><label>"From" price shown in hero (USD)</label><input type="number" id="p-7isl-from" placeholder="1873"></div>
     </div>
 
     <button class="btn-primary" onclick="savePricing()">Save pricing</button>
@@ -405,7 +405,7 @@ input,textarea,select{font-family:'Instrument Sans',sans-serif;font-size:13px}
         </div>
         <div class="form-row">
           <div class="form-group"><label>KM</label><input type="text" id="f-km" placeholder="1,259"></div>
-          <div class="form-group"><label>Starting price</label><input type="text" id="f-price" placeholder="$2,671"></div>
+          <div class="form-group"><label>Starting price</label><input type="text" id="f-price" placeholder="$2,650"></div>
         </div>
         <div class="form-group"><label>Spots label <span class="muted">leave empty if no urgency</span></label><input type="text" id="f-spots" placeholder="3 spots left"></div>
       </div>
@@ -877,7 +877,7 @@ function renderPageEditor(key) {
   h += '<div class="settings-section"><h3>Hero</h3>'
     + '<div class="form-row">'
     + '<div class="form-group"><label>Eyebrow</label><input type="text" value="' + esc(P.heroEyebrow) + '" ' + on('pgSet', "'heroEyebrow',this.value") + '></div>'
-    + '<div class="form-group"><label>"From" price shown in hero (EUR)</label><input type="number" value="' + esc(_pv) + '" onchange="pgPrice(' + K + ',this.value)"></div>'
+    + '<div class="form-group"><label>"From" price shown in hero (USD)</label><input type="number" value="' + esc(_pv) + '" onchange="pgPrice(' + K + ',this.value)"></div>'
     + '<div class="form-group"><label>"From" price note</label><input type="text" value="' + esc(P.heroNote) + '" ' + on('pgSet', "'heroNote',this.value") + '></div>'
     + '</div>'
     + '<div class="form-group"><label>Title — supports &lt;br&gt; and &lt;em&gt; (em = orange)</label><textarea rows="2" ' + on('pgSet', "'heroTitle',this.value") + '>' + esc(P.heroTitle) + '</textarea></div>'
@@ -1016,28 +1016,28 @@ function closeImagePicker() { document.getElementById('img-picker').classList.ad
 function renderPricing() {
   var k = DATA.komodo   || {};
   var s = DATA.islands7 || {};
-  document.getElementById('p-komodo-roundtrip').value = k.pkgRoundtrip  || 2950;
-  document.getElementById('p-komodo-deluxe').value    = k.pkgDeluxe     || 3950;
-  document.getElementById('p-komodo-from').value      = k.priceFrom     || 2450;
-  document.getElementById('p-7isl-bike2').value       = s.pkgBike2      || 1718;
-  document.getElementById('p-7isl-bike1').value       = s.pkgBike1      || 1787;
-  document.getElementById('p-7isl-carself').value     = s.pkgCarSelf    || 1925;
-  document.getElementById('p-7isl-cardriver').value   = s.pkgCarDriver  || 2195;
-  document.getElementById('p-7isl-from').value        = s.priceFrom     || 1718;
+  document.getElementById('p-komodo-roundtrip').value = k.pkgRoundtrip  || 3200;
+  document.getElementById('p-komodo-deluxe').value    = k.pkgDeluxe     || 4300;
+  document.getElementById('p-komodo-from').value      = k.priceFrom     || 2650;
+  document.getElementById('p-7isl-bike2').value       = s.pkgBike2      || 1873;
+  document.getElementById('p-7isl-bike1').value       = s.pkgBike1      || 1948;
+  document.getElementById('p-7isl-carself').value     = s.pkgCarSelf    || 2098;
+  document.getElementById('p-7isl-cardriver').value   = s.pkgCarDriver  || 2393;
+  document.getElementById('p-7isl-from').value        = s.priceFrom     || 1873;
 }
 
 function savePricing() {
   DATA.komodo = {
-    pkgRoundtrip: parseFloat(document.getElementById('p-komodo-roundtrip').value) || 2950,
-    pkgDeluxe:    parseFloat(document.getElementById('p-komodo-deluxe').value)    || 3950,
-    priceFrom:    parseFloat(document.getElementById('p-komodo-from').value)      || 2450
+    pkgRoundtrip: parseFloat(document.getElementById('p-komodo-roundtrip').value) || 3200,
+    pkgDeluxe:    parseFloat(document.getElementById('p-komodo-deluxe').value)    || 4300,
+    priceFrom:    parseFloat(document.getElementById('p-komodo-from').value)      || 2650
   };
   DATA.islands7 = {
-    pkgBike2:     parseFloat(document.getElementById('p-7isl-bike2').value)     || 1718,
-    pkgBike1:     parseFloat(document.getElementById('p-7isl-bike1').value)     || 1787,
-    pkgCarSelf:   parseFloat(document.getElementById('p-7isl-carself').value)   || 1925,
-    pkgCarDriver: parseFloat(document.getElementById('p-7isl-cardriver').value) || 2195,
-    priceFrom:    parseFloat(document.getElementById('p-7isl-from').value)      || 1718
+    pkgBike2:     parseFloat(document.getElementById('p-7isl-bike2').value)     || 1873,
+    pkgBike1:     parseFloat(document.getElementById('p-7isl-bike1').value)     || 1948,
+    pkgCarSelf:   parseFloat(document.getElementById('p-7isl-carself').value)   || 2098,
+    pkgCarDriver: parseFloat(document.getElementById('p-7isl-cardriver').value) || 2393,
+    priceFrom:    parseFloat(document.getElementById('p-7isl-from').value)      || 1873
   };
   markDirty();
   toast('Pricing saved. Click Publish to go live.', 'info');

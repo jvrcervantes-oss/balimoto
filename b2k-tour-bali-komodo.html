@@ -15,9 +15,9 @@
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
 <link rel="apple-touch-icon" href="images/favicon-180.png">
-<meta name="description" content="12 days · 6 islands · 1,259 km. Ride from Bali's temples to Komodo's ancient dragons. Premium motorcycle expedition from $2,671. Expert guides, luxury hotels, all inclusive.">
+<meta name="description" content="12 days · 6 islands · 1,259 km. Ride from Bali's temples to Komodo's ancient dragons. Premium motorcycle expedition from $2,650. Expert guides, luxury hotels, all inclusive.">
 <meta property="og:title" content="Bali to Komodo Challenge — Bali Moto Adventures">
-<meta property="og:description" content="12 days · 6 islands · 1,259 km. Premium motorcycle expedition from $2,671. Expert guides, luxury hotels, all inclusive.">
+<meta property="og:description" content="12 days · 6 islands · 1,259 km. Premium motorcycle expedition from $2,650. Expert guides, luxury hotels, all inclusive.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://balimotoadventures.com/bali-to-komodo">
 <meta name="twitter:card" content="summary_large_image">
@@ -383,7 +383,31 @@ fbq('track', 'PageView');
 fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_category: 'Motorcycle Tour', currency: 'USD', value: 3218});
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1916298258994371&ev=PageView&noscript=1"/></noscript>
-<!-- End Meta Pixel Code --></head>
+<!-- End Meta Pixel Code -->
+<style id="btn-hover-polish">
+/* === Hover polish de botones — JC Capital / Diseño (emil-design-eng) ===
+   Elevación + sombra de marca en hover; press apoyado con scale(0.97).
+   Gated en dispositivos con hover real + respeto a prefers-reduced-motion. */
+@media (hover:hover) and (pointer:fine){
+  .btn-p,.btn-bb,.btn-bk,.nav-cta{transition:background .2s ease,transform 180ms cubic-bezier(.23,1,.32,1),box-shadow 180ms cubic-bezier(.23,1,.32,1)}
+  .btn-p:hover,.btn-bb:hover,.btn-bk:hover,.nav-cta:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(232,73,10,.32)}
+  .btn-p:active,.btn-bb:active,.btn-bk:active,.nav-cta:active{transform:translateY(0) scale(.97);box-shadow:0 2px 8px rgba(232,73,10,.22);transition-duration:110ms}
+  .btn-g{transition:border-color .2s ease,background .2s ease,transform 180ms cubic-bezier(.23,1,.32,1)}
+  .btn-g:hover{border-color:#fff;background:rgba(255,255,255,.08);transform:translateY(-2px)}
+  .btn-g:active{transform:translateY(0) scale(.97);transition-duration:110ms}
+  .btn-bk-wa{transition:border-color .2s ease,transform 180ms cubic-bezier(.23,1,.32,1),box-shadow 180ms cubic-bezier(.23,1,.32,1)}
+  .btn-bk-wa:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:0 6px 18px rgba(28,43,30,.14)}
+  .btn-bk-wa:active{transform:translateY(0) scale(.97);transition-duration:110ms}
+  .btn-bb-wa{transition:background .2s ease,transform 180ms cubic-bezier(.23,1,.32,1),box-shadow 180ms cubic-bezier(.23,1,.32,1)}
+  .btn-bb-wa:hover{background:#1da851;transform:translateY(-2px);box-shadow:0 6px 18px rgba(37,211,102,.32)}
+  .btn-bb-wa:active{transform:translateY(0) scale(.97);transition-duration:110ms}
+}
+@media (prefers-reduced-motion:reduce){
+  .btn-p:hover,.btn-bb:hover,.btn-bk:hover,.nav-cta:hover,
+  .btn-g:hover,.btn-bk-wa:hover,.btn-bb-wa:hover{transform:none}
+}
+</style>
+</head>
 <body>
 
 <nav>
@@ -427,7 +451,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
     <!-- Inline "From" price — updated by booking calculator JS -->
     <div class="th-price-inline">
       <span class="th-from-word">From</span>
-      <span class="th-from-num" id="heroFromPrice">$2,671</span>
+      <span class="th-from-num" id="heroFromPrice">$2,650</span>
       <span class="th-from-note" id="t-heroFromNote">self-guided &middot; all inclusive &middot; excl. intl. flights</span>
     </div>
   </div>
@@ -448,7 +472,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
     </div>
   </div>
   <div class="bb-right">
-    <span class="bb-price" id="bbFromPrice">From &#8364;2,450</span>
+    <span class="bb-price" id="bbFromPrice">From $2,650</span>
     <a href="#booking" class="btn-bb">Reserve Spot</a>
     <a href="https://wa.me/62881037978255" target="_blank" rel="noopener noreferrer" class="btn-bb-wa">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.121 1.526 5.853L.057 23.447a.75.75 0 00.932.932l5.595-1.469A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22.5c-2.028 0-3.927-.54-5.565-1.484l-.399-.235-4.133 1.085 1.085-4.133-.235-.399A10.452 10.452 0 011.5 12C1.5 6.201 6.201 1.5 12 1.5S22.5 6.201 22.5 12 17.799 22.5 12 22.5z"/></svg>
@@ -765,7 +789,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
       <h2 class="sec-ttl" id="t-bkTtl">Build Your<br>Adventure</h2>
       <div class="bk-from-row">
         <span class="bk-from-word">From</span>
-        <span class="bk-from-price" id="bkFromPrice">&#8364;2,450</span>
+        <span class="bk-from-price" id="bkFromPrice">$2,650</span>
         <span class="bk-from-note" id="t-bkFromNote">self-guided &middot; all inclusive</span>
       </div>
     </div>
@@ -790,8 +814,8 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
         <div class="pkg-card sel" data-pkg="roundtrip" onclick="bkSelectPkg('roundtrip')">
           <div class="pkg-sel-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
           <div class="pkg-name">Roundtrip</div>
-          <div class="pkg-price-tag" id="pkgTag-roundtrip">&#8364;2,950</div>
-          <div class="pkg-meta">1,458 km &middot; Budget hotels<br>6&ndash;8 h/day &middot; Ferry</div>
+          <div class="pkg-price-tag" id="pkgTag-roundtrip">$3,200</div>
+          <div class="pkg-meta">1,458 km &middot; Budget hotels<br>~160 km/day &middot; Ferry</div>
           <div class="pkg-perks">
             <span class="pkg-perk">Guide</span>
             <span class="pkg-perk">Mechanic</span>
@@ -804,8 +828,8 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
         <div class="pkg-card" data-pkg="deluxe" onclick="bkSelectPkg('deluxe')">
           <div class="pkg-sel-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
           <div class="pkg-name">Deluxe</div>
-          <div class="pkg-price-tag" id="pkgTag-deluxe">&#8364;3,950</div>
-          <div class="pkg-meta">1,259 km &middot; Luxury hotels<br>4&ndash;6 h/day &middot; Ferry/Private</div>
+          <div class="pkg-price-tag" id="pkgTag-deluxe">$4,300</div>
+          <div class="pkg-meta">1,259 km &middot; Luxury hotels<br>~140 km/day &middot; Ferry/Private</div>
           <div class="pkg-perks">
             <span class="pkg-perk">Support Car</span>
             <span class="pkg-perk">Massages x3</span>
@@ -825,7 +849,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
             <div class="mod-name" id="modName-self_guided">Self-guided</div>
             <div class="mod-desc" id="modDesc-self_guided">Arrive any day you want &mdash; navigate autonomously, no group schedule</div>
           </div>
-          <div class="mod-adj neg" id="modAdj-self_guided">&minus;&#8364;500</div>
+          <div class="mod-adj neg" id="modAdj-self_guided">&minus;$550</div>
         </div>
 
         <div class="mod-row" data-mod="pillion" onclick="bkToggleMod('pillion')">
@@ -834,7 +858,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
             <div class="mod-name" id="modName-pillion">Pillion (passenger)</div>
             <div class="mod-desc" id="modDesc-pillion">Travel as co-pilot on another rider&#39;s bike</div>
           </div>
-          <div class="mod-adj neg" id="modAdj-pillion">&minus;&#8364;350</div>
+          <div class="mod-adj neg" id="modAdj-pillion">&minus;$380</div>
         </div>
 
         <div class="mod-row" data-mod="single_room" onclick="bkToggleMod('single_room')">
@@ -843,7 +867,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
             <div class="mod-name" id="modName-single_room">Single room</div>
             <div class="mod-desc" id="modDesc-single_room">Private room at every hotel along the route</div>
           </div>
-          <div class="mod-adj pos" id="modAdj-single_room">+&#8364;500</div>
+          <div class="mod-adj pos" id="modAdj-single_room">+$550</div>
         </div>
 
         <div class="mod-row" data-mod="all_in_insurance" onclick="bkToggleMod('all_in_insurance')">
@@ -852,7 +876,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
             <div class="mod-name" id="modName-all_in_insurance">Full-risk insurance</div>
             <div class="mod-desc" id="modDesc-all_in_insurance">Pay ~$275 for full coverage &mdash; or leave a $1,000 refundable deposit to cover the bike</div>
           </div>
-          <div class="mod-adj pos" id="modAdj-all_in_insurance">+&#8364;250</div>
+          <div class="mod-adj pos" id="modAdj-all_in_insurance">+$275</div>
         </div>
 
       </div>
@@ -880,12 +904,12 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
       <div class="bk-sum-title">Your Price Summary</div>
 
       <div class="bk-breakdown" id="bk-breakdown">
-        <div class="bk-br-row"><span class="bk-br-label">Roundtrip (1,458 km)</span><span class="bk-br-val">&#8364;2,950</span></div>
+        <div class="bk-br-row"><span class="bk-br-label">Roundtrip (1,458 km)</span><span class="bk-br-val">$3,200</span></div>
       </div>
 
       <div class="bk-total-row">
         <span class="bk-total-lbl">Total</span>
-        <span class="bk-total-price" id="bk-total">&#8364;2,950</span>
+        <span class="bk-total-price" id="bk-total">$3,200</span>
       </div>
       <p class="bk-total-sub" id="t-bkTotalSub">All inclusive &middot; excl. international flights</p>
 
@@ -1135,28 +1159,29 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
   var _kp = {};
   try { var _r = await fetch('data.json?_='+Date.now()); if(_r.ok){var _j=await _r.json();_kp=_j.komodo||{};} } catch(e){}
   var PKGS = {
-    roundtrip: {name: 'Roundtrip', price: _kp.pkgRoundtrip||2950, km: 1458},
-    deluxe:    {name: 'Deluxe',    price: _kp.pkgDeluxe||3950,   km: 1259}
+    roundtrip: {name: 'Roundtrip', price: _kp.pkgRoundtrip||3200, km: 1458},
+    deluxe:    {name: 'Deluxe',    price: _kp.pkgDeluxe||4300,   km: 1259}
   };
-  var FROM_EUR = _kp.priceFrom || 2450;
+  var FROM_USD = _kp.priceFrom || 2650;
   var MODS = {
-    self_guided:      {name: 'Self-guided',         adj: -500, neg: true},
-    pillion:          {name: 'Pillion (passenger)',  adj: -350, neg: true},
-    single_room:      {name: 'Single room',          adj:  500, neg: false},
-    all_in_insurance: {name: 'All-in insurance',     adj:  250, neg: false}
+    self_guided:      {name: 'Self-guided',         adj: -550, neg: true},
+    pillion:          {name: 'Pillion (passenger)',  adj: -380, neg: true},
+    single_room:      {name: 'Single room',          adj:  550, neg: false},
+    all_in_insurance: {name: 'All-in insurance',     adj:  275, neg: false}
   };
-  var SYMS = {EUR: '€', USD: '$', AUD: 'AU$', CAD: 'CA$'};
-  var FALLBACK = {EUR: 1, USD: 1.09, AUD: 1.66, CAD: 1.48};
-  var rates = {EUR: 1, USD: 1.09, AUD: 1.66, CAD: 1.48};
+  // Base currency = USD. Las demás monedas se derivan del USD (rates relativos a 1 USD).
+  var SYMS = {USD: '$', EUR: '€', AUD: 'AU$', CAD: 'CA$'};
+  var FALLBACK = {USD: 1, EUR: 0.92, AUD: 1.52, CAD: 1.36};
+  var rates = {USD: 1, EUR: 0.92, AUD: 1.52, CAD: 1.36};
   var selPkg  = 'roundtrip';
   var selMods = {};
   var selCurr = 'USD';
 
-  fetch('https://api.frankfurter.app/latest?from=EUR&to=USD,AUD,CAD')
+  fetch('https://api.frankfurter.app/latest?from=USD&to=EUR,AUD,CAD')
     .then(function(r) { return r.json(); })
     .then(function(d) {
       if (d && d.rates) {
-        rates.USD = d.rates.USD || FALLBACK.USD;
+        rates.EUR = d.rates.EUR || FALLBACK.EUR;
         rates.AUD = d.rates.AUD || FALLBACK.AUD;
         rates.CAD = d.rates.CAD || FALLBACK.CAD;
         updateUI();
@@ -1181,11 +1206,11 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
     if (el) el.textContent = fmt(eur);
 
     var fp = document.getElementById('bkFromPrice');
-    if (fp) fp.textContent = fmt(FROM_EUR);
+    if (fp) fp.textContent = fmt(FROM_USD);
     var hfp = document.getElementById('heroFromPrice');
-    if (hfp) hfp.textContent = fmt(FROM_EUR);
+    if (hfp) hfp.textContent = fmt(FROM_USD);
     var bbfp = document.getElementById('bbFromPrice');
-    if (bbfp) bbfp.textContent = 'From ' + fmt(FROM_EUR);
+    if (bbfp) bbfp.textContent = 'From ' + fmt(FROM_USD);
     var pkgPrices = {roundtrip: PKGS.roundtrip.price, deluxe: PKGS.deluxe.price};
     Object.keys(pkgPrices).forEach(function(id) {
       var ptag = document.getElementById('pkgTag-' + id);
@@ -1221,7 +1246,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
     if (wa) wa.href = 'https://wa.me/62881037978255?text=' + encodeURIComponent(msg);
 
     var dep = 1000;
-    var ins = Math.round(250 * rates[selCurr]);
+    var ins = Math.round(275 * rates[selCurr]);
     var S = SYMS[selCurr];
     var insDesc = document.getElementById('modDesc-all_in_insurance');
     if (insDesc) insDesc.textContent = 'Pay ' + S + ins + ' for full coverage — or leave a $1,000 refundable deposit to cover the bike';
