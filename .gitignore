@@ -2,8 +2,14 @@
 private/
 bot-config/
 
+# CMS — lo gestiona el cliente desde admin.html en el servidor (patrón Lawang).
+# El sitio tiene fallback estático embebido si falta. NO subir al repo para no
+# machacar las ediciones del cliente en cada deploy.
+data.json
+
 # Backups locales (cualquier fecha)
 Backup_*/
+Backups/
 
 # Trabajo local — no desplegar
 indexv2.html
