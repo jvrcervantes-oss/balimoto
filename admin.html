@@ -322,11 +322,11 @@ input,textarea,select{font-family:'Instrument Sans',sans-serif;font-size:13px}
       <h3>7 Islands Hopping</h3>
       <div class="form-row">
         <div class="form-group"><label>Bike × 2 (USD)</label><input type="number" id="p-7isl-bike2" placeholder="1873"></div>
-        <div class="form-group"><label>Bike × 1 (USD)</label><input type="number" id="p-7isl-bike1" placeholder="1948"></div>
+        <div class="form-group"><label>Bike × 1 (USD)</label><input type="number" id="p-7isl-bike1" placeholder="1950"></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label>Car self-drive (USD)</label><input type="number" id="p-7isl-carself" placeholder="2098"></div>
-        <div class="form-group"><label>Car + driver (USD)</label><input type="number" id="p-7isl-cardriver" placeholder="2393"></div>
+        <div class="form-group"><label>Car self-drive (USD)</label><input type="number" id="p-7isl-carself" placeholder="2100"></div>
+        <div class="form-group"><label>Car + driver (USD)</label><input type="number" id="p-7isl-cardriver" placeholder="2395"></div>
       </div>
       <div class="form-group" style="max-width:260px"><label>"From" price shown in hero (USD)</label><input type="number" id="p-7isl-from" placeholder="1873"></div>
     </div>
@@ -1020,9 +1020,9 @@ function renderPricing() {
   document.getElementById('p-komodo-deluxe').value    = k.pkgDeluxe     || 4300;
   document.getElementById('p-komodo-from').value      = k.priceFrom     || 2650;
   document.getElementById('p-7isl-bike2').value       = s.pkgBike2      || 1873;
-  document.getElementById('p-7isl-bike1').value       = s.pkgBike1      || 1948;
-  document.getElementById('p-7isl-carself').value     = s.pkgCarSelf    || 2098;
-  document.getElementById('p-7isl-cardriver').value   = s.pkgCarDriver  || 2393;
+  document.getElementById('p-7isl-bike1').value       = s.pkgBike1      || 1950;
+  document.getElementById('p-7isl-carself').value     = s.pkgCarSelf    || 2100;
+  document.getElementById('p-7isl-cardriver').value   = s.pkgCarDriver  || 2395;
   document.getElementById('p-7isl-from').value        = s.priceFrom     || 1873;
 }
 
@@ -1034,9 +1034,9 @@ function savePricing() {
   };
   DATA.islands7 = {
     pkgBike2:     parseFloat(document.getElementById('p-7isl-bike2').value)     || 1873,
-    pkgBike1:     parseFloat(document.getElementById('p-7isl-bike1').value)     || 1948,
-    pkgCarSelf:   parseFloat(document.getElementById('p-7isl-carself').value)   || 2098,
-    pkgCarDriver: parseFloat(document.getElementById('p-7isl-cardriver').value) || 2393,
+    pkgBike1:     parseFloat(document.getElementById('p-7isl-bike1').value)     || 1950,
+    pkgCarSelf:   parseFloat(document.getElementById('p-7isl-carself').value)   || 2100,
+    pkgCarDriver: parseFloat(document.getElementById('p-7isl-cardriver').value) || 2395,
     priceFrom:    parseFloat(document.getElementById('p-7isl-from').value)      || 1873
   };
   markDirty();
