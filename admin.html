@@ -315,7 +315,7 @@ input,textarea,select{font-family:'Instrument Sans',sans-serif;font-size:13px}
         <div class="form-group"><label>Roundtrip (EUR)</label><input type="number" id="p-komodo-roundtrip" placeholder="2950"></div>
         <div class="form-group"><label>Deluxe (EUR)</label><input type="number" id="p-komodo-deluxe" placeholder="3950"></div>
       </div>
-      <div class="form-group" style="max-width:260px"><label>"From" price shown in hero (EUR)</label><input type="number" id="p-komodo-from" placeholder="2671"></div>
+      <div class="form-group" style="max-width:260px"><label>"From" price shown in hero (EUR)</label><input type="number" id="p-komodo-from" placeholder="2450"></div>
     </div>
 
     <div class="settings-section">
@@ -868,6 +868,8 @@ function renderPageEditor(key) {
   var P = pg(key);
   P.pills = P.pills || []; P.included = P.included || []; P.itinerary = P.itinerary || []; P.faq = P.faq || [];
   var K = "'" + key + "'";
+  var _pk = PRICE_KEY[key];
+  var _pv = (DATA[_pk] && DATA[_pk].priceFrom != null) ? DATA[_pk].priceFrom : '';
   function on(fn, args) { return 'onchange="' + fn + '(' + K + ',' + args + ')"'; }
   var h = '';
 
@@ -875,6 +877,7 @@ function renderPageEditor(key) {
   h += '<div class="settings-section"><h3>Hero</h3>'
     + '<div class="form-row">'
     + '<div class="form-group"><label>Eyebrow</label><input type="text" value="' + esc(P.heroEyebrow) + '" ' + on('pgSet', "'heroEyebrow',this.value") + '></div>'
+    + '<div class="form-group"><label>"From" price shown in hero (EUR)</label><input type="number" value="' + esc(_pv) + '" onchange="pgPrice(' + K + ',this.value)"></div>'
     + '<div class="form-group"><label>"From" price note</label><input type="text" value="' + esc(P.heroNote) + '" ' + on('pgSet', "'heroNote',this.value") + '></div>'
     + '</div>'
     + '<div class="form-group"><label>Title — supports &lt;br&gt; and &lt;em&gt; (em = orange)</label><textarea rows="2" ' + on('pgSet', "'heroTitle',this.value") + '>' + esc(P.heroTitle) + '</textarea></div>'
@@ -936,6 +939,19 @@ function renderPageEditor(key) {
     + '</div>';
 
   el.innerHTML = h;
+}
+
+// El precio "from" vive en la clave de pricing (komodo/islands7), no en la de página.
+// Single source of truth: este campo del editor de hero escribe ahí y sincroniza
+// el input del panel Tour Pricing si está montado.
+var PRICE_KEY = { komodoPage: 'komodo', islands7Page: 'islands7' };
+function pgPrice(key, v) {
+  var pk = PRICE_KEY[key]; if (!pk) return;
+  if (!DATA[pk]) DATA[pk] = {};
+  var n = parseFloat(v); if (!isNaN(n)) DATA[pk].priceFrom = n;
+  var inp = document.getElementById(pk === 'komodo' ? 'p-komodo-from' : 'p-7isl-from');
+  if (inp) inp.value = DATA[pk].priceFrom;
+  markDirty();
 }
 
 function pgSet(key, f, v) { pg(key)[f] = v; markDirty(); }
@@ -1002,7 +1018,7 @@ function renderPricing() {
   var s = DATA.islands7 || {};
   document.getElementById('p-komodo-roundtrip').value = k.pkgRoundtrip  || 2950;
   document.getElementById('p-komodo-deluxe').value    = k.pkgDeluxe     || 3950;
-  document.getElementById('p-komodo-from').value      = k.priceFrom     || 2671;
+  document.getElementById('p-komodo-from').value      = k.priceFrom     || 2450;
   document.getElementById('p-7isl-bike2').value       = s.pkgBike2      || 1718;
   document.getElementById('p-7isl-bike1').value       = s.pkgBike1      || 1787;
   document.getElementById('p-7isl-carself').value     = s.pkgCarSelf    || 1925;
@@ -1014,7 +1030,7 @@ function savePricing() {
   DATA.komodo = {
     pkgRoundtrip: parseFloat(document.getElementById('p-komodo-roundtrip').value) || 2950,
     pkgDeluxe:    parseFloat(document.getElementById('p-komodo-deluxe').value)    || 3950,
-    priceFrom:    parseFloat(document.getElementById('p-komodo-from').value)      || 2671
+    priceFrom:    parseFloat(document.getElementById('p-komodo-from').value)      || 2450
   };
   DATA.islands7 = {
     pkgBike2:     parseFloat(document.getElementById('p-7isl-bike2').value)     || 1718,
