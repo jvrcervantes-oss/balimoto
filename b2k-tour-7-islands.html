@@ -789,6 +789,120 @@ footer{background:#070e08;color:rgba(255,255,255,.4);padding:3rem 5vw 2rem}
   </div>
 </section>
 
+<!-- ITINERARY LEAD MAGNET -->
+<style id="im-css">
+.im-band{background:var(--ink);color:#fff;padding:clamp(48px,7vw,88px) 0;position:relative;overflow:hidden}
+.im-band::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 85% 0%,rgba(232,73,10,.22),transparent 60%);pointer-events:none}
+.im-inner{max-width:760px;margin:0 auto;padding:0 clamp(20px,5vw,40px);position:relative;z-index:1;text-align:center}
+.im-eyebrow{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--orange);margin-bottom:1rem}
+.im-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,5.5vw,60px);line-height:.95;letter-spacing:.01em;margin-bottom:1rem}
+.im-h em{color:var(--orange);font-style:normal}
+.im-sub{font-size:16px;line-height:1.6;color:rgba(255,255,255,.72);max-width:480px;margin:0 auto 2rem}
+.im-btn{display:inline-block;background:var(--orange);color:#fff;border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:16px 38px;border-radius:100px;transition:background .2s,transform 180ms cubic-bezier(.23,1,.32,1),box-shadow 180ms cubic-bezier(.23,1,.32,1)}
+@media(hover:hover) and (pointer:fine){.im-btn:hover{background:var(--orange-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,73,10,.34)}}
+.im-btn:active{transform:translateY(0) scale(.97)}
+.im-note{font-size:12px;color:rgba(255,255,255,.45);margin-top:1rem}
+.im-unlocked{display:none}
+.im-band.is-unlocked .im-locked{display:none}
+.im-band.is-unlocked .im-unlocked{display:block}
+.im-check{width:48px;height:48px;border-radius:50%;background:rgba(45,122,74,.22);color:#7ed99f;display:inline-flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:1rem}
+.im-modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+.im-modal.open{display:flex}
+.im-ov{position:absolute;inset:0;background:rgba(28,43,30,.6);backdrop-filter:blur(3px)}
+.im-card{position:relative;z-index:1;background:var(--cream);border-radius:20px;max-width:440px;width:100%;padding:clamp(28px,5vw,40px);box-shadow:0 30px 80px rgba(0,0,0,.3);animation:imIn .25s cubic-bezier(.23,1,.32,1)}
+@keyframes imIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+.im-x{position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;color:var(--ink-soft);cursor:pointer;line-height:1}
+.im-card-eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);margin-bottom:.6rem}
+.im-card-h{font-family:'Bebas Neue',sans-serif;font-size:30px;line-height:1;color:var(--ink);margin-bottom:.6rem}
+.im-card-sub{font-size:14px;line-height:1.55;color:var(--ink-soft);margin-bottom:1.4rem}
+.im-field{width:100%;padding:14px 16px;border:1.5px solid var(--sand);border-radius:10px;font-family:inherit;font-size:15px;color:var(--ink);background:#fff;margin-bottom:.9rem}
+.im-field:focus{outline:none;border-color:var(--orange)}
+.im-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.im-consent{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:1.2rem;text-align:left}
+.im-consent a{color:var(--green);text-decoration:underline}
+.im-submit{width:100%;background:var(--orange);color:#fff;border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:15px;border-radius:10px;transition:background .2s}
+.im-submit:hover{background:var(--orange-dark)}
+.im-submit:disabled{opacity:.6;cursor:default}
+.im-err{font-size:13px;color:#c0392b;margin-top:.8rem;display:none}
+</style>
+<section class="im-band" id="getItinerary">
+  <div class="im-inner">
+    <div class="im-locked">
+      <p class="im-eyebrow">Free PDF &middot; 13-day plan</p>
+      <h2 class="im-h">Get the full <em>itinerary</em></h2>
+      <p class="im-sub">Every day mapped out &mdash; route, islands, highlights and exactly what&apos;s included. Drop your email and it&apos;s yours, instantly.</p>
+      <button class="im-btn" type="button" onclick="imOpen()">Get the itinerary</button>
+      <p class="im-note">No spam. Just the itinerary and the occasional ride update.</p>
+    </div>
+    <div class="im-unlocked">
+      <div class="im-check">&#10003;</div>
+      <h2 class="im-h">Your itinerary is <em>ready</em></h2>
+      <p class="im-sub">We&apos;ve also sent a copy to your inbox. Ride safe! 🏍️</p>
+      <a class="im-btn" href="pdf/7Islands.pdf" download>Download the PDF</a>
+    </div>
+  </div>
+</section>
+
+<!-- ITINERARY MODAL -->
+<div class="im-modal" id="imModal" role="dialog" aria-modal="true" aria-labelledby="imModalH">
+  <div class="im-ov" onclick="imClose()"></div>
+  <div class="im-card">
+    <button class="im-x" type="button" onclick="imClose()" aria-label="Close">&#10005;</button>
+    <p class="im-card-eyebrow">Free 13-day itinerary</p>
+    <h3 class="im-card-h" id="imModalH">Where should we send it?</h3>
+    <p class="im-card-sub">Get the full 7 Islands itinerary PDF &mdash; instant download, plus a copy in your inbox.</p>
+    <form id="imForm" novalidate>
+      <input class="im-field" type="email" name="email" id="imEmail" placeholder="your@email.com" autocomplete="email" required>
+      <input class="im-hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label class="im-consent"><input type="checkbox" id="imConsent" required> I agree to receive the itinerary and occasional updates. See our <a href="privacy-policy.html" target="_blank">privacy policy</a>.</label>
+      <button class="im-submit" type="submit" id="imSubmit">Send me the itinerary</button>
+      <p class="im-err" id="imErr"></p>
+    </form>
+  </div>
+</div>
+<script>
+(function(){
+  var KEY='b2k_itinerary_unlocked';
+  var band=document.getElementById('getItinerary');
+  var modal=document.getElementById('imModal');
+  function unlock(){ band.classList.add('is-unlocked'); }
+  if(localStorage.getItem(KEY)==='1') unlock();
+  window.imOpen=function(){ modal.classList.add('open'); setTimeout(function(){var e=document.getElementById('imEmail'); if(e) e.focus();},50); };
+  window.imClose=function(){ modal.classList.remove('open'); };
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') window.imClose(); });
+  document.addEventListener('mouseout',function(e){
+    if(e.clientY>0 || localStorage.getItem(KEY)==='1') return;
+    if(sessionStorage.getItem('b2k_exit_shown')) return;
+    sessionStorage.setItem('b2k_exit_shown','1');
+    window.imOpen();
+  });
+  var form=document.getElementById('imForm');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var err=document.getElementById('imErr'), btn=document.getElementById('imSubmit');
+    err.style.display='none';
+    var email=document.getElementById('imEmail').value.trim();
+    var consent=document.getElementById('imConsent').checked;
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ err.textContent='Please enter a valid email address.'; err.style.display='block'; return; }
+    if(!consent){ err.textContent='Please accept the privacy policy.'; err.style.display='block'; return; }
+    btn.disabled=true; btn.textContent='Sending…';
+    fetch('api/subscribe.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,consent:true,company:form.company.value})})
+      .then(function(r){return r.json();})
+      .then(function(d){
+        if(d && d.ok){
+          localStorage.setItem(KEY,'1'); unlock(); window.imClose();
+          if(window.fbq) fbq('track','Lead',{content_name:'7 Islands itinerary'});
+          band.scrollIntoView({behavior:'smooth',block:'center'});
+        } else {
+          err.textContent=(d&&d.error)||'Something went wrong. Please try again.'; err.style.display='block';
+        }
+      })
+      .catch(function(){ err.textContent='Network error. Please try again.'; err.style.display='block'; })
+      .finally(function(){ btn.disabled=false; btn.textContent='Send me the itinerary'; });
+  });
+})();
+</script>
+
 <!-- MEDIA REEL -->
 <section class="reel">
   <div class="reel-inner">
