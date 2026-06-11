@@ -387,6 +387,42 @@ footer{background:#070e08;color:rgba(255,255,255,.4);padding:4rem 5vw 2rem}
 @media(max-width:768px){nav{margin:0;border-radius:0;top:0;height:64px;padding:0 1.2rem}}
 @media(prefers-reduced-motion:reduce){.rv,.rvl,.rvs{transition:opacity .3s ease;transform:none!important}.tour-card{transition:none!important;opacity:1;transform:none}.hero-eyebrow::before{transition:none}.masonry-item img,.rev-card,.tour-card,.why-feat-icon{transition:none!important}}
 @media(max-width:600px){.nl-form{flex-direction:column;align-items:stretch}.nl-in{width:100%}.nl-btn{width:100%}}
+
+/* ════════════ CINEMATIC RESTYLE · capa additiva (2026-06-11) ════════════ */
+/* Capa 100% additiva — no modifica ninguna regla anterior. Toda la firma de marca se conserva. */
+/* 1 · Grano de película — textura cinematográfica sutil sobre toda la página */
+.grain{position:fixed;inset:0;z-index:150;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:140px 140px}
+/* 2 · Hero — asentamiento cinematográfico (Ken Burns) + glow cálido de atardecer que ancla el texto */
+.hero-bg{animation:heroSettle 2.8s cubic-bezier(.16,1,.3,1) both;transform-origin:60% 50%}
+@keyframes heroSettle{from{transform:scale(1.12)}to{transform:scale(1)}}
+.hero::before{content:'';position:absolute;left:0;bottom:0;width:65%;height:75%;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 15% 95%,rgba(232,73,10,.24),transparent 62%)}
+/* 3 · Profundidad atmosférica en secciones oscuras (radial-gradient, cero imágenes, contraste preservado) */
+.why{position:relative;overflow:hidden}
+.why::before{content:'';position:absolute;top:-12%;right:-8%;width:60%;height:95%;z-index:0;pointer-events:none;background:radial-gradient(circle at 70% 30%,rgba(232,73,10,.17),transparent 64%)}
+.why>div{position:relative;z-index:1}
+.counters{position:relative;overflow:hidden}
+.counters .cnt-item{position:relative;z-index:1}
+.counters::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 50% 135%,rgba(45,122,74,.22),transparent 58%)}
+.reviews{position:relative;overflow:hidden}
+.reviews::before{content:'';position:absolute;top:-18%;left:-6%;width:48%;height:85%;z-index:0;pointer-events:none;background:radial-gradient(circle at 30% 40%,rgba(232,73,10,.11),transparent 64%)}
+.reviews>*{position:relative;z-index:1}
+.nl{position:relative;overflow:hidden}
+.nl::before{content:'';position:absolute;bottom:-60%;right:-5%;width:40%;height:160%;z-index:0;pointer-events:none;background:radial-gradient(circle at 60% 50%,rgba(45,122,74,.16),transparent 62%)}
+.nl>*{position:relative;z-index:1}
+/* 4 · Micro-interacción: preparación para CTAs magnéticos */
+.nav-cta,.btn-white,.btn-p{will-change:transform;transition:transform .4s cubic-bezier(.16,1,.3,1),background .2s}
+.tour-card{will-change:transform}
+/* Choose Your Adventure — tarjeta entera clickable (no solo "More info") */
+.tours-grid a.tour-card{text-decoration:none;color:inherit;cursor:pointer}
+.tours-grid a.tour-card:focus-visible{outline:2px solid #ff7a3d;outline-offset:4px}
+.tour-card:hover .tc-link{gap:.7rem;color:#ff7a3d}
+/* Tours: rejilla uniforme de 4 cards iguales (sin card huérfana). 4-up · 2×2 · 1-col */
+.tours-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1180px;margin:0 auto}
+.tours-grid .tour-card{width:auto}
+@media(max-width:1100px){.tours-grid{grid-template-columns:repeat(2,1fr);max-width:720px}}
+@media(max-width:600px){.tours-grid{grid-template-columns:1fr;max-width:360px}}
+/* 5 · Accesibilidad — respeta prefers-reduced-motion */
+@media(prefers-reduced-motion:reduce){.hero-bg{animation:none}.grain{display:none}}
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -777,7 +813,7 @@ function renderTours(tours) {
     const pills = [t.days ? t.days + ' Days' : '', t.islands ? t.islands + ' Islands' : '', t.km ? t.km + ' km' : ''].filter(Boolean);
     const spotsHtml = t.spots ? `<div class="tc-spots"><div class="spot-dot"></div>${t.spots}</div>` : '';
     const isYear = /^\s*20\d{2}\s*$/.test(String(t.price || ''));
-    return `<div class="tour-card${i===0?' tour-card-feat':''}" style="transition-delay:${i*0.12}s">
+    return `<a href="${t.link}" class="tour-card" style="transition-delay:${i*0.12}s">
       <div class="tc-img">
         <img src="${src}" alt="${t.name}" onerror="this.style.display='none'">
       </div>
@@ -790,10 +826,10 @@ function renderTours(tours) {
         ${spotsHtml}
         <div class="tc-foot">
           <div><div class="tc-from">${isYear ? 'Opens' : 'From'}</div><div class="tc-price">${t.price}</div></div>
-          <a href="${t.link}" class="tc-link">More info →</a>
+          <span class="tc-link">More info →</span>
         </div>
       </div>
-    </div>`;
+    </a>`;
   }).join('');
   // Observe new cards
   grid.querySelectorAll('.tour-card').forEach(c => cardObs.observe(c));
@@ -950,11 +986,12 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   var navCta = document.getElementById('navCta');
   if (navCta) navCta.addEventListener('click', function() { fbq('track', 'InitiateCheckout'); });
-  document.querySelectorAll('.tour-card a, .tc-link').forEach(function(a) {
-    a.addEventListener('click', function() {
-      var name = this.closest('.tour-card') && this.closest('.tour-card').querySelector('.tc-name');
-      fbq('track', 'ViewContent', {content_name: name ? name.textContent : 'Tour'});
-    });
+  var tgGrid = document.getElementById('toursGrid');
+  if (tgGrid) tgGrid.addEventListener('click', function(e) {
+    var card = e.target.closest('.tour-card');
+    if (!card) return;
+    var name = card.querySelector('.tc-name');
+    fbq('track', 'ViewContent', {content_name: name ? name.textContent : 'Tour'});
   });
 });
 function playVid(){
@@ -986,6 +1023,54 @@ function nlSubmit() {
       btn.disabled = false;
     });
 }
+</script>
+
+<!-- ═══════════ CINEMATIC RESTYLE · capa de motion (GSAP, additiva) ═══════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Grano de película (inyectado, no toca el HTML del body)
+  if(!reduce){ var g=document.createElement('div'); g.className='grain'; document.body.appendChild(g); }
+  // CTAs magnéticos — solo puntero fino, desactivado en reduced-motion
+  if(!reduce && window.matchMedia('(pointer:fine)').matches){
+    document.querySelectorAll('.nav-cta,.btn-white,.btn-p').forEach(function(b){
+      b.addEventListener('mousemove',function(e){
+        var r=b.getBoundingClientRect();
+        b.style.transform='translate('+((e.clientX-r.left-r.width/2)*0.22)+'px,'+((e.clientY-r.top-r.height/2)*0.3)+'px)';
+      });
+      b.addEventListener('mouseleave',function(){b.style.transform='';});
+    });
+  }
+  if(!window.gsap||!window.ScrollTrigger||reduce) return;
+  gsap.registerPlugin(ScrollTrigger);
+  // Hero: el contenido sube ligeramente al hacer scroll (profundidad vs. parallax de la foto)
+  if(document.querySelector('.hero-content'))
+    gsap.to('.hero-content',{yPercent:-10,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+  // Why: imágenes en parallax a distintas velocidades (la grande sube, la pequeña baja → profundidad)
+  if(document.querySelector('.why-img-main'))
+    gsap.to('.why-img-main',{yPercent:-14,ease:'none',scrollTrigger:{trigger:'.why',start:'top bottom',end:'bottom top',scrub:true}});
+  if(document.querySelector('.why-img-acc'))
+    gsap.to('.why-img-acc',{yPercent:16,ease:'none',scrollTrigger:{trigger:'.why',start:'top bottom',end:'bottom top',scrub:true}});
+  // Galería: se renderiza por JS tras fetch → observar y animar cuando aparezcan los items
+  var grid=document.getElementById('galleryGrid');
+  function animGallery(){
+    var items=grid.querySelectorAll('.masonry-item');
+    if(!items.length) return false;
+    items.forEach(function(it){
+      gsap.from(it,{opacity:0,y:36,duration:.7,ease:'power3.out',scrollTrigger:{trigger:it,start:'top 90%'}});
+    });
+    ScrollTrigger.refresh();
+    return true;
+  }
+  if(grid && !animGallery()){
+    var mo=new MutationObserver(function(){ if(animGallery()) mo.disconnect(); });
+    mo.observe(grid,{childList:true});
+  }
+  // Recalcular posiciones tras la carga total (alturas dinámicas de tours/galería)
+  window.addEventListener('load',function(){ setTimeout(function(){ScrollTrigger.refresh();},300); });
+})();
 </script>
 <input type="file" id="imgFileInput" accept="image/*" style="display:none" onchange="handleImgUpload(event)">
 </body>
