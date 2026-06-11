@@ -421,6 +421,25 @@ footer{background:#070e08;color:rgba(255,255,255,.4);padding:4rem 5vw 2rem}
 .tours-grid .tour-card{width:auto}
 @media(max-width:1100px){.tours-grid{grid-template-columns:repeat(2,1fr);max-width:720px}}
 @media(max-width:600px){.tours-grid{grid-template-columns:1fr;max-width:360px}}
+/* More Ways to Ride — 2 negocios hermanos (alquiler de motos), sustituye a los contadores */
+.more{padding:8rem 5vw;background:var(--cream)}
+.more-hd{max-width:660px;margin:0 auto 3.5rem;text-align:center}
+.more-hd .lbl{display:inline-flex}
+.more-sub{font-family:'Instrument Serif',serif;font-style:italic;color:var(--ink-soft);font-size:18px;line-height:1.65;margin-top:1.2rem}
+.more-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:1080px;margin:0 auto}
+.more-card{display:flex;flex-direction:column;background:var(--parchment);border:1px solid var(--sand);border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1),border-color .35s}
+.more-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(28,43,30,.16);border-color:var(--orange)}
+.more-card:focus-visible{outline:2px solid #ff7a3d;outline-offset:4px}
+.more-img{aspect-ratio:16/10;overflow:hidden}
+.more-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.16,1,.3,1)}
+.more-card:hover .more-img img{transform:scale(1.06)}
+.more-card-body{padding:1.8rem 1.8rem 2rem;display:flex;flex-direction:column;gap:.7rem;flex:1}
+.more-loc{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange)}
+.more-name{font-family:'Bebas Neue',sans-serif;font-size:34px;line-height:1;color:var(--ink);letter-spacing:.02em}
+.more-desc{font-size:14px;color:var(--ink-soft);line-height:1.65;flex:1}
+.more-link{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);display:inline-flex;align-items:center;gap:.4rem;margin-top:.4rem;transition:gap .25s,color .25s}
+.more-card:hover .more-link{gap:.85rem;color:var(--orange)}
+@media(max-width:760px){.more{padding:5rem 5vw}.more-grid{grid-template-columns:1fr;max-width:420px}}
 /* 5 · Accesibilidad — respeta prefers-reduced-motion */
 @media(prefers-reduced-motion:reduce){.hero-bg{animation:none}.grain{display:none}}
 </style>
@@ -578,12 +597,33 @@ fbq('track', 'PageView');
 </section>
 
 
-<div class="counters" id="counters">
-  <div class="cnt-item rv"><span class="cnt-num" data-target="1000">0<em>+</em></span><div class="cnt-lab" id="cnt1Lab">Happy riders</div></div>
-  <div class="cnt-item rv d1"><span class="cnt-num" data-target="7">0</span><div class="cnt-lab" id="cnt2Lab">Years on the road</div></div>
-  <div class="cnt-item rv d2"><span class="cnt-num" data-target="12">0<em>+</em></span><div class="cnt-lab" id="cnt3Lab">Unique routes</div></div>
-  <div class="cnt-item rv d3"><span class="cnt-num" data-target="4">0</span><div class="cnt-lab" id="cnt4Lab">Islands crossed</div></div>
-</div>
+<section class="more" id="more">
+  <div class="more-hd">
+    <p class="lbl rv" style="justify-content:center">More Ways to Ride</p>
+    <h2 class="ttl rv d1">Rent &amp; Ride On Your Own</h2>
+    <p class="more-sub rv d2">Not ready for a full expedition? Rent a bike from our sister companies and explore Indonesia at your own pace.</p>
+  </div>
+  <div class="more-grid">
+    <a href="https://balibestmotorcycle.com/" target="_blank" rel="noopener noreferrer" class="more-card rv">
+      <div class="more-img"><img src="images/1.jpg" alt="Motorbike rental in Bali" loading="lazy"></div>
+      <div class="more-card-body">
+        <span class="more-loc">Bali</span>
+        <h3 class="more-name">Bali Bike Rental</h3>
+        <p class="more-desc">Scooters and motorbikes across Bali. The freedom to explore the island day by day, at your own rhythm.</p>
+        <span class="more-link">Visit balibestmotorcycle.com →</span>
+      </div>
+    </a>
+    <a href="https://sumba.balibestmotorcycle.com/" target="_blank" rel="noopener noreferrer" class="more-card rv d1">
+      <div class="more-img"><img src="images/5.jpg" alt="Motorbike rental in Sumba" loading="lazy"></div>
+      <div class="more-card-body">
+        <span class="more-loc">Sumba</span>
+        <h3 class="more-name">Sumba Bike Rental</h3>
+        <p class="more-desc">Two wheels on Indonesia's wildest island. Rent in Sumba and ride untouched roads and empty coastlines.</p>
+        <span class="more-link">Visit sumba.balibestmotorcycle.com →</span>
+      </div>
+    </a>
+  </div>
+</section>
 
 <section class="why" id="why">
   <div class="why-imgs rvl">
@@ -957,14 +997,17 @@ const cardObs = new IntersectionObserver(entries => {
 
 
 
-new IntersectionObserver(entries => {
+var _cntObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) e.target.querySelectorAll('.cnt-num').forEach(el => {
       const tgt = parseInt(el.dataset.target), sfx = el.querySelector('em')?.outerHTML || '', s = performance.now();
       (function step(n) { const p = Math.min((n-s)/1800,1), ee = 1-Math.pow(1-p,3); el.innerHTML = Math.floor(ee*tgt) + sfx; if(p<1) requestAnimationFrame(step); })(s);
     });
   });
-}, { threshold: .4 }).observe(document.getElementById('counters'));
+}, { threshold: .4 });
+// Contadores reemplazados por la sección "More Ways to Ride"; observamos solo si el elemento existe
+var _cntEl = document.getElementById('counters');
+if (_cntEl) _cntObs.observe(_cntEl);
 
 // ═══════════════════════════════════════════════════════════
 // LIGHTBOX
