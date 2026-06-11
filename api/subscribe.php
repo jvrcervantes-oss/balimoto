@@ -59,6 +59,7 @@ $line = '"' . implode('","', array_map(fn($v) => str_replace('"', '""', $v), $ro
 @file_put_contents($csv, $line, FILE_APPEND | LOCK_EX);
 
 // --- (2) Google Sheet (webhook Apps Script, opcional) ---
+$logFile = dirname(__DIR__) . '/private/webhook.log';
 if (!empty($cfg['sheet_webhook'])) {
     $payload = json_encode(['email' => $email, 'date' => $ts, 'source' => '7Islands itinerary', 'ip' => $ip]);
     $ch = curl_init($cfg['sheet_webhook']);
@@ -67,11 +68,17 @@ if (!empty($cfg['sheet_webhook'])) {
         CURLOPT_POSTFIELDS => $payload,
         CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT => 8,
-        CURLOPT_FOLLOWLOCATION => true, // Apps Script redirige
+        CURLOPT_TIMEOUT => 10,
+        CURLOPT_FOLLOWLOCATION => true, // Apps Script redirige a googleusercontent
     ]);
-    curl_exec($ch);
+    $whResp = curl_exec($ch);
+    $whCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $whErr  = curl_error($ch);
     curl_close($ch);
+    // Log de diagnóstico (en private/, fuera del web root)
+    @file_put_contents($logFile, "$ts | $email | http=$whCode | curl_err=$whErr | resp=" . substr((string)$whResp, 0, 300) . "\n", FILE_APPEND | LOCK_EX);
+} else {
+    @file_put_contents($logFile, "$ts | $email | SKIPPED: sheet_webhook vacío en config\n", FILE_APPEND | LOCK_EX);
 }
 
 // --- (3) Email con link de descarga ---
