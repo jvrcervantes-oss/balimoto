@@ -976,7 +976,7 @@ function nlSubmit() {
     msg.style.display = 'block'; return;
   }
   btn.disabled = true; btn.textContent = 'Sending...';
-  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykfMY8p8AAX-bAnzzPyO9CO2Y8NHoCCMLkcyZLPlxxi2sQeQzz1K-WDSUq-MRoQEW3/exec';
+  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTrSJrw6gx8ssV6dKJXP1MDMQpXc4efLuKEcMYqTD5h-w1q_5JfWwA3fMpLRfQzIsb/exec';
   fetch(SCRIPT_URL + '?email=' + encodeURIComponent(email) + '&source=b2k-newsletter', { mode: 'no-cors' })
     .finally(function() {
       msg.textContent = "You're in! We'll keep you posted.";
