@@ -1,6 +1,6 @@
 <?php
 /**
- * subscribe.php — Lead magnet "7 Islands itinerary"
+ * subscribe.php — Lead magnet de itinerarios (multi-tour: 7 Islands + Bali to Komodo)
  * Recibe email → (1) guarda en CSV, (2) push al Google Sheet (webhook opcional),
  * (3) envía email con LINK de descarga vía SMTP. Devuelve JSON {ok:true}.
  *
@@ -48,20 +48,28 @@ if (!$consent) {
     out(false, ['error' => 'Please accept the privacy policy.']);
 }
 
+// --- Tour (lead magnet multi-tour). Default 7islands = retrocompatible con el form viejo ---
+$tours = [
+    '7islands'    => ['source' => '7Islands itinerary',   'pdf' => '7Islands.pdf', 'label' => '7 Islands Hopping', 'days' => '13-day', 'subject' => 'Your 7 Islands itinerary is here 🏍️'],
+    'bali-komodo' => ['source' => 'BaliKomodo itinerary', 'pdf' => 'B2K.pdf',      'label' => 'Bali to Komodo',    'days' => '12-day', 'subject' => 'Your Bali to Komodo itinerary is here 🏍️'],
+];
+$tourKey = $data['tour'] ?? '7islands';
+$tour = $tours[$tourKey] ?? $tours['7islands'];
+
 $ip = $_SERVER['REMOTE_ADDR'] ?? '';
 $ua = substr($_SERVER['HTTP_USER_AGENT'] ?? '', 0, 200);
 $ts = date('c');
 
 // --- (1) Guardar en CSV ---
 $csv = $cfg['subscribers_csv'] ?? (dirname(__DIR__) . '/private/itinerary_subscribers.csv');
-$row = [$ts, $email, $ip, $ua, '7Islands'];
+$row = [$ts, $email, $ip, $ua, $tourKey];
 $line = '"' . implode('","', array_map(fn($v) => str_replace('"', '""', $v), $row)) . "\"\n";
 @file_put_contents($csv, $line, FILE_APPEND | LOCK_EX);
 
 // --- (2) Google Sheet (webhook Apps Script, opcional) ---
 $logFile = dirname(__DIR__) . '/private/webhook.log';
 if (!empty($cfg['sheet_webhook'])) {
-    $payload = json_encode(['email' => $email, 'date' => $ts, 'source' => '7Islands itinerary', 'ip' => $ip]);
+    $payload = json_encode(['email' => $email, 'date' => $ts, 'source' => $tour['source'], 'ip' => $ip]);
     $ch = curl_init($cfg['sheet_webhook']);
     curl_setopt_array($ch, [
         CURLOPT_POST => true,
@@ -82,15 +90,16 @@ if (!empty($cfg['sheet_webhook'])) {
 }
 
 // --- (3) Email con link de descarga ---
-$pdfUrl  = $cfg['pdf_url'] ?? 'https://balimotoadventures.com/pdf/7Islands.pdf';
-$subject = 'Your 7 Islands itinerary is here 🏍️';
-$html = email_html($pdfUrl, $cfg);
+$pdfBase = $cfg['pdf_base'] ?? 'https://balimotoadventures.com/pdf/';
+$pdfUrl  = $pdfBase . $tour['pdf'];
+$subject = $tour['subject'];
+$html = email_html($pdfUrl, $cfg, $tour);
 list($sent, $resp) = smtp_send($cfg, $email, $subject, $html);
 
 // Aviso al dueño (opcional)
 if (!empty($cfg['owner_notify'])) {
-    smtp_send($cfg, $cfg['owner_notify'], 'New itinerary lead: ' . $email,
-        '<p>New subscriber for the 7 Islands itinerary:</p><p><strong>' . htmlspecialchars($email) . '</strong><br>' . htmlspecialchars($ts) . '</p>');
+    smtp_send($cfg, $cfg['owner_notify'], 'New itinerary lead: ' . $email . ' (' . $tour['label'] . ')',
+        '<p>New subscriber for the ' . htmlspecialchars($tour['label']) . ' itinerary:</p><p><strong>' . htmlspecialchars($email) . '</strong><br>' . htmlspecialchars($ts) . '</p>');
 }
 
 // El email puede fallar (SMTP) pero el lead ya está guardado y la descarga en página funciona igual
@@ -99,19 +108,21 @@ out(true, ['emailed' => $sent]);
 
 /* ============================ Helpers ============================ */
 
-function email_html($pdfUrl, $cfg) {
-    $site = 'https://balimotoadventures.com';
+function email_html($pdfUrl, $cfg, $tour) {
+    $site  = 'https://balimotoadventures.com';
+    $label = htmlspecialchars($tour['label']);
+    $days  = htmlspecialchars($tour['days']);
     return '<!DOCTYPE html><html><body style="margin:0;background:#faf6ef;font-family:Arial,Helvetica,sans-serif;color:#1c2b1e">
 <div style="max-width:560px;margin:0 auto;padding:32px 24px">
-  <h1 style="font-size:24px;color:#1c2b1e;margin:0 0 8px">Your 7 Islands itinerary 🏍️</h1>
-  <p style="font-size:15px;line-height:1.6;color:#3d5c42">Thanks for your interest in the <strong>7 Islands Hopping</strong> tour. Here is the full 13-day itinerary — day by day, route, highlights and what is included.</p>
+  <h1 style="font-size:24px;color:#1c2b1e;margin:0 0 8px">Your ' . $label . ' itinerary 🏍️</h1>
+  <p style="font-size:15px;line-height:1.6;color:#3d5c42">Thanks for your interest in the <strong>' . $label . '</strong> tour. Here is the full ' . $days . ' itinerary — day by day, route, highlights and what is included.</p>
   <p style="margin:28px 0">
     <a href="' . htmlspecialchars($pdfUrl) . '" style="background:#e8490a;color:#fff;text-decoration:none;padding:14px 28px;border-radius:100px;font-weight:bold;font-size:15px;display:inline-block">Download the itinerary (PDF)</a>
   </p>
   <p style="font-size:13px;color:#3d5c42;line-height:1.6">Any questions? Just reply to this email or message us on WhatsApp — we are happy to help you plan the ride.</p>
   <p style="font-size:13px;color:#3d5c42;margin-top:24px">Cheers,<br>The Bali Moto Adventures team</p>
   <hr style="border:none;border-top:1px solid #e3ddd0;margin:24px 0">
-  <p style="font-size:11px;color:#9a9a8e">You received this because you requested the 7 Islands itinerary at <a href="' . $site . '" style="color:#9a9a8e">balimotoadventures.com</a>.</p>
+  <p style="font-size:11px;color:#9a9a8e">You received this because you requested the ' . $label . ' itinerary at <a href="' . $site . '" style="color:#9a9a8e">balimotoadventures.com</a>.</p>
 </div></body></html>';
 }
 
