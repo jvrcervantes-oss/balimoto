@@ -23,6 +23,9 @@ Deprecated/
 # Logos fuente (no necesarios en producción)
 Logos/
 
+# Masters / originales de alta resolución (PDF y vídeo sin optimizar) — no desplegar
+masters/
+
 # Sistema
 .DS_Store
 Thumbs.db
