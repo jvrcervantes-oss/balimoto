@@ -870,9 +870,21 @@ footer{background:#070e08;color:rgba(255,255,255,.4);padding:3rem 5vw 2rem}
   window.imOpen=function(){ modal.classList.add('open'); setTimeout(function(){var e=document.getElementById('imEmail'); if(e) e.focus();},50); };
   window.imClose=function(){ modal.classList.remove('open'); };
   document.addEventListener('keydown',function(e){ if(e.key==='Escape') window.imClose(); });
+
+  // Auto-popup: salta solo en la PRIMERA visita, a los 4s (una vez por visitante)
+  var autoShown=false;
+  function autoPrompt(){
+    if(localStorage.getItem(KEY)==='1' || localStorage.getItem('b2k_itinerary_prompted')==='1') return;
+    localStorage.setItem('b2k_itinerary_prompted','1');
+    autoShown=true;
+    if(!modal.classList.contains('open')) window.imOpen();
+  }
+  setTimeout(autoPrompt,4000);
+
+  // Exit-intent: red de seguridad si el auto-popup no llegó a saltar en esta sesión
   document.addEventListener('mouseout',function(e){
     if(e.clientY>0 || localStorage.getItem(KEY)==='1') return;
-    if(sessionStorage.getItem('b2k_exit_shown')) return;
+    if(autoShown || sessionStorage.getItem('b2k_exit_shown')) return;
     sessionStorage.setItem('b2k_exit_shown','1');
     window.imOpen();
   });
