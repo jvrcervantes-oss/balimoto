@@ -16,6 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+b2k_require_same_origin();
+
 $body = json_decode(file_get_contents('php://input'), true) ?? [];
 $pass = $body['password'] ?? '';
 

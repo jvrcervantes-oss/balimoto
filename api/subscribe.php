@@ -20,6 +20,15 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     out(false, ['error' => 'Method not allowed']);
 }
 
+// Rate-limit por IP: evita abusar del SMTP para spam (blacklist del dominio) y el crecimiento del CSV.
+require_once __DIR__ . '/throttle.php';
+$ipThrottle = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+if (b2k_throttle_blocked("sub_$ipThrottle", 5, 3600)) {
+    http_response_code(429);
+    out(false, ['error' => 'Too many requests. Please try again later.']);
+}
+b2k_throttle_register("sub_$ipThrottle", 3600);
+
 $cfgFile = dirname(__DIR__) . '/private/itinerary-config.php';
 if (!file_exists($cfgFile)) {
     http_response_code(500);

@@ -16,7 +16,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+b2k_require_same_origin();
+
 $body = file_get_contents('php://input');
+
+// Tope de tamaño del payload (anti-DoS de disco). El CMS real ocupa ~20 KB.
+if (strlen($body) > 2 * 1024 * 1024) {
+    http_response_code(413);
+    echo json_encode(['ok' => false, 'error' => 'Payload too large']);
+    exit;
+}
+
 $data = json_decode($body, true);
 
 if ($data === null) {

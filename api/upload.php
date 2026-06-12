@@ -16,6 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_FILES['image'])) {
     exit;
 }
 
+b2k_require_same_origin();
+
 $file    = $_FILES['image'];
 $allowed = ['jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png', 'webp' => 'image/webp'];
 $ext     = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
