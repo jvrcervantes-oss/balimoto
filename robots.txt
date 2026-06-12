@@ -1,4 +1,4 @@
-# deploy-check 20260612-b2k
+# deploy-check 20260612-b2k-2
 User-agent: *
 Disallow: /Backup_20260531/
 Disallow: /Backup_20260604/
