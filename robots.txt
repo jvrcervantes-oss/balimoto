@@ -9,4 +9,19 @@ Disallow: /Deprecated/
 Disallow: /video.html
 Disallow: /index_v2.html
 
+# AI / LLM crawlers — explicitly allowed so the brand can appear in
+# ChatGPT, Gemini, Perplexity and Claude answers.
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+
 Sitemap: https://balimotoadventures.com/sitemap.xml
