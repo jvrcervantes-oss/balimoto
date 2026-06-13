@@ -983,8 +983,9 @@ function applyAll() {
   document.getElementById('hw2').textContent = hw2;
   document.getElementById('hw3').textContent = hw3;
   document.getElementById('hSub').textContent = hSub;
-  // WA links
-  const waUrl = 'https://wa.me/' + wa;
+  // WA links — con mensaje pre-escrito para bajar la fricción y subir conversión
+  const waMsg = encodeURIComponent("Hi! 👋 I'm interested in your Indonesia motorcycle tours. Could you tell me more about availability and prices?");
+  const waUrl = 'https://wa.me/' + wa + '?text=' + waMsg;
   document.querySelectorAll('a[href*="wa.me"]:not(.wa-fixed)').forEach(a => a.href = waUrl);
   // Content fields — apply all by ID
   const contentKeys = ['hEye','par1Q','par1A','par2Q','par2A','cnt1Lab','cnt2Lab','cnt3Lab','cnt4Lab',
