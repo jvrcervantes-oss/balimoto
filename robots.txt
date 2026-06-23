@@ -8,6 +8,12 @@ Disallow: /Backup_20260609_auditoria/
 Disallow: /Deprecated/
 Disallow: /video.html
 Disallow: /index_v2.html
+Disallow: /admin.html
+Disallow: /checkout.php
+Disallow: /api/
+Disallow: /masters/
+Disallow: /scripts/
+Disallow: /private/
 
 # AI / LLM crawlers — explicitly allowed so the brand can appear in
 # ChatGPT, Gemini, Perplexity and Claude answers.
