@@ -96,7 +96,7 @@ nav.nav-out{opacity:0;pointer-events:none}
 .nav-cta:hover{background:var(--orange-dark)!important}
 @keyframes heroFadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
 @keyframes scrollBounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
-.tour-hero{position:relative;height:100vh;min-height:640px;display:flex;align-items:flex-end;overflow:hidden}
+.tour-hero{position:relative;height:calc(100vh - 64px);min-height:640px;display:flex;align-items:flex-end;overflow:hidden}
 .th-bg{position:absolute;inset:0}
 .th-bg img{width:100%;height:120%;object-fit:cover;object-position:center 38%;display:block;will-change:transform}
 .th-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(6,14,7,.98) 0%,rgba(15,40,20,.5) 45%,transparent 80%)}
@@ -341,7 +341,7 @@ footer{background:#070e08;color:rgba(255,255,255,.4);padding:3rem 5vw 2rem}
   .bk-pkgs{grid-template-columns:1fr}
   .ft-top{grid-template-columns:1fr}
 }
-@media(max-width:768px){nav{margin:0;border-radius:0;top:0;height:64px;padding:0 1.2rem}.book-bar{padding:.65rem 1.2rem}.bb-home{display:none}}
+@media(max-width:768px){nav{margin:0;border-radius:0;top:0;height:64px;padding:0 1.2rem}.book-bar{padding:.65rem 1.2rem}.bb-home{display:none}.th-scroll-ind{display:none}}
 @media(prefers-reduced-motion:reduce){.rv,.rvl{transition:opacity .3s ease;transform:none!important}.th-eyebrow,.th-title,.th-pills,.th-actions,.th-price-inline,.th-scroll-ind{animation-duration:.01ms!important;animation-delay:.01ms!important}.bike-card,.pkg-card{transition-duration:.01ms!important}.book-bar{transition-duration:.01ms!important}}
 
 /* MEDIA REEL */
@@ -385,7 +385,7 @@ footer{background:#070e08;color:rgba(255,255,255,.4);padding:3rem 5vw 2rem}
 @media(max-width:768px){.reel-inner{flex-direction:column;gap:32px}.reel-left{width:100%;padding-left:20px}.reel-foot{padding:0 20px}.reel-track{padding-right:20px}}
 </style>
 <style id="btn-hover-polish">
-/* === Hover polish de botones — JC Capital / Diseño (emil-design-eng) ===
+/* === Hover polish de botones — AxisWorks / Diseño (emil-design-eng) ===
    Elevación + sombra de marca en hover; press apoyado con scale(0.97).
    Gated en dispositivos con hover real + respeto a prefers-reduced-motion. */
 @media (hover:hover) and (pointer:fine){
