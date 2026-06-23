@@ -265,6 +265,7 @@ nav.nav-out{opacity:0;pointer-events:none}
 .mod-row{display:flex;align-items:center;gap:.9rem;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.08);border-radius:10px;padding:.85rem 1rem;cursor:pointer;transition:background .2s,border-color .2s;user-select:none}
 .mod-row:hover{border-color:rgba(255,255,255,.2)}
 .mod-row.sel{border-color:rgba(232,73,10,.5);background:rgba(232,73,10,.09)}
+.mod-row.disabled{opacity:.4;pointer-events:none;filter:grayscale(.4)}
 .mod-chk{width:18px;height:18px;border:2px solid rgba(255,255,255,.2);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s}
 .mod-row.sel .mod-chk{background:var(--orange);border-color:var(--orange)}
 .mod-chk svg{width:10px;height:10px;stroke:#fff;stroke-width:3;fill:none;display:none}
@@ -441,7 +442,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1916298258994371&ev=PageView&noscript=1"/></noscript>
 <!-- End Meta Pixel Code -->
 <style id="btn-hover-polish">
-/* === Hover polish de botones — JC Capital / Diseño (emil-design-eng) ===
+/* === Hover polish de botones — AxisWorks / Diseño (emil-design-eng) ===
    Elevación + sombra de marca en hover; press apoyado con scale(0.97).
    Gated en dispositivos con hover real + respeto a prefers-reduced-motion. */
 @media (hover:hover) and (pointer:fine){
@@ -1375,9 +1376,19 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
     return SYMS[selCurr] + Math.ceil(eur * rates[selCurr]).toLocaleString('en');
   }
 
+  // Pillion = viajan 2 personas en la misma moto. Estos mods se aplican UNA sola vez
+  // aunque vayan 2 pax; el resto (p.ej. seguro) se multiplica por persona.
+  var ONCE_MODS = {pillion: true, self_guided: true};
+  function paxCount() { return selMods.pillion ? 2 : 1; }
+
   function calcEur() {
-    var t = PKGS[selPkg].price;
-    Object.keys(selMods).forEach(function(k) { if (selMods[k]) t += MODS[k].adj; });
+    var pax = paxCount();
+    var t = PKGS[selPkg].price * pax;
+    Object.keys(selMods).forEach(function(k) {
+      if (!selMods[k]) return;
+      if (k === 'single_room' && pax > 1) return; // single room no aplica si van 2 personas
+      t += ONCE_MODS[k] ? MODS[k].adj : MODS[k].adj * pax;
+    });
     return t;
   }
 
@@ -1399,11 +1410,20 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
       var ptag = document.getElementById('pkgTag-' + id);
       if (ptag) ptag.textContent = fmt(pkgPrices[id]);
     });
+    var pax = paxCount();
     Object.keys(MODS).forEach(function(k) {
       var m = MODS[k];
       var adj = document.getElementById('modAdj-' + k);
+      var row = document.querySelector('[data-mod="' + k + '"]');
+      if (k === 'single_room' && pax > 1) {
+        if (row) row.classList.add('disabled');
+        if (adj) adj.textContent = 'N/A';
+        return;
+      }
+      if (row) row.classList.remove('disabled');
       if (adj) {
-        var converted = Math.ceil(Math.abs(m.adj) * rates[selCurr]);
+        var mult = ONCE_MODS[k] ? 1 : pax;
+        var converted = Math.ceil(Math.abs(m.adj) * mult * rates[selCurr]);
         var sign = m.adj < 0 ? '−' : '+';
         adj.textContent = sign + SYMS[selCurr] + converted.toLocaleString('en');
       }
@@ -1411,14 +1431,18 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
 
     var bd = document.getElementById('bk-breakdown');
     if (bd) {
-      var html = '<div class="bk-br-row"><span class="bk-br-label">' + pkg.name + ' (' + pkg.km + ' km)</span><span class="bk-br-val">' + fmt(pkg.price) + '</span></div>';
+      var pkgLabel = pkg.name + ' (' + pkg.km + ' km)' + (pax > 1 ? ' × 2 travelers' : '');
+      var html = '<div class="bk-br-row"><span class="bk-br-label">' + pkgLabel + '</span><span class="bk-br-val">' + fmt(pkg.price * pax) + '</span></div>';
       Object.keys(selMods).forEach(function(k) {
         if (!selMods[k]) return;
+        if (k === 'single_room' && pax > 1) return; // single room no aplica con pillion
         var m = MODS[k];
-        var abs = Math.ceil(Math.abs(m.adj) * rates[selCurr]);
+        var mult = ONCE_MODS[k] ? 1 : pax;
+        var abs = Math.ceil(Math.abs(m.adj) * mult * rates[selCurr]);
         var sign = m.adj < 0 ? '−' + SYMS[selCurr] : '+' + SYMS[selCurr];
         var cls = m.neg ? 'neg' : 'pos';
-        html += '<div class="bk-br-row ' + cls + '"><span class="bk-br-label">' + m.name + '</span><span class="bk-br-val">' + sign + abs.toLocaleString('en') + '</span></div>';
+        var lbl = m.name + (mult > 1 ? ' × 2' : '');
+        html += '<div class="bk-br-row ' + cls + '"><span class="bk-br-label">' + lbl + '</span><span class="bk-br-val">' + sign + abs.toLocaleString('en') + '</span></div>';
       });
       bd.innerHTML = html;
     }
@@ -1453,6 +1477,20 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
     selMods[id] = !selMods[id];
     var row = document.querySelector('[data-mod="' + id + '"]');
     if (row) row.classList.toggle('sel', !!selMods[id]);
+    if (id === 'pillion') {
+      if (selMods.pillion) {
+        // 2 personas: single room deja de aplicar
+        if (selMods.single_room) {
+          selMods.single_room = false;
+          var sr = document.querySelector('[data-mod="single_room"]');
+          if (sr) sr.classList.remove('sel');
+        }
+        numRidersB2K = Math.max(2, numRidersB2K);
+      } else {
+        numRidersB2K = 1;
+      }
+      renderRiders();
+    }
     updateUI();
   };
 
@@ -1488,16 +1526,23 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
   };
 
   var numRidersB2K = 1;
-  window.bkChangeRiders = function(delta) {
-    numRidersB2K = Math.max(1, Math.min(12, numRidersB2K + delta));
-    document.getElementById('bk-riders-num').textContent = numRidersB2K;
-    var total = numRidersB2K * 1000;
-    document.getElementById('bk-riders-dep').textContent = numRidersB2K > 1
-      ? numRidersB2K + ' × $1,000 = $' + total.toLocaleString() + ' deposit'
+  function renderRiders() {
+    var total = (numRidersB2K * 1000).toLocaleString('en');
+    var numEl = document.getElementById('bk-riders-num');
+    if (numEl) numEl.textContent = numRidersB2K;
+    var depEl = document.getElementById('bk-riders-dep');
+    if (depEl) depEl.textContent = numRidersB2K > 1
+      ? numRidersB2K + ' × $1,000 = $' + total + ' deposit'
       : '$1,000 deposit';
-    document.getElementById('bk-btn-dep').textContent = numRidersB2K > 1
-      ? '$' + total.toLocaleString() + ' (' + numRidersB2K + ' riders)'
+    var btnEl = document.getElementById('bk-btn-dep');
+    if (btnEl) btnEl.textContent = numRidersB2K > 1
+      ? '$' + total + ' (' + numRidersB2K + ' riders)'
       : '$1,000';
+  }
+  window.bkChangeRiders = function(delta) {
+    var min = selMods.pillion ? 2 : 1; // pillion = pareja, mínimo 2
+    numRidersB2K = Math.max(min, Math.min(12, numRidersB2K + delta));
+    renderRiders();
   };
 
   window.bkBookNow = function() {
