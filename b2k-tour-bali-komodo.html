@@ -1010,6 +1010,20 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
           </div>
         </div>
 
+        <!-- EXTREME -->
+        <div class="pkg-card" data-pkg="extreme" onclick="bkSelectPkg('extreme')">
+          <div class="pkg-sel-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="pkg-name">Extreme</div>
+          <div class="pkg-price-tag" id="pkgTag-extreme">$4,000</div>
+          <div class="pkg-meta">1,826 km &middot; 4&#9733; hotels<br>~165 km/day &middot; Ferry &middot; Fly back</div>
+          <div class="pkg-perks">
+            <span class="pkg-perk">Return flight</span>
+            <span class="pkg-perk">Experiences</span>
+            <span class="pkg-perk">Guide</span>
+            <span class="pkg-perk">Meals</span>
+          </div>
+        </div>
+
         <!-- DELUXE -->
         <div class="pkg-card" data-pkg="deluxe" onclick="bkSelectPkg('deluxe')">
           <div class="pkg-sel-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -1354,6 +1368,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
   try { var _r = await fetch('data.json?_='+Date.now()); if(_r.ok){var _j=await _r.json();_kp=_j.komodo||{};} } catch(e){}
   var PKGS = {
     roundtrip: {name: 'Roundtrip', price: _kp.pkgRoundtrip||3200, km: 1458},
+    extreme:   {name: 'Extreme',   price: _kp.pkgExtreme||4000,  km: 1826},
     deluxe:    {name: 'Deluxe',    price: _kp.pkgDeluxe||4300,   km: 1259}
   };
   var FROM_USD = _kp.priceFrom || 2650;
@@ -1415,7 +1430,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
     if (hfp) hfp.textContent = fmt(FROM_USD);
     var bbfp = document.getElementById('bbFromPrice');
     if (bbfp) bbfp.textContent = 'From ' + fmt(FROM_USD);
-    var pkgPrices = {roundtrip: PKGS.roundtrip.price, deluxe: PKGS.deluxe.price};
+    var pkgPrices = {roundtrip: PKGS.roundtrip.price, extreme: PKGS.extreme.price, deluxe: PKGS.deluxe.price};
     Object.keys(pkgPrices).forEach(function(id) {
       var ptag = document.getElementById('pkgTag-' + id);
       if (ptag) ptag.textContent = fmt(pkgPrices[id]);
