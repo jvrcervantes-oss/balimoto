@@ -514,6 +514,8 @@ footer{background:#070e08;color:rgba(255,255,255,.4);padding:4rem 5vw 2rem}
 @media(max-width:760px){.more{padding:5rem 5vw}.more-grid{grid-template-columns:1fr;max-width:420px}}
 /* 5 · Accesibilidad — respeta prefers-reduced-motion */
 @media(prefers-reduced-motion:reduce){.hero-bg{animation:none}.grain{display:none}}
+/* A11Y (EAA): foco visible por teclado en todo elemento interactivo */
+a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid #ff7a3d;outline-offset:3px}
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -762,7 +764,7 @@ fbq('track', 'PageView');
 
 <div class="nl">
   <div class="nl-txt"><strong>Stay in the loop</strong>New routes, early access and exclusive deals.</div>
-  <div class="nl-form"><input class="nl-in" id="nlEmail" type="email" placeholder="your@email.com" autocomplete="email"><button class="nl-btn" id="nlBtn" type="button" onclick="nlSubmit()">Subscribe</button></div><div id="nlMsg" style="font-size:13px;margin-top:.5rem;color:rgba(255,255,255,.6);display:none"></div>
+  <div class="nl-form"><input class="nl-in" id="nlEmail" type="email" placeholder="your@email.com" autocomplete="email" aria-label="Email address"><button class="nl-btn" id="nlBtn" type="button" onclick="nlSubmit()">Subscribe</button></div><div id="nlMsg" role="status" style="font-size:13px;margin-top:.5rem;color:rgba(255,255,255,.6);display:none"></div>
 </div>
 
 <section id="guides" style="background:var(--cream);padding:5rem 5vw 4rem">
@@ -848,7 +850,7 @@ fbq('track', 'PageView');
     <div><p class="ft-col-ttl">Guides</p><div class="ft-links"><a href="bali-to-komodo-motorcycle-tour.html">Bali to Komodo Guide</a><a href="7-islands-bali-motorcycle-tour.html">7 Islands Guide</a><a href="best-motorcycle-tours-indonesia.html">Indonesia Guide</a></div></div>
     <div><p class="ft-col-ttl">Contact</p><div class="ft-links"><a href="https://wa.me/62881037978255" target="_blank" rel="noopener noreferrer" id="footerWa">+62 881-0379-78255</a><a href="https://wa.me/6281138309862" target="_blank" rel="noopener noreferrer" class="wa-fixed">+62 811-3830-9862</a><a href="https://www.instagram.com/balimotoadventures/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="mailto:ride@balimotoadventures.com">Email us</a></div></div>
   </div>
-  <div class="ft-bot"><span>© 2026 Bali Moto Adventures. All rights reserved.</span><div style="display:flex;align-items:center;gap:1.25rem"><a href="privacy-policy.html" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Privacy Policy</a><a href="terms.html" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Terms</a><a href="data-deletion.html" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Data Deletion</a><a href="admin.html" class="admin-trigger" style="text-decoration:none">⚙ admin</a></div></div>
+  <div class="ft-bot"><span>© 2026 Bali Moto Adventures. All rights reserved.</span><div style="display:flex;align-items:center;gap:1.25rem"><a href="privacy-policy.html" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Privacy Policy</a><a href="terms.html" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Terms</a><a href="data-deletion.html" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Data Deletion</a><a href="accessibility.html" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Accessibility</a><a href="admin.html" class="admin-trigger" style="text-decoration:none">⚙ admin</a></div></div>
 </footer>
 
 <!-- Hidden reference images for gallery -->
@@ -994,7 +996,7 @@ function renderGallery(gallery) {
   if (!grid) return;
   grid.innerHTML = gallery.map(item => {
     const src = item.src || getImgSrc(item.imgId);
-    return `<div class="masonry-item" onclick="openLB('${src}')">
+    return `<div class="masonry-item" onclick="openLB('${src}')" tabindex="0" role="button" aria-label="View photo${item.caption ? ': ' + item.caption : ''}">
       <img src="${src}" alt="${item.caption || ''}" loading="lazy">
       <div class="masonry-caption">${item.caption || ''}</div>
     </div>`;
@@ -1131,7 +1133,14 @@ function closeLB() { document.getElementById('lightbox').classList.remove('open'
 // DRAWER
 function openDrw() { document.querySelector('.drw').classList.add('open'); document.querySelector('.drawer-ov').classList.add('open'); document.body.style.overflow = 'hidden'; }
 function closeDrw() { document.querySelector('.drw').classList.remove('open'); document.querySelector('.drawer-ov').classList.remove('open'); document.body.style.overflow = ''; }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeDrw(); closeLB(); } });
+
+// A11Y (EAA): items de galería operables por teclado (Enter/Espacio)
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const t = e.target;
+  if (t.matches && t.matches('.masonry-item')) { e.preventDefault(); t.click(); }
+});
 
 // META PIXEL EVENTS
 document.addEventListener('DOMContentLoaded', function() {

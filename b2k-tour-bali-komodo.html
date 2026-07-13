@@ -433,6 +433,8 @@ footer{background:#070e08;color:rgba(255,255,255,.4);padding:3rem 5vw 2rem}
 .reel-modal-close{position:absolute;top:-40px;right:0;background:none;border:none;color:#f0ece2;font-size:28px;cursor:pointer;line-height:1;opacity:.7;transition:opacity .2s}
 .reel-modal-close:hover{opacity:1}
 @media(max-width:768px){.reel-inner{flex-direction:column;gap:32px}.reel-left{width:100%;padding-left:20px}.reel-foot{padding:0 20px}.reel-track{padding-right:20px}}
+/* A11Y (EAA): foco visible por teclado en todo elemento interactivo */
+a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid #ff7a3d;outline-offset:3px}
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -813,11 +815,11 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
     <h3 class="im-card-h" id="imModalH">Where should we send it?</h3>
     <p class="im-card-sub">Get the full Bali to Komodo itinerary PDF &mdash; instant download, plus a copy in your inbox.</p>
     <form id="imForm" novalidate>
-      <input class="im-field" type="email" name="email" id="imEmail" placeholder="your@email.com" autocomplete="email" required>
+      <input class="im-field" type="email" name="email" id="imEmail" placeholder="your@email.com" autocomplete="email" aria-label="Email address" required>
       <input class="im-hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
       <label class="im-consent"><input type="checkbox" id="imConsent" required><span>Yes, email me the itinerary and the occasional ride update. See our <a href="privacy-policy.html" target="_blank">privacy policy</a>.</span></label>
       <button class="im-submit" type="submit" id="imSubmit">Send me the itinerary</button>
-      <p class="im-err" id="imErr"></p>
+      <p class="im-err" id="imErr" role="alert"></p>
     </form>
   </div>
 </div>
@@ -932,7 +934,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
 <!-- VIDEO MODAL -->
 <div class="reel-modal" id="reelModal">
   <div class="reel-modal-inner">
-    <button class="reel-modal-close" id="reelModalClose">&#x2715;</button>
+    <button class="reel-modal-close" id="reelModalClose" aria-label="Close video">&#x2715;</button>
     <video id="reelVideo" controls playsinline></video>
   </div>
 </div>
@@ -980,10 +982,10 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
       </div>
     </div>
     <div class="bk-curr-tabs">
-      <button class="bk-curr-btn" data-curr="EUR" onclick="bkSetCurr('EUR')">&#8364; EUR</button>
-      <button class="bk-curr-btn act" data-curr="USD" onclick="bkSetCurr('USD')">$ USD</button>
-      <button class="bk-curr-btn" data-curr="AUD" onclick="bkSetCurr('AUD')">AU$</button>
-      <button class="bk-curr-btn" data-curr="CAD" onclick="bkSetCurr('CAD')">CA$</button>
+      <button class="bk-curr-btn" data-curr="EUR" onclick="bkSetCurr('EUR')" aria-pressed="false">&#8364; EUR</button>
+      <button class="bk-curr-btn act" data-curr="USD" onclick="bkSetCurr('USD')" aria-pressed="true">$ USD</button>
+      <button class="bk-curr-btn" data-curr="AUD" onclick="bkSetCurr('AUD')" aria-pressed="false">AU$</button>
+      <button class="bk-curr-btn" data-curr="CAD" onclick="bkSetCurr('CAD')" aria-pressed="false">CA$</button>
     </div>
   </div>
 
@@ -1235,6 +1237,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
       <a href="privacy-policy.html" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Privacy Policy</a>
       <a href="terms.html" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Terms</a>
       <a href="data-deletion.html" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Data Deletion</a>
+      <a href="accessibility.html" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Accessibility</a>
       <a href="index.html" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:12px">← Home</a>
     </div>
   </div>
@@ -1245,7 +1248,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
   <div class="wise-box">
     <div class="wise-hd">
       <h3>Complete Your Reservation</h3>
-      <button class="wise-close" onclick="closeWiseModal()">&#10005;</button>
+      <button class="wise-close" onclick="closeWiseModal()" aria-label="Close">&#10005;</button>
     </div>
     <div class="wise-body">
 
@@ -1346,8 +1349,9 @@ function switchDay(idx) {
 // FAQ
 function toggleFaq(el) {
   const wasOpen = el.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  document.querySelectorAll('.faq-item.open').forEach(i => { i.classList.remove('open'); i.setAttribute('aria-expanded', 'false'); });
   if (!wasOpen) el.classList.add('open');
+  el.setAttribute('aria-expanded', wasOpen ? 'false' : 'true');
 }
 
 // REVEALS
@@ -1359,7 +1363,26 @@ document.querySelectorAll('.rv,.rvl').forEach(el => obs.observe(el));
 // DRAWER
 function openDrw() { document.querySelector('.drw').classList.add('open'); document.querySelector('.drawer-ov').classList.add('open'); document.body.style.overflow = 'hidden'; }
 function closeDrw() { document.querySelector('.drw').classList.remove('open'); document.querySelector('.drawer-ov').classList.remove('open'); document.body.style.overflow = ''; }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); });
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  closeDrw();
+  if (typeof closeWiseModal === 'function') closeWiseModal();
+  var rm = document.getElementById('reelModal');
+  if (rm && rm.classList.contains('open')) document.getElementById('reelModalClose').click();
+});
+
+// A11Y (EAA): divs clicables operables por teclado (Enter/Espacio)
+document.querySelectorAll('.pkg-card,.mod-row,.faq-item').forEach(function(el) {
+  el.setAttribute('tabindex', '0');
+  if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
+  if (el.classList.contains('pkg-card') || el.classList.contains('mod-row')) el.setAttribute('aria-pressed', el.classList.contains('sel') ? 'true' : 'false');
+  if (el.classList.contains('faq-item')) el.setAttribute('aria-expanded', 'false');
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  var t = e.target;
+  if (t.matches && t.matches('.pkg-card,.mod-row,.faq-item')) { e.preventDefault(); t.click(); }
+});
 </script>
 <script>
 // BOOKING CALCULATOR
@@ -1441,11 +1464,11 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
       var adj = document.getElementById('modAdj-' + k);
       var row = document.querySelector('[data-mod="' + k + '"]');
       if (k === 'single_room' && pax > 1) {
-        if (row) row.classList.add('disabled');
+        if (row) { row.classList.add('disabled'); row.setAttribute('aria-disabled', 'true'); }
         if (adj) adj.textContent = 'N/A';
         return;
       }
-      if (row) row.classList.remove('disabled');
+      if (row) { row.classList.remove('disabled'); row.removeAttribute('aria-disabled'); }
       if (adj) {
         var mult = ONCE_MODS[k] ? 1 : pax;
         var converted = Math.ceil(Math.abs(m.adj) * mult * rates[selCurr]);
@@ -1494,6 +1517,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
     selPkg = id;
     document.querySelectorAll('.pkg-card').forEach(function(c) {
       c.classList.toggle('sel', c.dataset.pkg === id);
+      c.setAttribute('aria-pressed', c.dataset.pkg === id ? 'true' : 'false');
     });
     updateUI();
   };
@@ -1501,7 +1525,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
   window.bkToggleMod = function(id) {
     selMods[id] = !selMods[id];
     var row = document.querySelector('[data-mod="' + id + '"]');
-    if (row) row.classList.toggle('sel', !!selMods[id]);
+    if (row) { row.classList.toggle('sel', !!selMods[id]); row.setAttribute('aria-pressed', selMods[id] ? 'true' : 'false'); }
     if (id === 'pillion') {
       if (selMods.pillion) {
         // 2 personas: single room deja de aplicar
@@ -1523,6 +1547,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
     selCurr = c;
     document.querySelectorAll('.bk-curr-btn').forEach(function(b) {
       b.classList.toggle('act', b.dataset.curr === c);
+      b.setAttribute('aria-pressed', b.dataset.curr === c ? 'true' : 'false');
     });
     updateUI();
   };
@@ -1700,7 +1725,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrw(); 
     if (cols) {
       var half = Math.ceil(P.faq.length / 2);
       var item = function(f) {
-        return '<div class="faq-item" onclick="toggleFaq(this)">' +
+        return '<div class="faq-item" onclick="toggleFaq(this)" tabindex="0" role="button" aria-expanded="false">' +
           '<div class="faq-q"><span class="faq-qt">' + esc(f.q) + '</span><svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>' +
           '<div class="faq-a">' + esc(f.a) + '</div></div>';
       };

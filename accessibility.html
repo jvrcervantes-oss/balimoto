@@ -11,12 +11,12 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Data Deletion — Bali Moto Adventures</title>
+<title>Accessibility Statement — Bali Moto Adventures</title>
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
 <link rel="apple-touch-icon" href="images/favicon-180.png">
-<meta name="description" content="How to request deletion of your personal data from Bali Moto Adventures.">
-<link rel="canonical" href="https://balimotoadventures.com/data-deletion.html">
+<meta name="description" content="Accessibility Statement for Bali Moto Adventures. Our commitment to WCAG 2.1 AA and the European Accessibility Act.">
+<link rel="canonical" href="https://balimotoadventures.com/accessibility.html">
 <meta name="robots" content="noindex">
 <meta name="facebook-domain-verification" content="nnhwo33xuwyw68j666nm5vxjjuolqm" />
 <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1916298258994371');fbq('track','PageView');</script>
@@ -40,8 +40,7 @@ p{font-size:.95rem;line-height:1.75;color:#3a4a3c;margin-bottom:1rem}
 ul{margin:.5rem 0 1rem 1.25rem}
 ul li{font-size:.95rem;line-height:1.75;color:#3a4a3c;margin-bottom:.25rem}
 a{color:var(--green)}
-.cta-block{background:var(--parchment);border:1px solid var(--sand);border-radius:8px;padding:2rem;margin:2rem 0;text-align:center}
-.cta-block a{display:inline-block;background:var(--orange);color:#fff;text-decoration:none;padding:.75rem 2rem;border-radius:4px;font-weight:600;font-size:.95rem;margin-top:.75rem}
+a:focus-visible,button:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
 footer{background:var(--ink);color:rgba(255,255,255,.55);padding:2.5rem 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-size:.8rem}
 footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#fff}
 .ft-brand{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;color:#fff;letter-spacing:.08em}.ft-brand span{color:var(--orange)}
@@ -62,41 +61,45 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
 </nav>
 
 <main>
-  <h1>Data Deletion</h1>
-  <p class="updated">Last updated: June 2026</p>
+  <h1>Accessibility Statement</h1>
+  <p class="updated">Last updated: 13 July 2026</p>
 
-  <p>Bali Moto Adventures respects your right to control your personal data. This page explains what data we hold and how to request its deletion.</p>
+  <p>Bali Moto Adventures is committed to ensuring that our website, <a href="https://balimotoadventures.com">balimotoadventures.com</a>, is accessible to all visitors, including people with disabilities. We aim to conform to the <strong>Web Content Accessibility Guidelines (WCAG) 2.1, Level AA</strong>, which is the standard referenced by the European Accessibility Act (Directive (EU) 2019/882) and the harmonised European standard EN 301 549.</p>
 
-  <h2>What Data We Hold</h2>
-  <p>If you have contacted us via WhatsApp or our website, we may hold:</p>
+  <h2>Conformance Status</h2>
+  <p>This website is <strong>partially conformant</strong> with WCAG 2.1 Level AA. "Partially conformant" means that some parts of the content do not yet fully conform to the accessibility standard. We are actively working to close the remaining gaps.</p>
+
+  <h2>Measures We Have Taken</h2>
   <ul>
-    <li>Your name and WhatsApp phone number</li>
-    <li>Your email address (if provided)</li>
-    <li>Tour enquiry details and conversation history</li>
-    <li>Country and travel dates (if provided)</li>
-  </ul>
-  <p>This data is stored in our CRM (Google Sheets) and is used solely to manage your enquiry and potential booking.</p>
-
-  <h2>How to Request Deletion</h2>
-  <p>To request deletion of all personal data we hold about you, send us an email with the subject line <strong>"Data Deletion Request"</strong> including your name and the phone number or email you used to contact us.</p>
-
-  <div class="cta-block">
-    <p>Send your data deletion request to:</p>
-    <a href="mailto:ride@balimotoadventures.com?subject=Data Deletion Request">ride@balimotoadventures.com</a>
-  </div>
-
-  <h2>What Happens Next</h2>
-  <ul>
-    <li>We will confirm receipt of your request within <strong>5 business days</strong></li>
-    <li>Your data will be permanently deleted within <strong>30 days</strong></li>
-    <li>We will send you a confirmation email once deletion is complete</li>
+    <li>The complete booking flow — from browsing tours to starting a secure payment — can be operated with a keyboard alone.</li>
+    <li>Interactive controls show a visible focus indicator when navigating by keyboard.</li>
+    <li>Form fields carry programmatic labels, and form errors are announced to assistive technology.</li>
+    <li>Dialogs and overlays can be dismissed with the Escape key.</li>
+    <li>Images carry text alternatives, and animations respect the "reduced motion" preference where supported.</li>
   </ul>
 
-  <h2>Exceptions</h2>
-  <p>We may be required to retain certain data to comply with legal obligations (e.g. financial records related to completed transactions). In such cases, we will inform you of the specific data retained and the reason.</p>
+  <h2>Known Limitations</h2>
+  <p>Despite our efforts, some content may not yet be fully accessible:</p>
+  <ul>
+    <li>Some custom dialogs do not yet constrain keyboard focus while open.</li>
+    <li>Some decorative animations and video content may lack full alternatives.</li>
+    <li>Colour contrast on a small number of decorative elements may fall below the recommended ratio.</li>
+  </ul>
+  <p>We are addressing these issues as part of our ongoing accessibility programme.</p>
 
-  <h2>Facebook / Meta Data</h2>
-  <p>If you connected with us through a Facebook or Instagram ad, Meta may hold additional data about your interaction. To manage that data, visit <a href="https://www.facebook.com/help/contact/540977946302970" target="_blank" rel="noopener noreferrer">Meta's data deletion page</a>.</p>
+  <h2>Assessment Method</h2>
+  <p>The accessibility of this website was evaluated by <strong>self-assessment</strong>, carried out on 13 July 2026, covering the main purchase flow (home page, tour pages, booking calculator and payment entry point) against WCAG 2.1 Level AA criteria.</p>
+
+  <h2>Feedback and Contact</h2>
+  <p>We welcome your feedback on the accessibility of this website. If you encounter an accessibility barrier, or need information from this site in an alternative format, please contact us:</p>
+  <ul>
+    <li>Email: <a href="mailto:ride@balimotoadventures.com">ride@balimotoadventures.com</a></li>
+    <li>WhatsApp: <a href="https://wa.me/62881037978255" target="_blank" rel="noopener noreferrer">+62 881-0379-78255</a></li>
+  </ul>
+  <p>We try to respond to accessibility feedback within 5 business days.</p>
+
+  <h2>Enforcement</h2>
+  <p>If you are located in the European Union and are not satisfied with our response to an accessibility issue, you may contact the market surveillance or enforcement authority responsible for the European Accessibility Act in your member state.</p>
 </main>
 
 <footer>
