@@ -1,0 +1,2 @@
+# Normaliza finales de linea a LF en el repo (evita commits-ruido CRLF desde Windows)
+* text=auto
