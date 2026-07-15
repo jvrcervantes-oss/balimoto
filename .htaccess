@@ -1,0 +1,47 @@
+# ═══════════════════════════════════════════════════════════════════
+# Seguridad — Depto. de Seguridad AxisWorks · 15-jul-2026
+# Estándar: contexto/seguridad_2026.md §1 (vía estática + JSON + admin)
+# Cubre OWASP A02:2025 (Security Misconfiguration) y A03 (Supply Chain).
+# ═══════════════════════════════════════════════════════════════════
+
+# ── 1. Cabeceras de seguridad ──────────────────────────────────────
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+  Header always set X-Frame-Options "SAMEORIGIN"
+
+  # CSP en modo REPORT-ONLY: no bloquea nada, solo reporta en la consola
+  # del navegador. Inventario de orígenes verificado por grep (15-jul-2026):
+  #   script  → GSAP (cdnjs) · GA4 (googletagmanager) · Meta Pixel (connect.facebook.net)
+  #   connect → frankfurter (divisas) · Apps Script (newsletter) · GA4 · Pixel
+  #   frame   → YouTube (embeds de tours)
+  #   img     → Unsplash (galería) · beacons de Pixel/GA4 · miniaturas YouTube
+  # PARA PASAR A ENFORCE: navegar el sitio entero (home, tours, checkout,
+  # newsletter), revisar violaciones en consola, corregir, y solo entonces
+  # renombrar la cabecera a Content-Security-Policy.
+  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://www.facebook.com https://www.google-analytics.com https://i.ytimg.com https://img.youtube.com; connect-src 'self' https://api.frankfurter.app https://script.google.com https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://connect.facebook.net; frame-src https://www.youtube.com https://www.youtube-nocookie.com; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'"
+</IfModule>
+
+# ── 2. Sin listado de directorios ──────────────────────────────────
+Options -Indexes
+
+# ── 3. Ficheros que nunca deben servirse en público ────────────────
+# A02:2025 — "ficheros olvidados" es el hallazgo top de los escáneres.
+# OJO: data.json NO se bloquea — es el CMS que carga el front (fetch).
+#      Los .txt tampoco — robots.txt, llms.txt y la clave IndexNow.
+<FilesMatch "\.(md|sql|zip|bak|log|sh|ini|yml|yaml|psd|ai)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# ── 4. Control de versiones y backups (defensa en profundidad) ─────
+# Ya están fuera del deploy por .gitignore; esto cubre subidas manuales.
+RedirectMatch 404 (?i)/\.git
+RedirectMatch 404 (?i)/(Backups?|Deprecated|masters|MetaLead)/
