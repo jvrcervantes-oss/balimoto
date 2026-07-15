@@ -29,9 +29,11 @@ Options -Indexes
 
 # ── 3. Ficheros que nunca deben servirse en público ────────────────
 # A02:2025 — "ficheros olvidados" es el hallazgo top de los escáneres.
+# `csv` incluido: private/itinerary_subscribers.csv son datos personales
+# (email, IP, user-agent) — una fuga ahí es brecha RGPD/UU PDP.
 # OJO: data.json NO se bloquea — es el CMS que carga el front (fetch).
 #      Los .txt tampoco — robots.txt, llms.txt y la clave IndexNow.
-<FilesMatch "\.(md|sql|zip|bak|log|sh|ini|yml|yaml|psd|ai)$">
+<FilesMatch "\.(md|sql|zip|bak|log|csv|sh|ini|yml|yaml|psd|ai)$">
   <IfModule mod_authz_core.c>
     Require all denied
   </IfModule>
@@ -41,7 +43,24 @@ Options -Indexes
   </IfModule>
 </FilesMatch>
 
-# ── 4. Control de versiones y backups (defensa en profundidad) ─────
-# Ya están fuera del deploy por .gitignore; esto cubre subidas manuales.
+# ── 4. Ficheros de backup sueltos en la raíz ───────────────────────
+# `.gitignore` usa `Backup_*/` (solo carpetas): un backup suelto tipo
+# Backup_2026_checkout.php sí se subiría. Esto lo corta igual.
+<FilesMatch "(?i)^(backup|backups)">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# ── 5. Control de versiones, backups y carpeta privada ─────────────
+# `/private/` ya tiene su propio .htaccess en el servidor, PERO `private/`
+# está gitignored → ese fichero no lo repone ningún deploy. Si un wipe o
+# una reconexión de Git en hPanel lo borra (le pasó a Lawang el 8-jul-2026),
+# el CSV de suscriptores queda al aire. Esta regla SÍ está versionada.
 RedirectMatch 404 (?i)/\.git
+RedirectMatch 404 (?i)/private/
 RedirectMatch 404 (?i)/(Backups?|Deprecated|masters|MetaLead)/
