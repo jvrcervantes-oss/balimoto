@@ -98,6 +98,23 @@ if (!empty($cfg['sheet_webhook'])) {
     @file_put_contents($logFile, "$ts | $email | SKIPPED: sheet_webhook vacío en config\n", FILE_APPEND | LOCK_EX);
 }
 
+// --- (2b) Alta en el CRM del bot como suscriptor de newsletter (best-effort) ---
+// Token propio (NO la admin key): el endpoint /api/subscribe solo puede añadir un email.
+if (!empty($cfg['crm_url']) && !empty($cfg['crm_subscribe_token'])) {
+    $ch = curl_init(rtrim($cfg['crm_url'], '/') . '/api/subscribe');
+    curl_setopt_array($ch, [
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => json_encode(['email' => $email, 'source' => $tour['source'], 'tour' => $tourKey]),
+        CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'X-Subscribe-Token: ' . $cfg['crm_subscribe_token']],
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 8,
+    ]);
+    $crmResp = curl_exec($ch);
+    $crmCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    @file_put_contents($logFile, "$ts | $email | crm=$crmCode | " . substr((string)$crmResp, 0, 120) . "\n", FILE_APPEND | LOCK_EX);
+}
+
 // --- (3) Email con link de descarga ---
 $pdfBase = $cfg['pdf_base'] ?? 'https://balimotoadventures.com/pdf/';
 $pdfUrl  = $pdfBase . $tour['pdf'];

@@ -31,6 +31,10 @@ return [
     // --- Google Sheet (webhook Apps Script, vacío = solo CSV) ---
     'sheet_webhook' => '',  // p.ej. 'https://script.google.com/macros/s/XXXX/exec'
 
+    // --- CRM del bot: da de alta al suscriptor para newsletter (ambos vacíos = desactivado) ---
+    'crm_url'              => 'https://b2k-bot-production.up.railway.app',
+    'crm_subscribe_token'  => '',  // <-- MISMO valor que SUBSCRIBE_TOKEN en Railway (bot). Vacío = no envía al CRM.
+
     // --- Dónde se guardan los emails (CSV en private/) ---
     'subscribers_csv' => __DIR__ . '/itinerary_subscribers.csv',
 ];
