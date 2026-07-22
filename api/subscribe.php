@@ -100,8 +100,10 @@ if (!empty($cfg['sheet_webhook'])) {
 
 // --- (2b) Alta en el CRM del bot como suscriptor de newsletter (best-effort) ---
 // Token propio (NO la admin key): el endpoint /api/subscribe solo puede añadir un email.
-if (!empty($cfg['crm_url']) && !empty($cfg['crm_subscribe_token'])) {
-    $ch = curl_init(rtrim($cfg['crm_url'], '/') . '/api/subscribe');
+// crm_url tiene default: la config del servidor solo necesita el token.
+$crmUrl = !empty($cfg['crm_url']) ? $cfg['crm_url'] : 'https://b2k-bot-production.up.railway.app';
+if (!empty($cfg['crm_subscribe_token'])) {
+    $ch = curl_init(rtrim($crmUrl, '/') . '/api/subscribe');
     curl_setopt_array($ch, [
         CURLOPT_POST => true,
         CURLOPT_POSTFIELDS => json_encode(['email' => $email, 'source' => $tour['source'], 'tour' => $tourKey]),

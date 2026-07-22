@@ -11,6 +11,9 @@ data.json
 Backup_*/
 Backups/
 
+# Exports del CRM (leads/operadores: PII) — el repo es público, nunca al repo
+*.csv
+
 # Trabajo local — no desplegar
 indexv2.html
 scripts/
