@@ -404,7 +404,11 @@ footer{background:#070e08;color:rgba(255,255,255,.4);padding:3rem 5vw 2rem}
 .reel-desc{font-size:14px;color:rgba(240,236,226,.62);line-height:1.65;margin-bottom:28px}
 .reel-cta{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:#f0ece2;text-decoration:none;letter-spacing:.04em;padding-bottom:2px;border-bottom:1px solid rgba(240,236,226,.28);transition:color .2s,border-color .2s}
 .reel-cta:hover{color:#e8490a;border-color:#e8490a}
-.reel-right{flex:1;min-width:0;overflow:hidden}.reel-scroll{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;cursor:grab}
+.reel-right{flex:1;min-width:0;overflow:hidden;position:relative}.reel-scroll{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;cursor:grab}
+.reel-arrow{position:absolute;top:50%;right:16px;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;border:none;background:#e8490a;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.35);opacity:.92;transition:opacity .2s,transform .2s,background .2s;z-index:3}
+.reel-arrow:hover{opacity:1;transform:translateY(-50%) scale(1.06);background:#c03d08}
+.reel-arrow[hidden]{display:none}
+@media(max-width:768px){.reel-arrow{display:none}}
 .reel-scroll:active{cursor:grabbing}
 .reel-scroll::-webkit-scrollbar{display:none}
 .reel-track{display:flex;gap:14px;padding-bottom:4px;padding-right:60px;width:max-content}
@@ -549,18 +553,21 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
     <h2 class="sec-ttl" id="t-incTtl">Everything<br>You Need</h2>
     <div class="inc-grid">
       <div class="inc-item yes"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>1,259 km route</div>
-      <div class="inc-item yes"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Luxury hotels</div>
+      <div class="inc-item yes"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Selected hotels</div>
       <div class="inc-item yes"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Island ferries</div>
       <div class="inc-item cond"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Internal flights<span class="inc-tag">Deluxe only</span></div>
-      <div class="inc-item yes"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Support vehicle</div>
-      <div class="inc-item yes"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Expert guide</div>
+      <div class="inc-item cond"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Support vehicle<span class="inc-tag">Guided only</span></div>
+      <div class="inc-item cond"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Expert guide<span class="inc-tag">Guided only</span></div>
       <div class="inc-item yes"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Mechanic</div>
       <div class="inc-item yes"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Full gear package</div>
-      <div class="inc-item yes"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>All meals</div>
+      <div class="inc-item cond"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>All meals<span class="inc-tag">Guided only</span></div>
       <div class="inc-item cond"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>3x massages<span class="inc-tag">Deluxe only</span></div>
       <div class="inc-item cond"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Helicopter tour over Bali<span class="inc-tag">Deluxe only</span></div>
       <div class="inc-item yes"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Fuel</div>
-      <div class="inc-item no"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Intl. flights</div>
+      <div class="inc-item yes"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Whale shark</div>
+      <div class="inc-item yes"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Purification ritual</div>
+      <div class="inc-item cond"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Private boat<span class="inc-tag">Deluxe only</span></div>
+      <div class="inc-item no"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>International flights</div>
       <div class="inc-item no"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Drinks</div>
     </div>
   </div>
@@ -926,6 +933,9 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
         </div>
         </div>
       </div>
+      <button class="reel-arrow" id="bkReelNext" type="button" aria-label="Next videos">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+      </button>
     </div>
   </div>
   <p class="reel-foot">BTM-25 · Filmed in Indonesia · Play with sound for the full experience &#9836;</p>
@@ -1002,7 +1012,6 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
             <span class="pkg-perk">Guide</span>
             <span class="pkg-perk">Mechanic</span>
             <span class="pkg-perk">Gear</span>
-            <span class="pkg-perk">Meals</span>
           </div>
         </div>
 
@@ -1011,12 +1020,11 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
           <div class="pkg-sel-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
           <div class="pkg-name">Extreme</div>
           <div class="pkg-price-tag" id="pkgTag-extreme">$3,950</div>
-          <div class="pkg-meta">1,826 km &middot; 4&#9733; hotels<br>~165 km/day &middot; Ferry &middot; Fly back</div>
+          <div class="pkg-meta">1,826 km &middot; Comfort hotels<br>~165 km/day &middot; Ferry &middot; Fly back</div>
           <div class="pkg-perks">
             <span class="pkg-perk">Return flight</span>
             <span class="pkg-perk">Experiences</span>
             <span class="pkg-perk">Guide</span>
-            <span class="pkg-perk">Meals</span>
           </div>
         </div>
 
@@ -1025,12 +1033,11 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
           <div class="pkg-sel-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
           <div class="pkg-name">Deluxe</div>
           <div class="pkg-price-tag" id="pkgTag-deluxe">$4,300</div>
-          <div class="pkg-meta">1,259 km &middot; Luxury hotels<br>~140 km/day &middot; Ferry/Private</div>
+          <div class="pkg-meta">1,259 km &middot; Boutique hotels<br>~140 km/day &middot; Ferry/Private</div>
           <div class="pkg-perks">
             <span class="pkg-perk">Support Car</span>
             <span class="pkg-perk">Massages x3</span>
             <span class="pkg-perk">Helicopter</span>
-            <span class="pkg-perk">Meals</span>
           </div>
         </div>
 
@@ -1639,6 +1646,15 @@ document.addEventListener('keydown', function(e) {
   modal.addEventListener('click',function(e){if(e.target===modal){modal.classList.remove('open');vid.pause();vid.src='';}});
   var reel=document.getElementById('bkReel');
   if(reel){var d=false,sx,sl;reel.addEventListener('mousedown',function(e){d=true;sx=e.pageX-reel.offsetLeft;sl=reel.scrollLeft;});reel.addEventListener('mouseleave',function(){d=false;});reel.addEventListener('mouseup',function(){d=false;});reel.addEventListener('mousemove',function(e){if(!d)return;e.preventDefault();reel.scrollLeft=sl-(e.pageX-reel.offsetLeft-sx)*1.2;});}
+  // Flecha circular: desliza una tarjeta y se oculta al llegar al final
+  var reelNext=document.getElementById('bkReelNext');
+  if(reel&&reelNext){
+    var syncArrow=function(){var end=reel.scrollLeft>=reel.scrollWidth-reel.clientWidth-8;reelNext.hidden=end;};
+    reelNext.addEventListener('click',function(){reel.scrollBy({left:Math.min(reel.clientWidth*0.8,440),behavior:'smooth'});});
+    reel.addEventListener('scroll',syncArrow,{passive:true});
+    window.addEventListener('resize',syncArrow);
+    syncArrow();
+  }
 })();
 </script>
 <script>document.querySelectorAll('a[href*="wa.me"],a[href^="mailto:"]').forEach(function(a){a.addEventListener('click',function(){if(typeof fbq!=='undefined')fbq('track','Contact');});});</script>
