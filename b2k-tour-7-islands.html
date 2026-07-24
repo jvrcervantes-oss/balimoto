@@ -1456,8 +1456,9 @@ document.addEventListener('keydown', function(e) {
     var dn = document.getElementById('t7-depNote');
     if (dn) dn.innerHTML = '<strong>To reserve:</strong> pay a <strong>' + DEP_TXT + ' per person deposit</strong> now. Balance due 60 days before departure. Insurance: ' + S + Math.ceil(275 * rates[selCurr]) + ' full-risk, or $1,000 refundable deposit to cover the bike.';
 
-    var stripeBtn = document.getElementById('bk7-stripe');
-    if (stripeBtn) stripeBtn.textContent = 'Reserve Now — Pay ' + DEP_TXT + ' per person deposit';
+    // OJO: no escribir textContent en #bk7-stripe — borraba el <span id="bk7-btn-dep">
+    // de dentro, y luego render7Riders petaba al buscarlo (el total se quedaba clavado).
+    // La etiqueta del botón la mantiene render7Riders.
 
     var sigDep = document.getElementById('bk7-sig-dep');
     if (sigDep) sigDep.innerHTML = '<strong>Secure reservation</strong>' + DEP_TXT + ' per person deposit holds your spot — balance due 60 days before';
@@ -1511,11 +1512,14 @@ document.addEventListener('keydown', function(e) {
 
   function render7Riders() {
     var total = numRiders7 * DEPOSIT_USD;
-    document.getElementById('bk7-riders-num').textContent = numRiders7;
-    document.getElementById('bk7-riders-dep').textContent = numRiders7 > 1
+    var numEl = document.getElementById('bk7-riders-num');
+    if (numEl) numEl.textContent = numRiders7;
+    var depEl = document.getElementById('bk7-riders-dep');
+    if (depEl) depEl.textContent = numRiders7 > 1
       ? numRiders7 + ' × ' + DEP_TXT + ' = $' + total.toLocaleString('en') + ' deposit'
       : DEP_TXT + ' deposit';
-    document.getElementById('bk7-btn-dep').textContent = numRiders7 > 1
+    var btnEl = document.getElementById('bk7-btn-dep');
+    if (btnEl) btnEl.textContent = numRiders7 > 1
       ? '$' + total.toLocaleString('en') + ' (' + numRiders7 + ' riders)'
       : DEP_TXT;
   }

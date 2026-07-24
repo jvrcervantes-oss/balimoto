@@ -1511,8 +1511,9 @@ document.addEventListener('keydown', function(e) {
     if (sigDep) sigDep.innerHTML = '<strong>Secure reservation<\/strong>' + DEP_TXT + ' per person deposit holds your spot — balance due 60 days before';
     var dn = document.getElementById('t-depNote');
     if (dn) dn.innerHTML = '<strong>To reserve:<\/strong> pay a <strong>' + DEP_TXT + ' per person deposit<\/strong> now. Balance due 60 days before departure. Insurance: ' + S + ins + ' full-risk, or $1,000 refundable deposit to cover the bike.';
-    var stripeBtn = document.getElementById('bk-stripe');
-    if (stripeBtn) stripeBtn.textContent = 'Reserve Now — Pay ' + DEP_TXT + ' per person deposit';
+    // OJO: no escribir textContent en #bk-stripe — borraba el <span id="bk-btn-dep">
+    // de dentro y el botón dejaba de reflejar el nº de riders. La etiqueta la
+    // mantiene renderRiders.
   }
 
   window.bkSelectPkg = function(id) {
