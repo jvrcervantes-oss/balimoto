@@ -1081,7 +1081,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
       <div class="bk-signals">
         <div class="bk-sig">
           <div class="bk-sig-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div class="bk-sig-txt" id="bk-sig-dep"><strong>Secure reservation</strong>$1,000 per person deposit holds your spot &mdash; balance due 60 days before</div>
+          <div class="bk-sig-txt" id="bk-sig-dep"><strong>Secure reservation</strong>$500 per person deposit holds your spot &mdash; balance due 60 days before</div>
         </div>
         <div class="bk-sig">
           <div class="bk-sig-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
@@ -1110,7 +1110,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
       <p class="bk-total-sub" id="t-bkTotalSub">All inclusive &middot; excl. international flights</p>
 
       <div class="bk-dep-note" id="t-depNote">
-        <strong>To reserve:</strong> pay a <strong>$1,000 per person deposit</strong> now. Balance due 60 days before departure. Insurance: ~$275 full-risk, or $1,000 refundable deposit to cover the bike.
+        <strong>To reserve:</strong> pay a <strong>$500 per person deposit</strong> now. Balance due 60 days before departure. Insurance: ~$275 full-risk, or $1,000 refundable deposit to cover the bike.
       </div>
 
       <div class="bk-riders">
@@ -1120,11 +1120,11 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
           <span class="bk-riders-num" id="bk-riders-num">1</span>
           <button class="bk-riders-btn" onclick="bkChangeRiders(1)" aria-label="More riders">+</button>
         </div>
-        <span class="bk-riders-dep" id="bk-riders-dep">$1,000 deposit</span>
+        <span class="bk-riders-dep" id="bk-riders-dep">$500 deposit</span>
       </div>
       <div class="bk-ctas">
         <button class="btn-bk" id="bk-stripe" onclick="bkBookNow()">
-          Reserve Now &mdash; Pay <span id="bk-btn-dep">$1,000</span> deposit
+          Reserve Now &mdash; Pay <span id="bk-btn-dep">$500</span> deposit
         </button>
         <button class="btn-bk-wa" onclick="openWiseModal()" style="border:none;cursor:pointer;width:100%">
           &#127968; Pay by bank transfer (Wise)
@@ -1253,7 +1253,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
 
       <div class="wise-amount-box">
         <div class="wise-amount-lbl">Deposit amount</div>
-        <div class="wise-amount-num" id="wiseDepAmt">$1,000</div>
+        <div class="wise-amount-num" id="wiseDepAmt">$500</div>
         <div class="wise-amount-note" id="wisePkgNote">Roundtrip package &middot; balance due 60 days before departure</div>
       </div>
 
@@ -1418,17 +1418,26 @@ document.addEventListener('keydown', function(e) {
     return SYMS[selCurr] + Math.ceil(eur * rates[selCurr]).toLocaleString('en');
   }
 
-  // Pillion = viajan 2 personas en la misma moto. Estos mods se aplican UNA sola vez
-  // aunque vayan 2 pax; el resto (p.ej. seguro) se multiplica por persona.
-  var ONCE_MODS = {pillion: true, self_guided: true};
-  function paxCount() { return selMods.pillion ? 2 : 1; }
+  // Depósito de RESERVA (se paga ahora, por persona). No confundir con el depósito
+  // reembolsable de daños, que son $1.000 POR MOTO y se deja al llegar.
+  var DEPOSIT_USD = 500;
+  var DEP_TXT = '$' + DEPOSIT_USD.toLocaleString('en');
+
+  // Pillion = 2 personas en la misma moto: el descuento es de ESE acompañante, así que
+  // se aplica una sola vez. El resto de mods (seguro, habitación individual, self-guided)
+  // es por persona — igual que lo cotiza el bot.
+  var ONCE_MODS = {pillion: true};
+  var numRidersB2K = 1;
+  // pax = riders del contador. Antes devolvía 1 ó 2 mirando solo el pillion, así que
+  // subir el contador movía el depósito pero NO el total.
+  function paxCount() { return numRidersB2K; }
 
   function calcEur() {
     var pax = paxCount();
     var t = PKGS[selPkg].price * pax;
     Object.keys(selMods).forEach(function(k) {
       if (!selMods[k]) return;
-      if (k === 'single_room' && pax > 1) return; // single room no aplica si van 2 personas
+      if (k === 'single_room' && selMods.pillion) return; // pareja compartiendo moto = comparte habitación
       t += ONCE_MODS[k] ? MODS[k].adj : MODS[k].adj * pax;
     });
     return t;
@@ -1457,7 +1466,7 @@ document.addEventListener('keydown', function(e) {
       var m = MODS[k];
       var adj = document.getElementById('modAdj-' + k);
       var row = document.querySelector('[data-mod="' + k + '"]');
-      if (k === 'single_room' && pax > 1) {
+      if (k === 'single_room' && selMods.pillion) {
         if (row) { row.classList.add('disabled'); row.setAttribute('aria-disabled', 'true'); }
         if (adj) adj.textContent = 'N/A';
         return;
@@ -1473,17 +1482,17 @@ document.addEventListener('keydown', function(e) {
 
     var bd = document.getElementById('bk-breakdown');
     if (bd) {
-      var pkgLabel = pkg.name + ' (' + pkg.km + ' km)' + (pax > 1 ? ' × 2 travelers' : '');
+      var pkgLabel = pkg.name + ' (' + pkg.km + ' km)' + (pax > 1 ? ' × ' + pax + ' travelers' : '');
       var html = '<div class="bk-br-row"><span class="bk-br-label">' + pkgLabel + '</span><span class="bk-br-val">' + fmt(pkg.price * pax) + '</span></div>';
       Object.keys(selMods).forEach(function(k) {
         if (!selMods[k]) return;
-        if (k === 'single_room' && pax > 1) return; // single room no aplica con pillion
+        if (k === 'single_room' && selMods.pillion) return; // single room no aplica con pillion
         var m = MODS[k];
         var mult = ONCE_MODS[k] ? 1 : pax;
         var abs = Math.ceil(Math.abs(m.adj) * mult * rates[selCurr]);
         var sign = m.adj < 0 ? '−' + SYMS[selCurr] : '+' + SYMS[selCurr];
         var cls = m.neg ? 'neg' : 'pos';
-        var lbl = m.name + (mult > 1 ? ' × 2' : '');
+        var lbl = m.name + (mult > 1 ? ' × ' + mult : '');
         html += '<div class="bk-br-row ' + cls + '"><span class="bk-br-label">' + lbl + '</span><span class="bk-br-val">' + sign + abs.toLocaleString('en') + '</span></div>';
       });
       bd.innerHTML = html;
@@ -1494,17 +1503,16 @@ document.addEventListener('keydown', function(e) {
     var wa = document.getElementById('bk-wa');
     if (wa) wa.href = 'https://wa.me/62881037978255?text=' + encodeURIComponent(msg);
 
-    var dep = 1000;
     var ins = Math.ceil(275 * rates[selCurr]);
     var S = SYMS[selCurr];
     var insDesc = document.getElementById('modDesc-all_in_insurance');
     if (insDesc) insDesc.textContent = 'Pay ' + S + ins + ' for full coverage — or leave a $1,000 refundable deposit to cover the bike';
     var sigDep = document.getElementById('bk-sig-dep');
-    if (sigDep) sigDep.innerHTML = '<strong>Secure reservation<\/strong>$1,000 per person deposit holds your spot — balance due 60 days before';
+    if (sigDep) sigDep.innerHTML = '<strong>Secure reservation<\/strong>' + DEP_TXT + ' per person deposit holds your spot — balance due 60 days before';
     var dn = document.getElementById('t-depNote');
-    if (dn) dn.innerHTML = '<strong>To reserve:<\/strong> pay a <strong>$1,000 per person deposit<\/strong> now. Balance due 60 days before departure. Insurance: ' + S + ins + ' full-risk, or $1,000 refundable deposit to cover the bike.';
+    if (dn) dn.innerHTML = '<strong>To reserve:<\/strong> pay a <strong>' + DEP_TXT + ' per person deposit<\/strong> now. Balance due 60 days before departure. Insurance: ' + S + ins + ' full-risk, or $1,000 refundable deposit to cover the bike.';
     var stripeBtn = document.getElementById('bk-stripe');
-    if (stripeBtn) stripeBtn.textContent = 'Reserve Now — Pay $1,000 per person deposit';
+    if (stripeBtn) stripeBtn.textContent = 'Reserve Now — Pay ' + DEP_TXT + ' per person deposit';
   }
 
   window.bkSelectPkg = function(id) {
@@ -1547,18 +1555,17 @@ document.addEventListener('keydown', function(e) {
   };
 
   function populateWiseModal() {
-    var dep = 1000;
     var pkg = PKGS[selPkg];
     var S = SYMS[selCurr];
     var refCode = 'B2K-' + selPkg.toUpperCase();
     var el = document.getElementById('wiseDepAmt');
-    if (el) el.textContent = '$1,000 per person';
+    if (el) el.textContent = DEP_TXT + ' per person';
     var pn = document.getElementById('wisePkgNote');
     if (pn) pn.textContent = pkg.name + ' package · balance due 60 days before departure';
     var rf = document.getElementById('wiseRef');
     if (rf) rf.textContent = refCode;
     var mods = Object.keys(selMods).filter(function(k){return selMods[k];}).map(function(k){return MODS[k].name;}).join(' + ');
-    var waMsg = 'Hi! I just made a bank transfer to reserve the Bali to Komodo Challenge.\nPackage: ' + pkg.name + (mods ? '\nOptions: ' + mods : '') + '\nDeposit: $1,000 per person\nReference: ' + refCode + '\nPlease confirm my reservation. Thanks!';
+    var waMsg = 'Hi! I just made a bank transfer to reserve the Bali to Komodo Challenge.\nPackage: ' + pkg.name + (mods ? '\nOptions: ' + mods : '') + '\nDeposit: ' + DEP_TXT + ' per person\nReference: ' + refCode + '\nPlease confirm my reservation. Thanks!';
     var waBtn = document.getElementById('wiseWaBtn');
     if (waBtn) waBtn.href = 'https://wa.me/62881037978255?text=' + encodeURIComponent(waMsg);
   }
@@ -1569,24 +1576,24 @@ document.addEventListener('keydown', function(e) {
     document.body.style.overflow = 'hidden';
   };
 
-  var numRidersB2K = 1;
   function renderRiders() {
-    var total = (numRidersB2K * 1000).toLocaleString('en');
+    var total = (numRidersB2K * DEPOSIT_USD).toLocaleString('en');
     var numEl = document.getElementById('bk-riders-num');
     if (numEl) numEl.textContent = numRidersB2K;
     var depEl = document.getElementById('bk-riders-dep');
     if (depEl) depEl.textContent = numRidersB2K > 1
-      ? numRidersB2K + ' × $1,000 = $' + total + ' deposit'
-      : '$1,000 deposit';
+      ? numRidersB2K + ' × ' + DEP_TXT + ' = $' + total + ' deposit'
+      : DEP_TXT + ' deposit';
     var btnEl = document.getElementById('bk-btn-dep');
     if (btnEl) btnEl.textContent = numRidersB2K > 1
       ? '$' + total + ' (' + numRidersB2K + ' riders)'
-      : '$1,000';
+      : DEP_TXT;
   }
   window.bkChangeRiders = function(delta) {
     var min = selMods.pillion ? 2 : 1; // pillion = pareja, mínimo 2
     numRidersB2K = Math.max(min, Math.min(12, numRidersB2K + delta));
     renderRiders();
+    updateUI(); // los riders son parte del total, no solo del depósito
   };
 
   window.bkBookNow = function() {
@@ -1612,6 +1619,7 @@ document.addEventListener('keydown', function(e) {
 
   document.getElementById('wiseOv').addEventListener('click', function(e){ if(e.target===this) closeWiseModal(); });
 
+  renderRiders(); // pinta el depósito desde DEPOSIT_USD en vez de dejar el HTML estático
   updateUI();
 })();
 </script>

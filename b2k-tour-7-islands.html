@@ -58,7 +58,7 @@
         { "@type": "Question", "name": "Do I need to ride a motorcycle?", "acceptedAnswer": { "@type": "Answer", "text": "No. The tour offers four transport options: shared motorcycle (Bike x 2), solo motorcycle (Bike x 1), self-drive car, or private car with driver. You choose what fits your comfort level." } },
         { "@type": "Question", "name": "What level of fitness is required?", "acceptedAnswer": { "@type": "Answer", "text": "Medium. The itinerary includes river rafting, surfing lessons, ridge walks and snorkelling sessions. The driving days are long but comfortable, especially in the car options. You don't need to be an athlete, just curious and ready for adventure." } },
         { "@type": "Question", "name": "Do I need a visa for Indonesia?", "acceptedAnswer": { "@type": "Answer", "text": "Most European passport holders can enter Indonesia visa-free for up to 30 days. For longer stays a Visa on Arrival is available. Always check the latest requirements for your nationality before booking." } },
-        { "@type": "Question", "name": "How does the deposit and payment work?", "acceptedAnswer": { "@type": "Answer", "text": "A $1,000 deposit secures your spot. The remaining balance is due 60 days before departure. You can pay by card, Apple Pay, Google Pay or SEPA bank transfer (Wise)." } },
+        { "@type": "Question", "name": "How does the deposit and payment work?", "acceptedAnswer": { "@type": "Answer", "text": "A $500 per person deposit secures your spot. The remaining balance is due 60 days before departure. You can pay by card, Apple Pay, Google Pay or SEPA bank transfer (Wise)." } },
         { "@type": "Question", "name": "Can I join as a solo traveller?", "acceptedAnswer": { "@type": "Answer", "text": "Absolutely. Choose Bike x 1 or a car option to travel at your own pace. Solo travellers are very welcome, and you'll meet the rest of the group along the way." } }
       ]
     }
@@ -1111,7 +1111,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
       <div class="bk-signals">
         <div class="bk-sig">
           <div class="bk-sig-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div class="bk-sig-txt" id="bk7-sig-dep"><strong>Secure reservation</strong>$1,000 per person deposit holds your spot &mdash; balance due 60 days before</div>
+          <div class="bk-sig-txt" id="bk7-sig-dep"><strong>Secure reservation</strong>$500 per person deposit holds your spot &mdash; balance due 60 days before</div>
         </div>
         <div class="bk-sig">
           <div class="bk-sig-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
@@ -1135,7 +1135,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
       </div>
       <p class="bk-total-sub">All inclusive &middot; excl. international flights</p>
       <div class="bk-dep-note" id="t7-depNote">
-        <strong>To reserve:</strong> pay a <strong>$1,000 per person deposit</strong> now. Balance due 60 days before departure. Insurance: ~$275 full-risk, or $1,000 refundable deposit to cover the bike.
+        <strong>To reserve:</strong> pay a <strong>$500 per person deposit</strong> now. Balance due 60 days before departure. Insurance: ~$275 full-risk, or $1,000 refundable deposit to cover the bike.
       </div>
       <div class="bk-riders">
         <span class="bk-riders-lbl">Riders</span>
@@ -1144,11 +1144,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
           <span class="bk-riders-num" id="bk7-riders-num">1</span>
           <button class="bk-riders-btn" onclick="bk7ChangeRiders(1)" aria-label="More riders">+</button>
         </div>
-        <span class="bk-riders-dep" id="bk7-riders-dep">$1,000 deposit</span>
+        <span class="bk-riders-dep" id="bk7-riders-dep">$500 deposit</span>
       </div>
       <div class="bk-ctas">
         <button class="btn-bk" id="bk7-stripe" onclick="bk7BookNow()">
-          Reserve Now &mdash; Pay <span id="bk7-btn-dep">$1,000</span> deposit
+          Reserve Now &mdash; Pay <span id="bk7-btn-dep">$500</span> deposit
         </button>
         <button class="btn-bk-wa" onclick="open7WiseModal()" style="border:none;cursor:pointer;width:100%">
           &#127968; Pay by bank transfer (Wise)
@@ -1201,7 +1201,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q"><span class="faq-qt">How does the deposit and payment work?</span><svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        <div class="faq-a">A $1,000 deposit secures your spot. The remaining balance is due 60 days before departure. You can pay by card, Apple Pay, Google Pay or SEPA bank transfer (Wise).</div>
+        <div class="faq-a">A $500 per person deposit secures your spot. The remaining balance is due 60 days before departure. You can pay by card, Apple Pay, Google Pay or SEPA bank transfer (Wise).</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q"><span class="faq-qt">Can I join as a solo traveller?</span><svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
@@ -1273,7 +1273,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
       </div>
       <div class="wise-amount-box">
         <div class="wise-amount-lbl">Deposit amount</div>
-        <div class="wise-amount-num" id="wiseDepAmt7">$1,000</div>
+        <div class="wise-amount-num" id="wiseDepAmt7">$500</div>
         <div class="wise-amount-note" id="wisePkgNote7">Bike &times; 2 &middot; balance due 60 days before departure</div>
       </div>
       <div class="wise-bank">
@@ -1418,10 +1418,18 @@ document.addEventListener('keydown', function(e) {
 
   function fmt(eur) { return SYMS[selCurr] + Math.ceil(eur * rates[selCurr]).toLocaleString('en'); }
 
+  // Depósito de RESERVA (ahora, por persona). Distinto del reembolsable de daños ($1.000 por moto).
+  var DEPOSIT_USD = 500;
+  var DEP_TXT = '$' + DEPOSIT_USD.toLocaleString('en');
+  var numRiders7 = 1;
+
+  // "Bike × 2" es el precio DE LA PAREJA (2 personas en 1 moto), no por persona:
+  // se normaliza a por-persona para poder multiplicar por riders sin duplicarlo.
+  function perPerson7(pkg) { return selPkg === 'bike2' ? pkg.price / 2 : pkg.price; }
+
   function updateUI7() {
     var pkg = PKGS[selPkg];
-    var total = pkg.price;
-    var dep = 1000;
+    var total = perPerson7(pkg) * numRiders7;
     var S = SYMS[selCurr];
 
     var el = document.getElementById('bk7-total');
@@ -1442,19 +1450,20 @@ document.addEventListener('keydown', function(e) {
     });
 
     var bd = document.getElementById('bk7-breakdown');
-    if (bd) bd.innerHTML = '<div class="bk-br-row"><span class="bk-br-label">' + pkg.name + ' &mdash; ' + pkg.desc + '</span><span class="bk-br-val">' + fmt(total) + '</span></div>';
+    var lbl7 = pkg.name + ' &mdash; ' + pkg.desc + (numRiders7 > 1 ? ' × ' + numRiders7 + ' travelers' : '');
+    if (bd) bd.innerHTML = '<div class="bk-br-row"><span class="bk-br-label">' + lbl7 + '</span><span class="bk-br-val">' + fmt(total) + '</span></div>';
 
     var dn = document.getElementById('t7-depNote');
-    if (dn) dn.innerHTML = '<strong>To reserve:</strong> pay a <strong>$1,000 per person deposit</strong> now. Balance due 60 days before departure. Insurance: ' + S + Math.ceil(275 * rates[selCurr]) + ' full-risk, or $1,000 refundable deposit to cover the bike.';
+    if (dn) dn.innerHTML = '<strong>To reserve:</strong> pay a <strong>' + DEP_TXT + ' per person deposit</strong> now. Balance due 60 days before departure. Insurance: ' + S + Math.ceil(275 * rates[selCurr]) + ' full-risk, or $1,000 refundable deposit to cover the bike.';
 
     var stripeBtn = document.getElementById('bk7-stripe');
-    if (stripeBtn) stripeBtn.textContent = 'Reserve Now — Pay $1,000 per person deposit';
+    if (stripeBtn) stripeBtn.textContent = 'Reserve Now — Pay ' + DEP_TXT + ' per person deposit';
 
     var sigDep = document.getElementById('bk7-sig-dep');
-    if (sigDep) sigDep.innerHTML = '<strong>Secure reservation</strong>$1,000 per person deposit holds your spot — balance due 60 days before';
+    if (sigDep) sigDep.innerHTML = '<strong>Secure reservation</strong>' + DEP_TXT + ' per person deposit holds your spot — balance due 60 days before';
 
     var mods = selPkg;
-    var msg = 'Hi! I am interested in the 7 Islands Hopping Tour.\nTransport: ' + pkg.name + '\nEstimated total: ' + fmt(total) + '\nWhen can we speak?';
+    var msg = 'Hi! I am interested in the 7 Islands Hopping Tour.\nTransport: ' + pkg.name + '\nTravelers: ' + numRiders7 + '\nEstimated total: ' + fmt(total) + '\nWhen can we speak?';
     var wa = document.getElementById('bk7-wa');
     if (wa) wa.href = 'https://wa.me/62881037978255?text=' + encodeURIComponent(msg);
   }
@@ -1465,6 +1474,8 @@ document.addEventListener('keydown', function(e) {
       c.classList.toggle('sel', c.dataset.pkg === id);
       c.setAttribute('aria-pressed', c.dataset.pkg === id ? 'true' : 'false');
     });
+    // Bike × 2 son 2 personas compartiendo moto: el mínimo es 2, igual que el pillion en Komodo
+    if (id === 'bike2' && numRiders7 < 2) { numRiders7 = 2; render7Riders(); }
     updateUI7();
   };
 
@@ -1478,17 +1489,16 @@ document.addEventListener('keydown', function(e) {
   };
 
   function populate7WiseModal() {
-    var dep = 1000;
     var pkg = PKGS[selPkg];
     var S = SYMS[selCurr];
     var refCode = '7ISL-' + selPkg.toUpperCase();
     var el = document.getElementById('wiseDepAmt7');
-    if (el) el.textContent = '$1,000 per person';
+    if (el) el.textContent = DEP_TXT + ' per person';
     var pn = document.getElementById('wisePkgNote7');
     if (pn) pn.textContent = pkg.name + ' · balance due 60 days before departure';
     var rf = document.getElementById('wiseRef7');
     if (rf) rf.textContent = refCode;
-    var msg = 'Hi! I just made a bank transfer to reserve the 7 Islands Hopping Tour.\nTransport: ' + pkg.name + '\nDeposit: $1,000 per person\nReference: ' + refCode + '\nPlease confirm my reservation. Thanks!';
+    var msg = 'Hi! I just made a bank transfer to reserve the 7 Islands Hopping Tour.\nTransport: ' + pkg.name + '\nTravelers: ' + numRiders7 + '\nDeposit: ' + DEP_TXT + ' per person\nReference: ' + refCode + '\nPlease confirm my reservation. Thanks!';
     var waBtn = document.getElementById('wiseWaBtn7');
     if (waBtn) waBtn.href = 'https://wa.me/62881037978255?text=' + encodeURIComponent(msg);
   }
@@ -1499,22 +1509,26 @@ document.addEventListener('keydown', function(e) {
     document.body.style.overflow = 'hidden';
   };
 
-  var numRiders7 = 1;
-  window.bk7ChangeRiders = function(delta) {
-    numRiders7 = Math.max(1, Math.min(12, numRiders7 + delta));
+  function render7Riders() {
+    var total = numRiders7 * DEPOSIT_USD;
     document.getElementById('bk7-riders-num').textContent = numRiders7;
-    var total = numRiders7 * 1000;
     document.getElementById('bk7-riders-dep').textContent = numRiders7 > 1
-      ? numRiders7 + ' × $1,000 = $' + total.toLocaleString() + ' deposit'
-      : '$1,000 deposit';
+      ? numRiders7 + ' × ' + DEP_TXT + ' = $' + total.toLocaleString('en') + ' deposit'
+      : DEP_TXT + ' deposit';
     document.getElementById('bk7-btn-dep').textContent = numRiders7 > 1
-      ? '$' + total.toLocaleString() + ' (' + numRiders7 + ' riders)'
-      : '$1,000';
+      ? '$' + total.toLocaleString('en') + ' (' + numRiders7 + ' riders)'
+      : DEP_TXT;
+  }
+  window.bk7ChangeRiders = function(delta) {
+    var min = selPkg === 'bike2' ? 2 : 1; // Bike × 2 = pareja
+    numRiders7 = Math.max(min, Math.min(12, numRiders7 + delta));
+    render7Riders();
+    updateUI7(); // los riders son parte del total, no solo del depósito
   };
 
   window.bk7BookNow = function() {
     if (typeof fbq !== 'undefined') {
-      fbq('track', 'InitiateCheckout', {content_name: '7 Islands Hopping', currency: selCurr, value: Math.ceil(PKGS[selPkg].price * rates[selCurr])});
+      fbq('track', 'InitiateCheckout', {content_name: '7 Islands Hopping', currency: selCurr, value: Math.ceil(perPerson7(PKGS[selPkg]) * numRiders7 * rates[selCurr])});
     }
     var ref7 = '7ISL-' + selPkg.toUpperCase();
     window.location.href = 'checkout.php?riders=' + numRiders7 + '&ref=' + encodeURIComponent(ref7);
@@ -1534,6 +1548,10 @@ document.addEventListener('keydown', function(e) {
 
   document.getElementById('wiseOv7').addEventListener('click', function(e) { if (e.target === this) close7WiseModal(); });
 
+  // El paquete por defecto es Bike × 2 (pareja), así que el total de salida es el de 2 personas
+  // y coincide con el precio que anuncia su tarjeta.
+  if (selPkg === 'bike2') numRiders7 = 2;
+  render7Riders();
   updateUI7();
 })();
 </script>

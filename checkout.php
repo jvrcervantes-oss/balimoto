@@ -9,14 +9,15 @@ if (!file_exists($config_path)) {
 require_once $config_path;
 // private/b2k-config.php define: STRIPE_SECRET, SUCCESS_URL, CANCEL_URL
 
-define('DEPOSIT_USD_CENTS', 100000); // $1,000 × 100
+define('DEPOSIT_USD', 500);                          // depósito de RESERVA, por persona
+define('DEPOSIT_USD_CENTS', DEPOSIT_USD * 100);
 define('MAX_RIDERS', 12);
 
 // ── Validar parámetros ─────────────────────────────────────────────
 $riders = max(1, min((int)($_GET['riders'] ?? 1), MAX_RIDERS));
 $ref    = substr(preg_replace('/[^a-zA-Z0-9_\-]/', '', $_GET['ref'] ?? 'B2K'), 0, 100);
 
-$label = $riders . ' rider' . ($riders > 1 ? 's' : '') . ' × $1,000 deposit';
+$label = $riders . ' rider' . ($riders > 1 ? 's' : '') . ' × $' . number_format(DEPOSIT_USD) . ' deposit';
 
 // ── Crear Checkout Session via Stripe API ──────────────────────────
 $data = [
@@ -30,7 +31,7 @@ $data = [
   'cancel_url'                                           => CANCEL_URL,
   'client_reference_id'                                  => $ref,
   'metadata[riders]'                                     => $riders,
-  'metadata[total_usd]'                                  => $riders * 1000,
+  'metadata[total_usd]'                                  => $riders * DEPOSIT_USD,
 ];
 
 $ch = curl_init('https://api.stripe.com/v1/checkout/sessions');
