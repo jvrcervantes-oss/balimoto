@@ -311,11 +311,13 @@ input,textarea,select{font-family:'Instrument Sans',sans-serif;font-size:13px}
 
     <div class="settings-section">
       <h3>Bali to Komodo Challenge</h3>
+      <p class="muted" style="margin:-4px 0 10px">These are the <strong>self-guided</strong> standard prices shown on the page. The guided departure adds +$550 automatically.</p>
       <div class="form-row">
-        <div class="form-group"><label>Roundtrip (USD)</label><input type="number" id="p-komodo-roundtrip" placeholder="3200"></div>
-        <div class="form-group"><label>Deluxe (USD)</label><input type="number" id="p-komodo-deluxe" placeholder="4300"></div>
+        <div class="form-group"><label>Roundtrip (USD)</label><input type="number" id="p-komodo-roundtrip" placeholder="2700"></div>
+        <div class="form-group"><label>Extreme (USD)</label><input type="number" id="p-komodo-extreme" placeholder="3450"></div>
+        <div class="form-group"><label>Deluxe (USD)</label><input type="number" id="p-komodo-deluxe" placeholder="3950"></div>
       </div>
-      <div class="form-group" style="max-width:260px"><label>"From" price shown in hero (USD)</label><input type="number" id="p-komodo-from" placeholder="2650"></div>
+      <div class="form-group" style="max-width:260px"><label>"From" price shown in hero (USD)</label><input type="number" id="p-komodo-from" placeholder="2700"></div>
     </div>
 
     <div class="settings-section">
@@ -405,7 +407,7 @@ input,textarea,select{font-family:'Instrument Sans',sans-serif;font-size:13px}
         </div>
         <div class="form-row">
           <div class="form-group"><label>KM</label><input type="text" id="f-km" placeholder="1,259"></div>
-          <div class="form-group"><label>Starting price</label><input type="text" id="f-price" placeholder="$2,650"></div>
+          <div class="form-group"><label>Starting price</label><input type="text" id="f-price" placeholder="$2,700"></div>
         </div>
         <div class="form-group"><label>Spots label <span class="muted">leave empty if no urgency</span></label><input type="text" id="f-spots" placeholder="3 spots left"></div>
       </div>
@@ -1016,9 +1018,10 @@ function closeImagePicker() { document.getElementById('img-picker').classList.ad
 function renderPricing() {
   var k = DATA.komodo   || {};
   var s = DATA.islands7 || {};
-  document.getElementById('p-komodo-roundtrip').value = k.pkgRoundtrip  || 3200;
-  document.getElementById('p-komodo-deluxe').value    = k.pkgDeluxe     || 4300;
-  document.getElementById('p-komodo-from').value      = k.priceFrom     || 2650;
+  document.getElementById('p-komodo-roundtrip').value = k.pkgRoundtrip  || 2700;
+  document.getElementById('p-komodo-extreme').value   = k.pkgExtreme    || 3450;
+  document.getElementById('p-komodo-deluxe').value    = k.pkgDeluxe     || 3950;
+  document.getElementById('p-komodo-from').value      = k.priceFrom     || 2700;
   document.getElementById('p-7isl-bike2').value       = s.pkgBike2      || 3746;
   document.getElementById('p-7isl-bike1').value       = s.pkgBike1      || 2050;
   document.getElementById('p-7isl-carself').value     = s.pkgCarSelf    || 2250;
@@ -1028,9 +1031,10 @@ function renderPricing() {
 
 function savePricing() {
   DATA.komodo = {
-    pkgRoundtrip: parseFloat(document.getElementById('p-komodo-roundtrip').value) || 3200,
-    pkgDeluxe:    parseFloat(document.getElementById('p-komodo-deluxe').value)    || 4300,
-    priceFrom:    parseFloat(document.getElementById('p-komodo-from').value)      || 2650
+    pkgRoundtrip: parseFloat(document.getElementById('p-komodo-roundtrip').value) || 2700,
+    pkgExtreme:   parseFloat(document.getElementById('p-komodo-extreme').value)   || 3450,
+    pkgDeluxe:    parseFloat(document.getElementById('p-komodo-deluxe').value)    || 3950,
+    priceFrom:    parseFloat(document.getElementById('p-komodo-from').value)      || 2700
   };
   DATA.islands7 = {
     pkgBike2:     parseFloat(document.getElementById('p-7isl-bike2').value)     || 3746,
