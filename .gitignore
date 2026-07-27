@@ -34,3 +34,6 @@ masters/
 Thumbs.db
 desktop.ini
 MetaLead/
+
+# Concepts de diseño (v2) — local, no desplegar
+concept-*.html
