@@ -316,7 +316,7 @@ input,textarea,select{font-family:'Instrument Sans',sans-serif;font-size:13px}
       <div class="form-row">
         <div class="form-group"><label>Roundtrip (USD)</label><input type="number" id="p-komodo-roundtrip" placeholder="2700"></div>
         <div class="form-group"><label>Extreme (USD)</label><input type="number" id="p-komodo-extreme" placeholder="3450"></div>
-        <div class="form-group"><label>Deluxe (USD)</label><input type="number" id="p-komodo-deluxe" placeholder="3950"></div>
+        <div class="form-group"><label>Deluxe (USD)</label><input type="number" id="p-komodo-deluxe" placeholder="3750"></div>
       </div>
       <div class="form-group" style="max-width:260px"><label>"From" price shown in hero (USD)</label><input type="number" id="p-komodo-from" placeholder="2700"></div>
     </div>
@@ -1062,7 +1062,7 @@ function renderPricing() {
   var s = DATA.islands7 || {};
   document.getElementById('p-komodo-roundtrip').value = k.pkgRoundtrip  || 2700;
   document.getElementById('p-komodo-extreme').value   = k.pkgExtreme    || 3450;
-  document.getElementById('p-komodo-deluxe').value    = k.pkgDeluxe     || 3950;
+  document.getElementById('p-komodo-deluxe').value    = k.pkgDeluxe     || 3750;
   document.getElementById('p-komodo-from').value      = k.priceFrom     || 2700;
   document.getElementById('p-7isl-bike2').value       = s.pkgBike2      || 3746;
   document.getElementById('p-7isl-bike1').value       = s.pkgBike1      || 2050;
@@ -1077,7 +1077,7 @@ function savePricing() {
   DATA.komodo = {
     pkgRoundtrip: parseFloat(document.getElementById('p-komodo-roundtrip').value) || 2700,
     pkgExtreme:   parseFloat(document.getElementById('p-komodo-extreme').value)   || 3450,
-    pkgDeluxe:    parseFloat(document.getElementById('p-komodo-deluxe').value)    || 3950,
+    pkgDeluxe:    parseFloat(document.getElementById('p-komodo-deluxe').value)    || 3750,
     priceFrom:    parseFloat(document.getElementById('p-komodo-from').value)      || 2700
   };
   DATA.islands7 = {

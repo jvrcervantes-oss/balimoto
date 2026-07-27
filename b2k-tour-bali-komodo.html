@@ -1060,7 +1060,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali 2 Komodo Challenge', content_ca
           <div class="pkg-sel-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
           <div class="pkg-name">Roundtrip</div>
           <div class="pkg-price-tag" id="pkgTag-roundtrip">$2,700</div>
-          <div class="pkg-meta">1,458 km &middot; Budget hotels<br>~160 km/day &middot; Ferry</div>
+          <div class="pkg-meta">1,538 km &middot; Budget hotels<br>~160 km/day &middot; Ferry</div>
           <div class="pkg-perks">
             <span class="pkg-perk">Guide</span>
             <span class="pkg-perk">Mechanic</span>
@@ -1085,7 +1085,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali 2 Komodo Challenge', content_ca
         <div class="pkg-card" data-pkg="deluxe" onclick="bkSelectPkg('deluxe')">
           <div class="pkg-sel-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
           <div class="pkg-name">Deluxe</div>
-          <div class="pkg-price-tag" id="pkgTag-deluxe">$3,950</div>
+          <div class="pkg-price-tag" id="pkgTag-deluxe">$3,750</div>
           <div class="pkg-meta">1,259 km &middot; Boutique hotels<br>~140 km/day &middot; Ferry/Private</div>
           <div class="pkg-perks">
             <span class="pkg-perk">Support Car</span>
@@ -1160,7 +1160,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali 2 Komodo Challenge', content_ca
       <div class="bk-sum-title">Your Price Summary</div>
 
       <div class="bk-breakdown" id="bk-breakdown">
-        <div class="bk-br-row"><span class="bk-br-label">Roundtrip (1,458 km)</span><span class="bk-br-val">$2,700</span></div>
+        <div class="bk-br-row"><span class="bk-br-label">Roundtrip (1,538 km)</span><span class="bk-br-val">$2,700</span></div>
       </div>
 
       <div class="bk-total-row">
@@ -1446,7 +1446,7 @@ document.addEventListener('keydown', function(e) {
   var PKGS = {
     roundtrip: {name: 'Roundtrip', price: _kp.pkgRoundtrip||2700, km: 1458},
     extreme:   {name: 'Extreme',   price: _kp.pkgExtreme||3450,  km: 1826},
-    deluxe:    {name: 'Deluxe',    price: _kp.pkgDeluxe||3950,   km: 1259}
+    deluxe:    {name: 'Deluxe',    price: _kp.pkgDeluxe||3750,   km: 1259}
   };
   var FROM_USD = _kp.priceFrom || 2700;
   // El precio base de cada paquete ES el self-guided (estándar). "Guided departure"
@@ -1836,7 +1836,7 @@ document.addEventListener('keydown', function(e) {
 
     if (tabsEl && panelsEl) {
       if (pickEl) {
-        var PRICE = {roundtrip: KP.pkgRoundtrip || 2700, extreme: KP.pkgExtreme || 3450, deluxe: KP.pkgDeluxe || 3950};
+        var PRICE = {roundtrip: KP.pkgRoundtrip || 2700, extreme: KP.pkgExtreme || 3450, deluxe: KP.pkgDeluxe || 3750};
         pickEl.innerHTML = ROUTES.map(function(r, i) {
           var p = PRICE[r.key];
           return '<button type="button" class="rp" aria-pressed="false" onclick="switchRoute(' + i + ')">' +
