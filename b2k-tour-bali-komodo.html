@@ -177,6 +177,17 @@ nav.nav-out{opacity:0;pointer-events:none}
 .itin{padding:6rem 5vw;background:var(--cream)}
 .itin-hd{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
 .itin-sub{font-family:'Instrument Serif',serif;font-style:italic;color:var(--ink-soft);font-size:17px;line-height:1.6;max-width:420px}
+/* route picker — los 3 paquetes NO hacen el mismo recorrido */
+.route-pick{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2.25rem}
+.rp{text-align:left;background:none;border:1px solid var(--sand);border-radius:12px;padding:1.1rem 1.25rem;cursor:pointer;font-family:inherit;color:var(--ink-soft);transition:border-color .2s,background .2s,color .2s}
+.rp:hover{border-color:var(--orange)}
+.rp.active{border-color:var(--orange);background:rgba(232,73,10,.06);color:var(--ink)}
+.rp-name{font-family:'Bebas Neue',sans-serif;font-size:26px;line-height:1;color:var(--ink);letter-spacing:.03em;display:flex;align-items:baseline;justify-content:space-between;gap:.6rem}
+.rp.active .rp-name{color:var(--orange)}
+.rp-price{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--ink-soft);white-space:nowrap}
+.rp-isl{font-size:13px;line-height:1.5;margin-top:.55rem}
+.rp-end{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-top:.45rem;color:var(--orange)}
+@media(max-width:760px){.route-pick{grid-template-columns:1fr;gap:.7rem}}
 /* progress */
 .itin-prog{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
 .prog-bar{flex:1;height:3px;background:var(--sand);border-radius:2px;overflow:hidden}
@@ -502,8 +513,8 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
     <h1 class="th-title" id="t-heroTitle">Bali to<br><em>Komodo</em></h1>
     <div class="th-pills">
       <span class="th-pill"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>12 Days</span>
-      <span class="th-pill"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>6 Islands</span>
-      <span class="th-pill"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>1,259 km</span>
+      <span class="th-pill"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>3 Routes</span>
+      <span class="th-pill"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>1,259&ndash;1,826 km</span>
       <span class="th-pill"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Max 12 riders</span>
     </div>
     <div class="th-actions">
@@ -533,7 +544,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
   <div class="bb-info">
     <div>
       <div class="bb-title" id="t-bbTitle">Bali to Komodo Challenge</div>
-      <div class="bb-meta" id="t-bbMeta">12 days · 6 islands · 1,259 km</div>
+      <div class="bb-meta" id="t-bbMeta">12 days · 3 routes · Bali to Sumbawa or all the way to Komodo</div>
     </div>
   </div>
   <div class="bb-right">
@@ -592,168 +603,166 @@ fbq('track', 'ViewContent', {content_name: 'Bali to Komodo Challenge', content_c
       <p class="sec-lbl" id="t-itinLbl">Day by Day</p>
       <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,6vw,72px);line-height:.95;color:var(--ink)">The Route</h2>
     </div>
-    <p class="itin-sub">12 days across Bali, Lombok, Gili T, Sumbawa, Flores and Komodo. No two days the same.</p>
+    <p class="itin-sub">Twelve days, three routes. All of them share the first week; from Sumbawa on, they part ways.</p>
   </div>
+  <!-- Selector de recorrido: lo pinta el JS desde data.json. Si data.json falla no
+       aparece y abajo queda el Roundtrip estatico, que es el paquete de entrada. -->
+  <div class="route-pick rv" id="routePick"></div>
   <div class="itin-prog rv">
     <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:8.33%"></div></div>
     <span class="prog-label" id="progLabel">Day 1 of 12</span>
   </div>
-  <div class="day-tabs" id="dayTabs"><button class="dt" data-day="0" onclick="switchDay(0)">01</button><button class="dt" data-day="1" onclick="switchDay(1)">02</button><button class="dt" data-day="2" onclick="switchDay(2)">03</button><button class="dt" data-day="3" onclick="switchDay(3)">04</button><button class="dt" data-day="4" onclick="switchDay(4)">05</button><button class="dt" data-day="5" onclick="switchDay(5)">06</button><button class="dt" data-day="6" onclick="switchDay(6)">07</button><button class="dt" data-day="7" onclick="switchDay(7)">08</button><button class="dt" data-day="8" onclick="switchDay(8)">09</button><button class="dt" data-day="9" onclick="switchDay(9)">10</button><button class="dt" data-day="10" onclick="switchDay(10)">11</button><button class="dt" data-day="11" onclick="switchDay(11)">12</button></div>
+  <div class="day-tabs" id="dayTabs"><button class="dt active" data-day="0" onclick="switchDay(0)">01</button><button class="dt" data-day="1" onclick="switchDay(1)">02</button><button class="dt" data-day="2" onclick="switchDay(2)">03</button><button class="dt" data-day="3" onclick="switchDay(3)">04</button><button class="dt" data-day="4" onclick="switchDay(4)">05</button><button class="dt" data-day="5" onclick="switchDay(5)">06</button><button class="dt" data-day="6" onclick="switchDay(6)">07</button><button class="dt" data-day="7" onclick="switchDay(7)">08</button><button class="dt" data-day="8" onclick="switchDay(8)">09</button><button class="dt" data-day="9" onclick="switchDay(9)">10</button><button class="dt" data-day="10" onclick="switchDay(10)">11</button><button class="dt" data-day="11" onclick="switchDay(11)">12</button></div>
   <div id="dayPanels"><div class="day-panel" id="dp0" style="display:grid">
       <div class="dp-img-wrap">
-        <img src="images/b2k-day-01-seminyak.webp" alt="Denpasar → Seminyak" class="dp-img">
+        <img src="images/b2k-day-01-seminyak.webp" alt="Sunset over Seminyak beach on arrival day" class="dp-img" loading="lazy" onerror="this.style.display='none'">
         <div class="dp-island-tag">Bali</div>
       </div>
       <div class="dp-body">
         <div class="dp-num">01</div>
-        <h3 class="dp-route">Denpasar → Seminyak</h3>
+        <h3 class="dp-route">Arrival — Seminyak</h3>
         <span class="dp-km">Arrival</span>
-        <p class="dp-summary">First night in Bali. Balinese dinner on the beach with the rest of the group.</p>
+        <p class="dp-summary">Land, shake off the flight with a massage, and meet the group over a welcome dinner on the beach.</p>
         <div class="dp-acts-title">Activities</div>
-        <div class="dp-acts"><div class="dp-act"><span>→</span><span>Arrival, bike check-in and mandatory orientation briefing</span></div><div class="dp-act"><span>→</span><span>Welcome dinner at a high-quality local partner venue on the beach</span></div></div>
+        <div class="dp-acts"><div class="dp-act"><span>&rarr;</span><span>Plan to land by 3:00 PM at the latest — bike check-in and the orientation briefing happen the same afternoon</span></div><div class="dp-act"><span>&rarr;</span><span>Recovery massage after the flight</span></div><div class="dp-act"><span>&rarr;</span><span>Welcome dinner on the beach with the rest of the riders</span></div></div>
       </div>
     </div><div class="day-panel" id="dp1" style="display:none">
       <div class="dp-img-wrap">
-        <img src="images/b2k-day-02-tejakula.webp" alt="Seminyak → Tejakula" class="dp-img">
+        <img src="images/b2k-day-02-tejakula.webp" alt="Balinese purification ceremony and jungle waterfall in North Bali" class="dp-img" loading="lazy" onerror="this.style.display='none'">
         <div class="dp-island-tag">Bali</div>
       </div>
       <div class="dp-body">
         <div class="dp-num">02</div>
-        <h3 class="dp-route">Seminyak → Tejakula</h3>
-        <span class="dp-km">150 km</span>
-        <p class="dp-summary">A coastal route north and the first test of escaping Bali traffic. Buddhist temples and a local educational project.</p>
+        <h3 class="dp-route">Seminyak → North Bali</h3>
+        <p class="dp-summary">A Hindu purification ceremony, the school we sponsor, and a waterfall stop on the way to the north coast.</p>
         <div class="dp-acts-title">Activities</div>
-        <div class="dp-acts"><div class="dp-act"><span>→</span><span>Hindu purification ceremony at the revered Pura Kelecung temple</span></div><div class="dp-act"><span>→</span><span>Visit the Escuela Torrevieja foundation — 500,000 IDR donation per pilot</span></div><div class="dp-act"><span>→</span><span>Ride through the lush rice terraces of Tabanan</span></div></div>
+        <div class="dp-acts"><div class="dp-act"><span>&rarr;</span><span>Hindu purification ceremony</span></div><div class="dp-act"><span>&rarr;</span><span>Visit and donation to the school we are patrons of — 500,000 IDR per rider</span></div><div class="dp-act"><span>&rarr;</span><span>Jungle waterfall stop</span></div><div class="dp-act"><span>&rarr;</span><span>Overnight on Bali's north coast</span></div></div>
       </div>
     </div><div class="day-panel" id="dp2" style="display:none">
       <div class="dp-img-wrap">
-        <img src="images/b2k-day-03-ubud.webp" alt="Tejakula → Ubud" class="dp-img">
+        <img src="images/b2k-day-03-ubud.webp" alt="Mount Batur volcano and the black lava fields" class="dp-img" loading="lazy" onerror="this.style.display='none'">
         <div class="dp-island-tag">Bali</div>
       </div>
       <div class="dp-body">
         <div class="dp-num">03</div>
-        <h3 class="dp-route">Tejakula → Ubud</h3>
-        <span class="dp-km">90 km</span>
-        <p class="dp-summary">Batur Volcano, rice terraces, and hot springs before reaching the cultural heart of Bali.</p>
+        <h3 class="dp-route">North Bali → East Coast</h3>
+        <p class="dp-summary">Panoramic views over Mount Batur, a ride straight across the old lava field, and Bali's mother temple.</p>
         <div class="dp-acts-title">Activities</div>
-        <div class="dp-acts"><div class="dp-act"><span>→</span><span>Ride towards the magnificent Mount Batur volcano</span></div><div class="dp-act"><span>→</span><span>Batur hot springs — complimentary 30-minute thermal massage</span></div><div class="dp-act"><span>→</span><span>East Coast Amed overnight stop</span></div></div>
+        <div class="dp-acts"><div class="dp-act"><span>&rarr;</span><span>Panoramic viewpoint over the Batur volcano</span></div><div class="dp-act"><span>&rarr;</span><span>Ride across the lava fields</span></div><div class="dp-act"><span>&rarr;</span><span>Besakih — the Mother Temple, the oldest temple in Bali</span></div><div class="dp-act"><span>&rarr;</span><span>Beachfront overnight</span></div></div>
       </div>
     </div><div class="day-panel" id="dp3" style="display:none">
       <div class="dp-img-wrap">
-        <img src="images/b2k-day-04-senggigi.webp" alt="Ubud → Senggigi via Padangbai" class="dp-img">
+        <img src="images/b2k-day-04-senggigi.webp" alt="Inter-island ferry crossing from Bali to Lombok" class="dp-img" loading="lazy" onerror="this.style.display='none'">
         <div class="dp-island-tag">Lombok</div>
       </div>
       <div class="dp-body">
         <div class="dp-num">04</div>
-        <h3 class="dp-route">Ubud → Senggigi via Padangbai</h3>
-        <span class="dp-km">150 km + ferry</span>
-        <p class="dp-summary">Boat crossing to Lombok, paradisiacal beaches and discovery of Mandalika. You cross the Wallace Line.</p>
+        <h3 class="dp-route">Bali → Lombok (ferry)</h3>
+        <span class="dp-km">Ferry · approx. 4 h</span>
+        <p class="dp-summary">Crossing to Lombok by ferry — roughly four hours over the Wallace Line — and a night right on the sand.</p>
         <div class="dp-acts-title">Activities</div>
-        <div class="dp-acts"><div class="dp-act"><span>→</span><span>Early ferry crossing from Bali to Lombok — crossing the famous Wallace Line</span></div><div class="dp-act"><span>→</span><span>Ride through Lombok capital region to Senggigi overnight</span></div></div>
+        <div class="dp-acts"><div class="dp-act"><span>&rarr;</span><span>Inter-island ferry Bali → Lombok, approx. 4 hours</span></div><div class="dp-act"><span>&rarr;</span><span>Overnight on the beachfront or on a private beach</span></div></div>
       </div>
     </div><div class="day-panel" id="dp4" style="display:none">
       <div class="dp-img-wrap">
-        <img src="images/b2k-day-05-gili.webp" alt="Senggigi → Gili Trawangan" class="dp-img">
+        
         <div class="dp-island-tag">Lombok</div>
       </div>
       <div class="dp-body">
         <div class="dp-num">05</div>
-        <h3 class="dp-route">Senggigi → Gili Trawangan</h3>
-        <span class="dp-km">20 km</span>
-        <p class="dp-summary">A day of rest on a traffic-free island with crystal-clear waters and white sand.</p>
+        <h3 class="dp-route">Lombok coast → Kuta Lombok</h3>
+        <p class="dp-summary">A full day riding the Lombok coast down to Kuta Lombok.</p>
         <div class="dp-acts-title">Activities</div>
-        <div class="dp-acts"><div class="dp-act"><span>→</span><span>Lombok coastal explorer — scenic coasts and inland roads</span></div><div class="dp-act"><span>→</span><span>Gili Trawangan free time, snorkeling, relax before the demanding Sumbawa legs</span></div></div>
+        <div class="dp-acts"><div class="dp-act"><span>&rarr;</span><span>Coastal route across Lombok</span></div><div class="dp-act"><span>&rarr;</span><span>Arrival in Kuta Lombok</span></div></div>
       </div>
     </div><div class="day-panel" id="dp5" style="display:none">
       <div class="dp-img-wrap">
-        <img src="images/b2k-day-06-sambelia.webp" alt="Gili Trawangan → Sambelia" class="dp-img">
+        <img src="images/b2k-day-06-sambelia.webp" alt="Ferry crossing from Lombok to Sumbawa" class="dp-img" loading="lazy" onerror="this.style.display='none'">
         <div class="dp-island-tag">Sumbawa</div>
       </div>
       <div class="dp-body">
         <div class="dp-num">06</div>
-        <h3 class="dp-route">Gili Trawangan → Sambelia</h3>
-        <span class="dp-km">120 km</span>
-        <p class="dp-summary">Back to Lombok, hidden waterfalls in the jungle and coastal roads. Ferry to Sumbawa — the true wilderness begins.</p>
+        <h3 class="dp-route">Lombok → Sumbawa (ferry)</h3>
+        <span class="dp-km">Ferry · approx. 2 h</span>
+        <p class="dp-summary">A short two-hour crossing and the wild half of the trip begins.</p>
         <div class="dp-acts-title">Activities</div>
-        <div class="dp-acts"><div class="dp-act"><span>→</span><span>Ferry crossing from Lombok to Sumbawa</span></div><div class="dp-act"><span>→</span><span>Ride the challenging Sumbawa South Coast — far from tourist crowds</span></div></div>
+        <div class="dp-acts"><div class="dp-act"><span>&rarr;</span><span>Inter-island ferry Lombok → Sumbawa, approx. 2 hours</span></div><div class="dp-act"><span>&rarr;</span><span>Beachfront overnight</span></div></div>
       </div>
     </div><div class="day-panel" id="dp6" style="display:none">
       <div class="dp-img-wrap">
-        <img src="images/b2k-day-07-sekongkang.webp" alt="Sambelia → Sekongkang" class="dp-img">
+        <img src="images/b2k-day-08-moyo.webp" alt="Empty jungle roads crossing Sumbawa from south to north" class="dp-img" loading="lazy" onerror="this.style.display='none'">
         <div class="dp-island-tag">Sumbawa</div>
       </div>
       <div class="dp-body">
         <div class="dp-num">07</div>
-        <h3 class="dp-route">Sambelia → Sekongkang</h3>
-        <span class="dp-km">120 km</span>
-        <p class="dp-summary">Remote roads and crazy viewpoints. The wild heart of the archipelago.</p>
+        <h3 class="dp-route">Queen stage → Moyo Utara</h3>
+        <p class="dp-summary">The longest day of the trip: Sumbawa south to north through deep jungle and empty roads.</p>
         <div class="dp-acts-title">Activities</div>
-        <div class="dp-acts"><div class="dp-act"><span>→</span><span>Tambora Volcano Expedition — ride past the legendary Tambora volcano</span></div><div class="dp-act"><span>→</span><span>Remote jungle roads, dramatic viewpoints and authentic local villages</span></div></div>
+        <div class="dp-acts"><div class="dp-act"><span>&rarr;</span><span>Queen stage — the longest leg of the tour</span></div><div class="dp-act"><span>&rarr;</span><span>Deep jungle and empty roads, south to north across Sumbawa</span></div><div class="dp-act"><span>&rarr;</span><span>Simplest accommodation of the trip, but the best possible position for tomorrow's sunrise departure</span></div></div>
       </div>
     </div><div class="day-panel" id="dp7" style="display:none">
       <div class="dp-img-wrap">
-        <img src="images/b2k-day-08-moyo.webp" alt="Sekongkang → Moyo Utara" class="dp-img">
+        <img src="images/b2k-day-09-moyo-rest.webp" alt="Snorkelling with whale sharks in Saleh Bay" class="dp-img" loading="lazy" onerror="this.style.display='none'">
         <div class="dp-island-tag">Sumbawa</div>
       </div>
       <div class="dp-body">
         <div class="dp-num">08</div>
-        <h3 class="dp-route">Sekongkang → Moyo Utara</h3>
-        <span class="dp-km">200 km</span>
-        <p class="dp-summary">The longest and most demanding day. Jungle, dirt roads and hidden villages.</p>
+        <h3 class="dp-route">Whale sharks → Lombok (ferry)</h3>
+        <span class="dp-km">Ferry</span>
+        <p class="dp-summary">Early start for the whale sharks, then the ride back west begins with the ferry to Lombok.</p>
         <div class="dp-acts-title">Activities</div>
-        <div class="dp-acts"><div class="dp-act"><span>→</span><span>Most challenging day of the tour — isolated terrain, off-road sections</span></div><div class="dp-act"><span>→</span><span>Arrive at Moyo Utara base camp before the whale shark encounter</span></div></div>
+        <div class="dp-acts"><div class="dp-act"><span>&rarr;</span><span>Whale Shark Tour at first light</span></div><div class="dp-act"><span>&rarr;</span><span>Start of the return leg</span></div><div class="dp-act"><span>&rarr;</span><span>Inter-island ferry Sumbawa → Lombok</span></div></div>
       </div>
     </div><div class="day-panel" id="dp8" style="display:none">
       <div class="dp-img-wrap">
-        <img src="images/b2k-day-09-moyo-rest.webp" alt="Moyo Utara — Rest Day" class="dp-img">
-        <div class="dp-island-tag">Moyo</div>
+        
+        <div class="dp-island-tag">Lombok</div>
       </div>
       <div class="dp-body">
         <div class="dp-num">09</div>
-        <h3 class="dp-route">Moyo Utara — Rest Day</h3>
-        <span class="dp-km">Rest</span>
-        <p class="dp-summary">Snorkel with whale sharks in the turquoise waters of Moyo Utara / Saleh Bay.</p>
+        <h3 class="dp-route">Northern Lombok</h3>
+        <p class="dp-summary">The north of Lombok: Sendang Gile waterfall, Rinjani on the skyline and rice paddies all the way to the coast.</p>
         <div class="dp-acts-title">Activities</div>
-        <div class="dp-acts"><div class="dp-act"><span>→</span><span>Whale Shark Snorkeling at remote Saleh Bay</span></div><div class="dp-act"><span>→</span><span>Evening: board the long-haul night ferry to Flores</span></div></div>
+        <div class="dp-acts"><div class="dp-act"><span>&rarr;</span><span>Sendang Gile — one of the most famous waterfalls on the island</span></div><div class="dp-act"><span>&rarr;</span><span>Views of the Rinjani volcano and the rice terraces</span></div><div class="dp-act"><span>&rarr;</span><span>Beachfront overnight — two nights in the same hotel, the right moment to get laundry done</span></div></div>
       </div>
     </div><div class="day-panel" id="dp9" style="display:none">
       <div class="dp-img-wrap">
-        <img src="images/b2k-day-10-bima.webp" alt="Moyo Utara → Bima" class="dp-img">
-        <div class="dp-island-tag">Flores</div>
+        <img src="images/b2k-day-05-gili.webp" alt="Private boat snorkelling around the three Gili islands" class="dp-img" loading="lazy" onerror="this.style.display='none'">
+        <div class="dp-island-tag">Gili Islands</div>
       </div>
       <div class="dp-body">
         <div class="dp-num">10</div>
-        <h3 class="dp-route">Moyo Utara → Bima</h3>
-        <span class="dp-km">260 km</span>
-        <p class="dp-summary">Island route with two options: technical and intense, or cultural and panoramic among crop terraces.</p>
+        <h3 class="dp-route">3 Gili boat tour</h3>
+        <span class="dp-km">Optional rest day</span>
+        <p class="dp-summary">Private boat around the three Gilis — turtles, the underwater statues and everything else down there. Or stay put and rest.</p>
         <div class="dp-acts-title">Activities</div>
-        <div class="dp-acts"><div class="dp-act"><span>→</span><span>Final ride to Komodo gateway — arrive in Flores at Labuan Bajo</span></div><div class="dp-act"><span>→</span><span>Bike drop-off and preparation for the final boat excursion</span></div></div>
+        <div class="dp-acts"><div class="dp-act"><span>&rarr;</span><span>3 Gili tour by private boat</span></div><div class="dp-act"><span>&rarr;</span><span>Snorkelling with turtles, the underwater statues and the reef</span></div><div class="dp-act"><span>&rarr;</span><span>Optional: skip the boat and take the day off</span></div></div>
       </div>
     </div><div class="day-panel" id="dp10" style="display:none">
       <div class="dp-img-wrap">
-        <img src="images/b2k-day-11-komodo.webp" alt="Bima → Komodo / Labuan Bajo" class="dp-img">
-        <div class="dp-island-tag">Komodo</div>
+        <img src="images/b2k-day-12-end.webp" alt="Farewell party back in Bali" class="dp-img" loading="lazy" onerror="this.style.display='none'">
+        <div class="dp-island-tag">Bali</div>
       </div>
       <div class="dp-body">
         <div class="dp-num">11</div>
-        <h3 class="dp-route">Bima → Komodo / Labuan Bajo</h3>
-        <span class="dp-km">50 km</span>
-        <p class="dp-summary">Encounter with the Komodo dragons and the incredible pink sand beach.</p>
+        <h3 class="dp-route">Lombok → Bali (ferry)</h3>
+        <span class="dp-km">Ferry</span>
+        <p class="dp-summary">Ferry back to Bali, a last massage and the farewell party.</p>
         <div class="dp-acts-title">Activities</div>
-        <div class="dp-acts"><div class="dp-act"><span>→</span><span>Board boat to Komodo National Park — iconic Komodo Dragon trek</span></div><div class="dp-act"><span>→</span><span>Pink Sand Beach — one of the rarest beaches in the world</span></div></div>
+        <div class="dp-acts"><div class="dp-act"><span>&rarr;</span><span>Inter-island ferry Lombok → Bali</span></div><div class="dp-act"><span>&rarr;</span><span>Closing massage</span></div><div class="dp-act"><span>&rarr;</span><span>Farewell party</span></div></div>
       </div>
     </div><div class="day-panel" id="dp11" style="display:none">
       <div class="dp-img-wrap">
-        <img src="images/b2k-day-12-end.webp" alt="Komodo → Denpasar" class="dp-img">
+        
         <div class="dp-island-tag">Finish 🏁</div>
       </div>
       <div class="dp-body">
         <div class="dp-num">12</div>
-        <h3 class="dp-route">Komodo → Denpasar</h3>
-        <span class="dp-km">Flight</span>
-        <p class="dp-summary">Return by plane to Bali. End the party at one of the best beach clubs.</p>
+        <h3 class="dp-route">Denpasar → home</h3>
+        <span class="dp-km">Departure</span>
+        <p class="dp-summary">Transfer to Denpasar and the flight home.</p>
         <div class="dp-acts-title">Activities</div>
-        <div class="dp-acts"><div class="dp-act"><span>→</span><span>Final group breakfast and transfer to Labuan Bajo airport</span></div><div class="dp-act"><span>→</span><span>Beach club celebration — the 12-day Bali to Komodo Challenge is complete</span></div></div>
+        <div class="dp-acts"><div class="dp-act"><span>&rarr;</span><span>Transfer to Denpasar airport</span></div><div class="dp-act"><span>&rarr;</span><span>Fly home</span></div></div>
       </div>
     </div></div>
 </section>
@@ -1672,6 +1681,7 @@ document.addEventListener('keydown', function(e) {
     if (!r.ok) return;
     var j = await r.json();
     P = j.komodoPage || {};
+    var KP = j.komodo || {};   // precios por paquete, para el selector de recorrido
     if (j.barDate) { var bd = document.getElementById('barDate'); if (bd) bd.textContent = j.barDate; }
   } catch(e) { return; }
   function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -1704,15 +1714,40 @@ document.addEventListener('keydown', function(e) {
     }
   }
 
-  if (P.itinerary && P.itinerary.length) {
-    var N = P.itinerary.length;
+  // Los 3 paquetes no hacen el mismo recorrido: el Roundtrip da la vuelta en Sumbawa
+  // y no llega a Komodo. Cada uno puede traer su propio itinerario; el que falte cae
+  // al compartido (P.itinerary), asi el data.json viejo del servidor sigue funcionando.
+  // shared:false en Roundtrip a proposito. El itinerario compartido es el que llega a
+  // Komodo; si el Roundtrip cayera a el volveria a prometer dragones que no ve. Antes
+  // de eso, que desaparezca del selector.
+  var ROUTES = [
+    {key:'roundtrip', name:'Roundtrip', days:P.itineraryRoundtrip, shared:false,
+     islands:'Bali &middot; Lombok &middot; Gili &middot; Sumbawa &middot; Moyo',
+     end:'Turns around in Sumbawa &mdash; back to Bali by road'},
+    {key:'extreme', name:'Extreme', days:P.itineraryExtreme, shared:true,
+     islands:'Bali &middot; Lombok &middot; Gili &middot; Sumbawa &middot; Moyo &middot; Flores &middot; Komodo',
+     end:'Reaches Komodo &mdash; flight home from Flores'},
+    {key:'deluxe', name:'Deluxe', days:P.itineraryDeluxe, shared:true,
+     islands:'Bali &middot; Lombok &middot; Gili &middot; Sumbawa &middot; Moyo &middot; Flores &middot; Komodo',
+     end:'Reaches Komodo &mdash; the roughest legs and the long ferries taken out'}
+  ].filter(function(r) {
+    if (!r.days && r.shared) r.days = P.itinerary;
+    return r.days && r.days.length;
+  });
+
+  if (ROUTES.length) {
+    var N = 0;
     var tabsEl = document.getElementById('dayTabs');
     var panelsEl = document.getElementById('dayPanels');
-    if (tabsEl && panelsEl) {
-      tabsEl.innerHTML = P.itinerary.map(function(_, i) {
+    var pickEl = document.getElementById('routePick');
+
+    function renderRoute(rIdx) {
+      var ITIN = ROUTES[rIdx].days;
+      N = ITIN.length;
+      tabsEl.innerHTML = ITIN.map(function(_, i) {
         return '<button class="dt' + (i === 0 ? ' active' : '') + '" data-day="' + i + '" onclick="switchDay(' + i + ')">' + String(i + 1).padStart(2, '0') + '</button>';
       }).join('');
-      panelsEl.innerHTML = P.itinerary.map(function(d, i) {
+      panelsEl.innerHTML = ITIN.map(function(d, i) {
         var acts = (d.acts || []).map(function(a) { return '<div class="dp-act"><span>→</span><span>' + esc(a) + '</span></div>'; }).join('');
         var img = d.img ? '<img src="' + esc(d.img) + '" alt="' + esc(d.imgAlt || d.route) + '" class="dp-img" loading="lazy" onerror="this.style.display=\'none\'">' : '';
         return '<div class="day-panel" id="dp' + i + '" style="display:' + (i === 0 ? 'grid' : 'none') + '">' +
@@ -1739,6 +1774,28 @@ document.addEventListener('keydown', function(e) {
       };
       var pl0 = document.getElementById('progLabel'); if (pl0) pl0.textContent = 'Day 1 of ' + N;
       var pf0 = document.getElementById('progFill'); if (pf0) pf0.style.width = (100 / N).toFixed(1) + '%';
+      if (pickEl) {
+        pickEl.querySelectorAll('.rp').forEach(function(b, i) {
+          b.classList.toggle('active', i === rIdx);
+          b.setAttribute('aria-pressed', i === rIdx ? 'true' : 'false');
+        });
+      }
+    }
+
+    if (tabsEl && panelsEl) {
+      if (pickEl) {
+        var PRICE = {roundtrip: KP.pkgRoundtrip || 2700, extreme: KP.pkgExtreme || 3450, deluxe: KP.pkgDeluxe || 3950};
+        pickEl.innerHTML = ROUTES.map(function(r, i) {
+          var p = PRICE[r.key];
+          return '<button type="button" class="rp" aria-pressed="false" onclick="switchRoute(' + i + ')">' +
+            '<span class="rp-name">' + esc(r.name) + (p ? '<span class="rp-price">from $' + Number(p).toLocaleString('en-US') + '</span>' : '') + '</span>' +
+            '<span class="rp-isl">' + r.islands + '</span>' +
+            '<span class="rp-end">' + r.end + '</span>' +
+            '</button>';
+        }).join('');
+        window.switchRoute = function(i) { if (ROUTES[i]) renderRoute(i); };
+      }
+      renderRoute(0);
     }
   }
 

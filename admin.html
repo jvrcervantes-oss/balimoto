@@ -859,6 +859,17 @@ var PAGE_DEFS = {
   islands7Page: { mount: 'pe-islands7Page', hasBar: false }
 };
 
+// Bali-Komodo tiene un itinerario por paquete. 'itinerary' es el compartido: lo usa
+// en la web cualquier recorrido que no tenga clave propia.
+var ITIN_ROUTES = [
+  { f: 'itineraryRoundtrip', label: 'Roundtrip' },
+  { f: 'itineraryExtreme',   label: 'Extreme' },
+  { f: 'itineraryDeluxe',    label: 'Deluxe' },
+  { f: 'itinerary',          label: 'Shared' }
+];
+var ITIN_FIELD = 'itineraryRoundtrip';
+function pgRoute(key, f) { ITIN_FIELD = f; renderPageEditor(key); }
+
 function pg(key) { if (!DATA[key]) DATA[key] = {}; return DATA[key]; }
 
 function renderPageEditors() { Object.keys(PAGE_DEFS).forEach(renderPageEditor); }
@@ -911,20 +922,34 @@ function renderPageEditor(key) {
     + '</div>';
 
   /* ITINERARY */
-  h += '<div class="settings-section"><h3 style="display:flex;justify-content:space-between;align-items:center">Itinerary — day by day <button class="btn-primary" onclick="pgAdd(' + K + ',\'itinerary\')">+ Add day</button></h3>'
-    + P.itinerary.map(function(d, i) {
+  // Bali-Komodo tiene 3 recorridos distintos: el Roundtrip da la vuelta en Sumbawa
+  // y no llega a Komodo. Cada uno se guarda en su clave; el paquete que no tenga la
+  // suya cae al itinerario compartido en la web.
+  var F = (key === 'komodoPage') ? ITIN_FIELD : 'itinerary';
+  P[F] = P[F] || [];
+  var FQ = "'" + F + "'";
+  h += '<div class="settings-section"><h3 style="display:flex;justify-content:space-between;align-items:center">Itinerary — day by day <button class="btn-primary" onclick="pgAdd(' + K + ',' + FQ + ')">+ Add day</button></h3>';
+  if (key === 'komodoPage') {
+    h += '<div class="form-group"><label>Which route are you editing?</label><div style="display:flex;gap:8px;flex-wrap:wrap">'
+      + ITIN_ROUTES.map(function(r) {
+          var on_ = r.f === F;
+          return '<button class="' + (on_ ? 'btn-primary' : 'btn-ghost') + '" onclick="pgRoute(' + K + ',\'' + r.f + '\')">' + r.label + '</button>';
+        }).join('')
+      + '</div><p style="font-size:12px;color:#6b7280;margin:6px 0 0">Shared = the fallback the web uses for any route with no itinerary of its own.</p></div>';
+  }
+  h += P[F].map(function(d, i) {
         return '<div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px;margin-bottom:12px">'
-          + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>Day ' + String(i + 1).padStart(2, '0') + '</strong><button class="btn-danger" onclick="pgDel(' + K + ',\'itinerary\',' + i + ')">Del</button></div>'
+          + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>Day ' + String(i + 1).padStart(2, '0') + '</strong><button class="btn-danger" onclick="pgDel(' + K + ',' + FQ + ',' + i + ')">Del</button></div>'
           + '<div class="form-row">'
-          + '<div class="form-group"><label>Route / place</label><input type="text" value="' + esc(d.route) + '" ' + on('pgItem', "'itinerary'," + i + ",'route',this.value") + '></div>'
-          + '<div class="form-group"><label>Km / day note</label><input type="text" value="' + esc(d.km) + '" ' + on('pgItem', "'itinerary'," + i + ",'km',this.value") + '></div>'
-          + '<div class="form-group"><label>Island tag</label><input type="text" value="' + esc(d.island) + '" ' + on('pgItem', "'itinerary'," + i + ",'island',this.value") + '></div>'
+          + '<div class="form-group"><label>Route / place</label><input type="text" value="' + esc(d.route) + '" ' + on('pgItem', FQ + "," + i + ",'route',this.value") + '></div>'
+          + '<div class="form-group"><label>Km / day note</label><input type="text" value="' + esc(d.km) + '" ' + on('pgItem', FQ + "," + i + ",'km',this.value") + '></div>'
+          + '<div class="form-group"><label>Island tag</label><input type="text" value="' + esc(d.island) + '" ' + on('pgItem', FQ + "," + i + ",'island',this.value") + '></div>'
           + '</div>'
           + '<div class="form-group"><label>Day image</label><div class="img-input-row">'
-          + '<input type="text" value="' + esc(d.img) + '" ' + on('pgItem', "'itinerary'," + i + ",'img',this.value") + '>'
-          + '<button class="btn-ghost" onclick="pgPick(' + K + ',\'itinerary\',' + i + ')">Pick</button></div></div>'
-          + '<div class="form-group"><label>Summary</label><textarea rows="2" ' + on('pgItem', "'itinerary'," + i + ",'summary',this.value") + '>' + esc(d.summary) + '</textarea></div>'
-          + '<div class="form-group"><label>Activities / highlights — one per line</label><textarea rows="3" ' + on('pgActs', i + ',this.value') + '>' + esc((d.acts || []).join('\n')) + '</textarea></div>'
+          + '<input type="text" value="' + esc(d.img) + '" ' + on('pgItem', FQ + "," + i + ",'img',this.value") + '>'
+          + '<button class="btn-ghost" onclick="pgPick(' + K + ',' + FQ + ',' + i + ')">Pick</button></div></div>'
+          + '<div class="form-group"><label>Summary</label><textarea rows="2" ' + on('pgItem', FQ + "," + i + ",'summary',this.value") + '>' + esc(d.summary) + '</textarea></div>'
+          + '<div class="form-group"><label>Activities / highlights — one per line</label><textarea rows="3" ' + on('pgActs', FQ + ',' + i + ',this.value') + '>' + esc((d.acts || []).join('\n')) + '</textarea></div>'
           + '</div>';
       }).join('')
     + '</div>';
@@ -959,7 +984,7 @@ function pgPrice(key, v) {
 function pgSet(key, f, v) { pg(key)[f] = v; markDirty(); }
 function pgArr(key, f, i, v) { var a = pg(key)[f] || []; a[i] = v; pg(key)[f] = a; markDirty(); }
 function pgItem(key, f, i, prop, v) { pg(key)[f][i][prop] = v; markDirty(); }
-function pgActs(key, i, v) { pg(key).itinerary[i].acts = v.split('\n').map(function(s) { return s.trim(); }).filter(Boolean); markDirty(); }
+function pgActs(key, f, i, v) { pg(key)[f][i].acts = v.split('\n').map(function(s) { return s.trim(); }).filter(Boolean); markDirty(); }
 function pgDel(key, f, i) {
   if (!confirm('Delete this item?')) return;
   pg(key)[f].splice(i, 1); markDirty(); renderPageEditor(key);
@@ -967,7 +992,7 @@ function pgDel(key, f, i) {
 function pgAdd(key, f) {
   var P = pg(key); P[f] = P[f] || [];
   if (f === 'included') P[f].push({ label: '', type: 'yes', tag: '' });
-  else if (f === 'itinerary') P[f].push({ img: '', imgAlt: '', island: '', route: '', km: '', summary: '', acts: [] });
+  else if (f.indexOf('itinerary') === 0) P[f].push({ img: '', imgAlt: '', island: '', route: '', km: '', summary: '', acts: [] });
   else P[f].push({ q: '', a: '' });
   markDirty(); renderPageEditor(key);
 }
