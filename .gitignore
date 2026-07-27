@@ -15,9 +15,7 @@ Backups/
 *.csv
 
 # Trabajo local — no desplegar
-indexv2.html
 scripts/
-b2kepicadv-redirect/
 *.md
 
 # Versiones deprecadas
@@ -34,6 +32,3 @@ masters/
 Thumbs.db
 desktop.ini
 MetaLead/
-
-# Concepts de diseño (v2) — local, no desplegar
-concept-*.html
