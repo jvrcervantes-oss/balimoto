@@ -187,6 +187,7 @@ input,textarea,select{font-family:'Instrument Sans',sans-serif;font-size:13px}
       <button class="tab"        data-panel="pricing" onclick="showPanel('pricing')">Pricing</button>
       <button class="tab"        data-panel="komodo"  onclick="showPanel('komodo')">Komodo Page</button>
       <button class="tab"        data-panel="islands7" onclick="showPanel('islands7')">7 Islands Page</button>
+      <button class="tab"        data-panel="islands4" onclick="showPanel('islands4')">4 Islands Page</button>
       <button class="tab"        data-panel="images"  onclick="showPanel('images')">Images</button>
     </nav>
     <div class="app-right">
@@ -333,6 +334,12 @@ input,textarea,select{font-family:'Instrument Sans',sans-serif;font-size:13px}
       <div class="form-group" style="max-width:260px"><label>"From" price shown in hero (USD)</label><input type="number" id="p-7isl-from" placeholder="2050"></div>
     </div>
 
+    <div class="settings-section">
+      <h3>4 Islands Hopping</h3>
+      <p class="muted" style="margin:-4px 0 12px">Fixed price: one number for the whole trip, bike or car. No packages and no guided supplement &mdash; that one belongs to Bali 2 Komodo only.</p>
+      <div class="form-group" style="max-width:260px"><label>Fixed price per person (USD)</label><input type="number" id="p-4isl-fixed" placeholder="1100"></div>
+    </div>
+
     <button class="btn-primary" onclick="savePricing()">Save pricing</button>
   </div>
 
@@ -346,6 +353,12 @@ input,textarea,select{font-family:'Instrument Sans',sans-serif;font-size:13px}
   <div class="panel" id="panel-islands7">
     <div class="panel-bar"><h2>7 Islands Page</h2><span class="muted">Content of b2k-tour-7-islands.html — edits go live on Publish.</span></div>
     <div id="pe-islands7Page"></div>
+  </div>
+
+  <!-- 4 ISLANDS PAGE -->
+  <div class="panel" id="panel-islands4">
+    <div class="panel-bar"><h2>4 Islands Page</h2><span class="muted">Content of b2k-tour-4-islands.html — edits go live on Publish.</span></div>
+    <div id="pe-islands4Page"></div>
   </div>
 
   <!-- IMAGES -->
@@ -856,7 +869,8 @@ async function handleFileSelect(files) {
 /* ─── TOUR PAGE EDITORS (Komodo / 7 Islands) ────────────────── */
 var PAGE_DEFS = {
   komodoPage:   { mount: 'pe-komodoPage',   hasBar: false },
-  islands7Page: { mount: 'pe-islands7Page', hasBar: false }
+  islands7Page: { mount: 'pe-islands7Page', hasBar: false },
+  islands4Page: { mount: 'pe-islands4Page', hasBar: false }
 };
 
 // Bali-Komodo tiene un itinerario por paquete. 'itinerary' es el compartido: lo usa
@@ -971,12 +985,15 @@ function renderPageEditor(key) {
 // El precio "from" vive en la clave de pricing (komodo/islands7), no en la de página.
 // Single source of truth: este campo del editor de hero escribe ahí y sincroniza
 // el input del panel Tour Pricing si está montado.
-var PRICE_KEY = { komodoPage: 'komodo', islands7Page: 'islands7' };
+var PRICE_KEY = { komodoPage: 'komodo', islands7Page: 'islands7', islands4Page: 'islands4' };
 function pgPrice(key, v) {
   var pk = PRICE_KEY[key]; if (!pk) return;
   if (!DATA[pk]) DATA[pk] = {};
   var n = parseFloat(v); if (!isNaN(n)) DATA[pk].priceFrom = n;
-  var inp = document.getElementById(pk === 'komodo' ? 'p-komodo-from' : 'p-7isl-from');
+  // 4 Islands es precio FIJO: su unico campo es pkgFixed, y priceFrom lo sigue para que
+  // el hero y la tarjeta no puedan descuadrarse entre si.
+  if (pk === 'islands4') { DATA.islands4.pkgFixed = DATA.islands4.priceFrom; }
+  var inp = document.getElementById(pk === 'komodo' ? 'p-komodo-from' : (pk === 'islands4' ? 'p-4isl-fixed' : 'p-7isl-from'));
   if (inp) inp.value = DATA[pk].priceFrom;
   markDirty();
 }
@@ -1052,6 +1069,8 @@ function renderPricing() {
   document.getElementById('p-7isl-carself').value     = s.pkgCarSelf    || 2250;
   document.getElementById('p-7isl-cardriver').value   = s.pkgCarDriver  || 2550;
   document.getElementById('p-7isl-from').value        = s.priceFrom     || 2050;
+  var f = DATA.islands4 || {};
+  document.getElementById('p-4isl-fixed').value       = f.pkgFixed      || 1100;
 }
 
 function savePricing() {
@@ -1068,6 +1087,11 @@ function savePricing() {
     pkgCarDriver: parseFloat(document.getElementById('p-7isl-cardriver').value) || 2550,
     priceFrom:    parseFloat(document.getElementById('p-7isl-from').value)      || 2050
   };
+  // Precio fijo: pkgFixed y priceFrom son EL MISMO numero. Se escriben los dos porque la
+  // pagina lee pkgFixed para el calculador y priceFrom para el hero y la barra de reserva;
+  // si se separan, el lead ve dos precios distintos en la misma pantalla.
+  var fx = parseFloat(document.getElementById('p-4isl-fixed').value) || 1100;
+  DATA.islands4 = Object.assign({}, DATA.islands4, { pkgFixed: fx, priceFrom: fx });
   markDirty();
   toast('Pricing saved. Click Publish to go live.', 'info');
 }
