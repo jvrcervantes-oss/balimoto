@@ -1241,5 +1241,117 @@ function nlSubmit() {
 })();
 </script>
 <input type="file" id="imgFileInput" accept="image/*" style="display:none" onchange="handleImgUpload(event)">
+<!-- axw:aviso_error_checkout -->
+<!-- Fuente canonica: catalogo/snippets/aviso_error_checkout.html (repo agencia).
+     No editar aqui: se regenera. -->
+<style>
+  .axw-erroraviso{
+    position:fixed; left:50%; transform:translateX(-50%);
+    bottom:max(18px, env(safe-area-inset-bottom));
+    z-index:2147483000; width:calc(100% - 32px); max-width:520px;
+    display:flex; gap:12px; align-items:flex-start;
+    padding:14px 16px; border-radius:12px;
+    background:#1c1917; color:#fafaf9;
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 10px 40px rgba(0,0,0,.35);
+    font:500 15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+    animation:axw-erroraviso-in .28s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes axw-erroraviso-in{from{opacity:0;transform:translateX(-50%) translateY(12px)}}
+  @media (prefers-reduced-motion:reduce){.axw-erroraviso{animation:none}}
+  .axw-erroraviso-i{flex:none;width:20px;height:20px;margin-top:1px}
+  .axw-erroraviso-t{flex:1;min-width:0}
+  .axw-erroraviso-t b{display:block;font-weight:700;margin-bottom:2px}
+  .axw-erroraviso-t small{display:block;margin-top:6px;opacity:.55;font-size:12px}
+  .axw-erroraviso-x{
+    flex:none; background:none; border:0; cursor:pointer;
+    color:inherit; opacity:.6; font-size:22px; line-height:1;
+    padding:0 2px; margin:-2px -4px 0 0;
+  }
+  .axw-erroraviso-x:hover{opacity:1}
+  .axw-erroraviso-x:focus-visible{outline:2px solid #fafaf9;outline-offset:3px;border-radius:4px}
+</style>
+<script>
+(function () {
+  // El código puede venir tras `?` o tras un segundo `?` mal formado, y en
+  // sitios con hash-routing puede acabar dentro del hash: se busca en ambos.
+  var hay = location.search + location.hash;
+  var m = hay.match(/[?&]error=([^&#]*)/);
+  if (!m) return;
+
+  var code = '';
+  try { code = decodeURIComponent(m[1] || ''); } catch (e) { code = m[1] || ''; }
+  code = code.toLowerCase();
+
+  var es = (document.documentElement.getAttribute('lang') || navigator.language || 'es')
+             .toLowerCase().indexOf('es') === 0;
+
+  // [titulo_es, cuerpo_es, titulo_en, cuerpo_en]
+  var MSG = {
+    fechas: [
+      'Fechas no válidas',
+      'Revisa las fechas de la reserva e inténtalo otra vez.',
+      'Those dates aren’t valid',
+      'Please check your booking dates and try again.'
+    ],
+    conexion: [
+      'No se pudo conectar',
+      'No hemos podido contactar con la pasarela de pago. No se ha realizado ningún cargo: inténtalo de nuevo en un momento.',
+      'Couldn’t connect',
+      'We couldn’t reach the payment gateway. You have not been charged — please try again in a moment.'
+    ],
+    _: [
+      'No se pudo iniciar el pago',
+      'Algo ha fallado antes de llegar a la pasarela. No se ha realizado ningún cargo: vuelve a intentarlo y, si sigue igual, escríbenos.',
+      'Payment couldn’t start',
+      'Something failed before reaching the gateway. You have not been charged — please try again, and contact us if it keeps happening.'
+    ]
+  };
+  var t = MSG[code] || MSG._;
+  var titulo = es ? t[0] : t[2];
+  var cuerpo = es ? t[1] : t[3];
+
+  var box = document.createElement('div');
+  box.className = 'axw-erroraviso';
+  box.setAttribute('role', 'alert');
+
+  box.innerHTML =
+    '<svg class="axw-erroraviso-i" viewBox="0 0 24 24" fill="none" stroke="#fb923c"' +
+    ' stroke-width="2" stroke-linecap="round" aria-hidden="true">' +
+    '<circle cx="12" cy="12" r="9"/><path d="M12 8v4.5M12 16.2v.1"/></svg>' +
+    '<div class="axw-erroraviso-t"><b></b><span></span></div>' +
+    '<button class="axw-erroraviso-x" type="button" aria-label="' +
+      (es ? 'Cerrar aviso' : 'Dismiss') + '">×</button>';
+
+  // Texto por textContent, nunca por innerHTML: `code` viene de la URL y lo
+  // controla quien manda el enlace. Interpolarlo seria un XSS regalado.
+  box.querySelector('b').textContent = titulo;
+  box.querySelector('span').textContent = cuerpo;
+
+  // El código crudo solo si no es uno de los nuestros: ayuda al soporte a
+  // identificar un fallo de Stripe sin mostrar jerga en los casos normales.
+  if (!MSG[code] && code) {
+    var ref = document.createElement('small');
+    ref.textContent = (es ? 'Código: ' : 'Reference: ') + code.slice(0, 60);
+    box.querySelector('.axw-erroraviso-t').appendChild(ref);
+  }
+
+  function cerrar() { if (box.parentNode) box.parentNode.removeChild(box); }
+  box.querySelector('.axw-erroraviso-x').addEventListener('click', cerrar);
+
+  (document.body || document.documentElement).appendChild(box);
+
+  // Limpiar el parámetro para que un refresco no reviva el aviso. Se quita
+  // tambien el `?` sobrante que deja la URL mal formada.
+  try {
+    var resto = (location.search + location.hash)
+                  .replace(/([?&])error=[^&#]*/, '$1')
+                  .replace(/\?&/, '?')
+                  .replace(/[?&]$/, '');
+    history.replaceState(null, '', location.pathname + resto);
+  } catch (e) { /* replaceState puede fallar en file://: el aviso ya se vio */ }
+})();
+</script>
+<!-- /axw:aviso_error_checkout -->
 </body>
 </html>
