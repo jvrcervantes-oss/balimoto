@@ -9,12 +9,29 @@ if (!file_exists($config_path)) {
 require_once $config_path;
 // private/b2k-config.php define: STRIPE_SECRET, SUCCESS_URL, CANCEL_URL
 
+// Si CANCEL_URL ya trae query propia, el separador no puede ser '?': quedaria
+// ...?booking=cancel?error=xxx y el motivo del rechazo se pierde dentro del valor.
+function cancel_to($code) {
+    $sep = strpos(CANCEL_URL, '?') === false ? '?' : '&';
+    header('Location: ' . CANCEL_URL . $sep . 'error=' . rawurlencode($code), true, 303);
+    exit;
+}
+
 define('DEPOSIT_USD', 500);                          // depósito de RESERVA, por persona
 define('DEPOSIT_USD_CENTS', DEPOSIT_USD * 100);
 define('MAX_RIDERS', 12);
 
 // ── Validar parámetros ─────────────────────────────────────────────
-$riders = max(1, min((int)($_GET['riders'] ?? 1), MAX_RIDERS));
+// `riders` es OBLIGATORIO y se rechaza si no cuadra, no se rellena ni se recorta:
+// - sin el, un GET suelto a /checkout creaba una sesion de Stripe LIVE con 1 rider;
+// - recortando a MAX_RIDERS en silencio, el cliente pagaria por 12 mientras reserva
+//   para 15 y el operador recibiria la reserva entera (misma clase de fuga que el
+//   `?days=` de Sumba). Un importe callado que no coincide con lo reservado es el bug.
+$ridersRaw = (string)($_GET['riders'] ?? '');
+if (!ctype_digit($ridersRaw)) cancel_to('riders');
+$riders = (int) $ridersRaw;
+if ($riders < 1 || $riders > MAX_RIDERS) cancel_to('riders');
+
 $ref    = substr(preg_replace('/[^a-zA-Z0-9_\-]/', '', $_GET['ref'] ?? 'B2K'), 0, 100);
 
 $label = $riders . ' rider' . ($riders > 1 ? 's' : '') . ' × $' . number_format(DEPOSIT_USD) . ' deposit';
