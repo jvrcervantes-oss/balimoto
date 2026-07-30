@@ -32,3 +32,8 @@ masters/
 Thumbs.db
 desktop.ini
 MetaLead/
+
+# Creatividades y planes de campaña (mismo caso que MetaLead/): material de trabajo
+# para Meta Ads. Este repo DESPLIEGA en Hostinger, asi que todo lo que entre aqui
+# queda publico en balimotoadventures.com — y son 69 MB de PNG que nadie sirve.
+Marketing/
