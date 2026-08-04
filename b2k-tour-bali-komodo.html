@@ -1141,7 +1141,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali 2 Komodo Challenge', content_ca
       <div class="bk-signals">
         <div class="bk-sig">
           <div class="bk-sig-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div class="bk-sig-txt" id="bk-sig-dep"><strong>Secure reservation</strong>$500 per person deposit holds your spot &mdash; balance due 60 days before</div>
+          <div class="bk-sig-txt" id="bk-sig-dep"><strong>Secure reservation</strong>$500 per person deposit holds your spot &mdash; free cancellation up to 30 days before</div>
         </div>
         <div class="bk-sig">
           <div class="bk-sig-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
@@ -1170,7 +1170,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali 2 Komodo Challenge', content_ca
       <p class="bk-total-sub" id="t-bkTotalSub">Bike, fuel, hotels and gear &middot; excl. guide, mechanic, support car, meals and international flights</p>
 
       <div class="bk-dep-note" id="t-depNote">
-        <strong>To reserve:</strong> pay a <strong>$500 per person deposit</strong> now. Balance due 60 days before departure. Insurance: ~$275 full-risk, or $1,000 refundable deposit to cover the bike.
+        <strong>To reserve:</strong> pay a <strong>$500 per person deposit</strong> now. 50% two months before departure, the rest two weeks before or in cash on arrival. Insurance: ~$275 full-risk, or $1,000 refundable deposit to cover the bike.
       </div>
 
       <div class="bk-riders">
@@ -1314,7 +1314,7 @@ fbq('track', 'ViewContent', {content_name: 'Bali 2 Komodo Challenge', content_ca
       <div class="wise-amount-box">
         <div class="wise-amount-lbl">Deposit amount</div>
         <div class="wise-amount-num" id="wiseDepAmt">$500</div>
-        <div class="wise-amount-note" id="wisePkgNote">Roundtrip package &middot; balance due 60 days before departure</div>
+        <div class="wise-amount-note" id="wisePkgNote">Roundtrip package &middot; 50% two months before departure, the rest two weeks before or in cash on arrival</div>
       </div>
 
       <div class="wise-bank">
@@ -1580,9 +1580,9 @@ document.addEventListener('keydown', function(e) {
     var insDesc = document.getElementById('modDesc-all_in_insurance');
     if (insDesc) insDesc.textContent = 'Pay ' + S + ins + ' for full coverage — or leave a $1,000 refundable deposit to cover the bike';
     var sigDep = document.getElementById('bk-sig-dep');
-    if (sigDep) sigDep.innerHTML = '<strong>Secure reservation<\/strong>' + DEP_TXT + ' per person deposit holds your spot — balance due 60 days before';
+    if (sigDep) sigDep.innerHTML = '<strong>Secure reservation<\/strong>' + DEP_TXT + ' per person deposit holds your spot — free cancellation up to 30 days before';
     var dn = document.getElementById('t-depNote');
-    if (dn) dn.innerHTML = '<strong>To reserve:<\/strong> pay a <strong>' + DEP_TXT + ' per person deposit<\/strong> now. Balance due 60 days before departure. Insurance: ' + S + ins + ' full-risk, or $1,000 refundable deposit to cover the bike.';
+    if (dn) dn.innerHTML = '<strong>To reserve:<\/strong> pay a <strong>' + DEP_TXT + ' per person deposit<\/strong> now. 50% two months before departure, the rest two weeks before or in cash on arrival. Insurance: ' + S + ins + ' full-risk, or $1,000 refundable deposit to cover the bike.';
     // OJO: no escribir textContent en #bk-stripe — borraba el <span id="bk-btn-dep">
     // de dentro y el botón dejaba de reflejar el nº de riders. La etiqueta la
     // mantiene renderRiders.
@@ -1634,7 +1634,7 @@ document.addEventListener('keydown', function(e) {
     var el = document.getElementById('wiseDepAmt');
     if (el) el.textContent = DEP_TXT + ' per person';
     var pn = document.getElementById('wisePkgNote');
-    if (pn) pn.textContent = pkg.name + ' package · balance due 60 days before departure';
+    if (pn) pn.textContent = pkg.name + ' package · 50% two months before departure, the rest two weeks before or in cash on arrival';
     var rf = document.getElementById('wiseRef');
     if (rf) rf.textContent = refCode;
     var mods = Object.keys(selMods).filter(function(k){return selMods[k];}).map(function(k){return MODS[k].name;}).join(' + ');

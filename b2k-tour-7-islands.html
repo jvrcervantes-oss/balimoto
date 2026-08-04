@@ -58,7 +58,7 @@
         { "@type": "Question", "name": "Do I need to ride a motorcycle?", "acceptedAnswer": { "@type": "Answer", "text": "No. The tour offers four transport options: shared motorcycle (Bike x 2), solo motorcycle (Bike x 1), self-drive car, or private car with driver. You choose what fits your comfort level." } },
         { "@type": "Question", "name": "What level of fitness is required?", "acceptedAnswer": { "@type": "Answer", "text": "Medium. The itinerary includes river rafting, surfing lessons, ridge walks and snorkelling sessions. The driving days are long but comfortable, especially in the car options. You don't need to be an athlete, just curious and ready for adventure." } },
         { "@type": "Question", "name": "Do I need a visa for Indonesia?", "acceptedAnswer": { "@type": "Answer", "text": "Most European passport holders can enter Indonesia visa-free for up to 30 days. For longer stays a Visa on Arrival is available. Always check the latest requirements for your nationality before booking." } },
-        { "@type": "Question", "name": "How does the deposit and payment work?", "acceptedAnswer": { "@type": "Answer", "text": "A $500 per person deposit secures your spot. The remaining balance is due 60 days before departure. You can pay by card, Apple Pay, Google Pay or SEPA bank transfer (Wise)." } },
+        { "@type": "Question", "name": "How does the deposit and payment work?", "acceptedAnswer": { "@type": "Answer", "text": "A $500 per person deposit secures your spot. Then 50% of the total is due two months before departure (the deposit counts towards it), and the rest two weeks before, or in cash on arrival. You can pay by card, Apple Pay, Google Pay or SEPA bank transfer (Wise). Free cancellation up to 30 days before departure." } },
         { "@type": "Question", "name": "Can I join as a solo traveller?", "acceptedAnswer": { "@type": "Answer", "text": "Absolutely. Choose Bike x 1 or a car option to travel at your own pace. Solo travellers are very welcome, and you'll meet the rest of the group along the way." } }
       ]
     }
@@ -1112,7 +1112,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
       <div class="bk-signals">
         <div class="bk-sig">
           <div class="bk-sig-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div class="bk-sig-txt" id="bk7-sig-dep"><strong>Secure reservation</strong>$500 per person deposit holds your spot &mdash; balance due 60 days before</div>
+          <div class="bk-sig-txt" id="bk7-sig-dep"><strong>Secure reservation</strong>$500 per person deposit holds your spot &mdash; free cancellation up to 30 days before</div>
         </div>
         <div class="bk-sig">
           <div class="bk-sig-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
@@ -1136,7 +1136,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
       </div>
       <p class="bk-total-sub">Hotels, breakfast, activities and transfers &middot; excl. petrol, guide and international flights</p>
       <div class="bk-dep-note" id="t7-depNote">
-        <strong>To reserve:</strong> pay a <strong>$500 per person deposit</strong> now. Balance due 60 days before departure. Insurance: ~$275 full-risk, or $1,000 refundable deposit to cover the bike.
+        <strong>To reserve:</strong> pay a <strong>$500 per person deposit</strong> now. 50% two months before departure, the rest two weeks before or in cash on arrival. Insurance: ~$275 full-risk, or $1,000 refundable deposit to cover the bike.
       </div>
       <div class="bk-riders">
         <span class="bk-riders-lbl">Riders</span>
@@ -1202,7 +1202,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q"><span class="faq-qt">How does the deposit and payment work?</span><svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        <div class="faq-a">A $500 per person deposit secures your spot. The remaining balance is due 60 days before departure. You can pay by card, Apple Pay, Google Pay or SEPA bank transfer (Wise).</div>
+        <div class="faq-a">A $500 per person deposit secures your spot. Then 50% of the total is due two months before departure (the deposit counts towards it), and the rest two weeks before, or in cash on arrival. You can pay by card, Apple Pay, Google Pay or SEPA bank transfer (Wise). Free cancellation up to 30 days before departure.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q"><span class="faq-qt">Can I join as a solo traveller?</span><svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
@@ -1275,7 +1275,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
       <div class="wise-amount-box">
         <div class="wise-amount-lbl">Deposit amount</div>
         <div class="wise-amount-num" id="wiseDepAmt7">$500</div>
-        <div class="wise-amount-note" id="wisePkgNote7">Bike &times; 2 &middot; balance due 60 days before departure</div>
+        <div class="wise-amount-note" id="wisePkgNote7">Bike &times; 2 &middot; 50% two months before departure, the rest two weeks before or in cash on arrival</div>
       </div>
       <div class="wise-bank">
         <div class="wise-row"><span class="wise-row-lbl">Account name</span><span class="wise-row-val">SANDAL WOODS LIMITED</span></div>
@@ -1464,14 +1464,14 @@ document.addEventListener('keydown', function(e) {
     if (bd) bd.innerHTML = '<div class="bk-br-row"><span class="bk-br-label">' + lbl7 + '</span><span class="bk-br-val">' + fmt(total) + '</span></div>';
 
     var dn = document.getElementById('t7-depNote');
-    if (dn) dn.innerHTML = '<strong>To reserve:</strong> pay a <strong>' + DEP_TXT + ' per person deposit</strong> now. Balance due 60 days before departure. Insurance: ' + S + conv(275) + ' full-risk, or $1,000 refundable deposit to cover the bike.';
+    if (dn) dn.innerHTML = '<strong>To reserve:</strong> pay a <strong>' + DEP_TXT + ' per person deposit</strong> now. 50% two months before departure, the rest two weeks before or in cash on arrival. Insurance: ' + S + conv(275) + ' full-risk, or $1,000 refundable deposit to cover the bike.';
 
     // OJO: no escribir textContent en #bk7-stripe — borraba el <span id="bk7-btn-dep">
     // de dentro, y luego render7Riders petaba al buscarlo (el total se quedaba clavado).
     // La etiqueta del botón la mantiene render7Riders.
 
     var sigDep = document.getElementById('bk7-sig-dep');
-    if (sigDep) sigDep.innerHTML = '<strong>Secure reservation</strong>' + DEP_TXT + ' per person deposit holds your spot — balance due 60 days before';
+    if (sigDep) sigDep.innerHTML = '<strong>Secure reservation</strong>' + DEP_TXT + ' per person deposit holds your spot — free cancellation up to 30 days before';
 
     var mods = selPkg;
     var msg = 'Hi! I am interested in the 7 Islands Hopping Tour.\nTransport: ' + pkg.name + '\nTravelers: ' + numRiders7 + '\nEstimated total: ' + fmt(total) + '\nWhen can we speak?';
@@ -1506,7 +1506,7 @@ document.addEventListener('keydown', function(e) {
     var el = document.getElementById('wiseDepAmt7');
     if (el) el.textContent = DEP_TXT + ' per person';
     var pn = document.getElementById('wisePkgNote7');
-    if (pn) pn.textContent = pkg.name + ' · balance due 60 days before departure';
+    if (pn) pn.textContent = pkg.name + ' · 50% two months before departure, the rest two weeks before or in cash on arrival';
     var rf = document.getElementById('wiseRef7');
     if (rf) rf.textContent = refCode;
     var msg = 'Hi! I just made a bank transfer to reserve the 7 Islands Hopping Tour.\nTransport: ' + pkg.name + '\nTravelers: ' + numRiders7 + '\nDeposit: ' + DEP_TXT + ' per person\nReference: ' + refCode + '\nPlease confirm my reservation. Thanks!';
