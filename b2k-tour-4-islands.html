@@ -1199,7 +1199,16 @@ document.addEventListener('keydown', function(e) {
       }
     }).catch(function() {});
 
-  function fmt(eur) { return SYMS[selCurr] + Math.ceil(eur * rates[selCurr]).toLocaleString('en'); }
+  // Redondeo de las monedas convertidas. El precio REAL es el USD self-guided; EUR/AUD/CAD
+  // son orientativos, asi que se redondean a 50 y no sale un "3,956" que parece calculado
+  // al centimo. USD no se toca: con rate 1, redondear a 50 convertiria los 275 del seguro
+  // en 300 y ese sí es un importe que se cobra.
+  function conv(usd) {
+    var v = usd * rates[selCurr];
+    return selCurr === 'USD' ? Math.ceil(v) : Math.round(v / 50) * 50;
+  }
+
+  function fmt(eur) { return SYMS[selCurr] + conv(eur).toLocaleString('en'); }
 
   // Depósito de RESERVA (ahora, por persona). Distinto del reembolsable de daños ($1.000 por moto).
   var DEPOSIT_USD = 500;
@@ -1237,7 +1246,7 @@ document.addEventListener('keydown', function(e) {
     if (bd) bd.innerHTML = '<div class="bk-br-row"><span class="bk-br-label">' + lbl7 + '</span><span class="bk-br-val">' + fmt(total) + '</span></div>';
 
     var dn = document.getElementById('t7-depNote');
-    if (dn) dn.innerHTML = '<strong>To reserve:</strong> pay a <strong>' + DEP_TXT + ' per person deposit</strong> now. Balance due 60 days before departure. Insurance: ' + S + Math.ceil(275 * rates[selCurr]) + ' full-risk, or $1,000 refundable deposit to cover the bike.';
+    if (dn) dn.innerHTML = '<strong>To reserve:</strong> pay a <strong>' + DEP_TXT + ' per person deposit</strong> now. Balance due 60 days before departure. Insurance: ' + S + conv(275) + ' full-risk, or $1,000 refundable deposit to cover the bike.';
 
     // OJO: no escribir textContent en #bk7-stripe — borraba el <span id="bk7-btn-dep">
     // de dentro, y luego render7Riders petaba al buscarlo (el total se quedaba clavado).
