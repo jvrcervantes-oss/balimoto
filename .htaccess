@@ -56,6 +56,11 @@ Options -Indexes
   </IfModule>
 </FilesMatch>
 
+# `_compartido/` (6-ago-2026): fuente de nav/footer por familia para
+# `tools/estampar_bloques.py` — fragmentos HTML sueltos, sin <head> ni
+# contenido, que nunca deben servirse por su cuenta. Cazado por Legal en
+# la consulta de deploy de esta misma sesión: sin esta regla respondían
+# 200 en producción.
 # ── 5. Control de versiones, backups y carpeta privada ─────────────
 # `/private/` ya tiene su propio .htaccess en el servidor, PERO `private/`
 # está gitignored → ese fichero no lo repone ningún deploy. Si un wipe o
@@ -63,7 +68,7 @@ Options -Indexes
 # el CSV de suscriptores queda al aire. Esta regla SÍ está versionada.
 RedirectMatch 404 (?i)/\.git
 RedirectMatch 404 (?i)/private/
-RedirectMatch 404 (?i)/(Backups?|Deprecated|masters|MetaLead)/
+RedirectMatch 404 (?i)/(Backups?|Deprecated|masters|MetaLead|_compartido)/
 
 # ── URLs limpias: /terms en vez de /terms.html ─────────────────────
 # Solo raiz y solo GET a proposito: las subcarpetas (api/, private/) son endpoints

@@ -426,8 +426,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
   <button class="ham-btn" onclick="openDrw()" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 <div class="drawer-ov" onclick="closeDrw()"></div>
-<nav class="drw">
-  <button class="drw-close" onclick="closeDrw()">&#10005;</button>
+<nav class="drw" aria-label="Mobile menu">
+  <button class="drw-close" onclick="closeDrw()" aria-label="Close menu">&#10005;</button>
   <a href="/">Home</a>
   <a href="#itinerary" onclick="closeDrw()">Itinerary</a>
   <a href="#faq" onclick="closeDrw()">FAQ</a>
