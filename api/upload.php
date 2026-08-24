@@ -45,13 +45,35 @@ if ($file['size'] > MAX_UPLOAD_MB * 1024 * 1024) {
 
 if (!is_dir(IMAGES_DIR)) mkdir(IMAGES_DIR, 0755, true);
 
-$filename = date('Ymd') . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
-$dest     = IMAGES_DIR . $filename;
+// Salida SIEMPRE webp (norma de agencia, 24-ago-2026): re-encoda con GD si esta
+// disponible; si no, guarda el original tal cual — mejor una foto pesada que un
+// panel que no deja subir nada. Sin resize: este endpoint nunca lo tuvo, y anadirlo
+// aqui seria colar una feature nueva en un cambio que solo pide formato.
+$loaders   = ['jpg' => 'imagecreatefromjpeg', 'jpeg' => 'imagecreatefromjpeg',
+              'png' => 'imagecreatefrompng',  'webp' => 'imagecreatefromwebp'];
+$loader    = $loaders[$ext] ?? null;
+$processed = false;
 
-if (!move_uploaded_file($file['tmp_name'], $dest)) {
-    http_response_code(500);
-    echo json_encode(['ok' => false, 'error' => 'Upload failed. Check server permissions.']);
-    exit;
+if ($loader && function_exists($loader) && function_exists('imagewebp')) {
+    $filename = date('Ymd') . '_' . bin2hex(random_bytes(6)) . '.webp';
+    $dest     = IMAGES_DIR . $filename;
+    $src      = @$loader($file['tmp_name']);
+    if ($src) {
+        imagealphablending($src, false);
+        imagesavealpha($src, true);
+        $processed = imagewebp($src, $dest, IMAGE_QUALITY);
+        imagedestroy($src);
+    }
+}
+
+if (!$processed) {
+    $filename = date('Ymd') . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
+    $dest     = IMAGES_DIR . $filename;
+    if (!move_uploaded_file($file['tmp_name'], $dest)) {
+        http_response_code(500);
+        echo json_encode(['ok' => false, 'error' => 'Upload failed. Check server permissions.']);
+        exit;
+    }
 }
 
 echo json_encode(['ok' => true, 'url' => IMAGES_URL . $filename, 'name' => $filename]);

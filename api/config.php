@@ -33,6 +33,7 @@ define('DATA_FILE',    dirname(__DIR__) . DIRECTORY_SEPARATOR . 'data.json');
 define('IMAGES_DIR',   dirname(__DIR__) . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR);
 define('IMAGES_URL',   'images/');
 define('MAX_UPLOAD_MB', 8);
+define('IMAGE_QUALITY', 82);
 
 // ── Anti-CSRF: exige que las peticiones que mutan estado vengan del propio sitio ──
 function b2k_require_same_origin() {
