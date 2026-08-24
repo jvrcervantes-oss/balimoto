@@ -72,14 +72,32 @@
 <meta name="twitter:image" content="https://balimotoadventures.com/images/hero-7islands.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-<!-- Meta Pixel Code -->
+<!-- Meta Pixel Code — gateado por consentimiento real (UK PECR/GDPR + CCPA): no dispara
+     hasta que el visitante acepta en el banner. Se quita el <noscript> de siempre: ese beacon
+     no se puede gatear (no hay JS que lo pare), así que se pierde el ~0% de tráfico sin JS a
+     cambio de no rastrear a nadie sin permiso. Ver privacy-policy.html §8. -->
 <script>
-!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+(function(){
+  var KEY='b2k_ads_consent', consent=localStorage.getItem(KEY), queue=[], booted=false;
+  window.fbq=function(){ queue.push(arguments); };
+  function boot(){
+    if (booted) return; booted=true;
+    delete window.fbq; // deja hueco para que el snippet oficial cree el stub real como window.fbq
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    queue.forEach(function(a){ window.fbq.apply(null, a); });
+    queue.length=0;
+  }
+  window.__b2kConsentAccept=function(){ localStorage.setItem(KEY,'yes'); boot(); var b=document.getElementById('cookieBanner'); if(b) b.style.display='none'; };
+  window.__b2kConsentReject=function(){ localStorage.setItem(KEY,'no'); queue.length=0; var b=document.getElementById('cookieBanner'); if(b) b.style.display='none'; };
+  if (consent==='yes') boot();
+  document.addEventListener('DOMContentLoaded', function(){
+    if (!consent){ var b=document.getElementById('cookieBanner'); if(b) b.style.display='flex'; }
+  });
+})();
 fbq('init', '1916298258994371');
 fbq('track', 'PageView');
 fbq('track', 'ViewContent', {content_name: '7 Islands Hopping', content_category: 'Island Tour', currency: 'USD', value: 2050});
 </script>
-<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1916298258994371&ev=PageView&noscript=1"/></noscript>
 <!-- End Meta Pixel Code -->
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -412,6 +430,13 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 </style>
 </head>
 <body>
+<div id="cookieBanner" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#1c2b1e;color:#faf6ef;padding:16px 20px;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font:14px/1.5 'Instrument Sans',system-ui,sans-serif;box-shadow:0 -4px 24px rgba(0,0,0,.25)">
+  <span style="max-width:520px">We use essential cookies to run this site, and — only if you say yes — advertising cookies to measure our Instagram/Facebook ads. <a href="/privacy-policy" style="color:#e8490a;text-decoration:underline">Privacy policy</a></span>
+  <span style="display:flex;gap:10px;flex-shrink:0">
+    <button onclick="window.__b2kConsentReject()" style="padding:9px 18px;border-radius:999px;border:1px solid rgba(250,246,239,.5);background:transparent;color:#faf6ef;font:inherit;font-weight:600;cursor:pointer">Reject</button>
+    <button onclick="window.__b2kConsentAccept()" style="padding:9px 18px;border-radius:999px;border:none;background:#e8490a;color:#fff;font:inherit;font-weight:600;cursor:pointer">Accept</button>
+  </span>
+</div>
 
 <nav>
   <a href="/" class="nav-logo">Bali <span>Moto</span> Adventures</a>

@@ -20,7 +20,28 @@
 <link rel="canonical" href="https://balimotoadventures.com/privacy-policy">
 <meta name="robots" content="noindex">
 <meta name="facebook-domain-verification" content="nnhwo33xuwyw68j666nm5vxjjuolqm" />
-<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1916298258994371');fbq('track','PageView');</script>
+<!-- Meta Pixel Code — gateado por consentimiento real, ver §8 más abajo y el banner del body. -->
+<script>
+(function(){
+  var KEY='b2k_ads_consent', consent=localStorage.getItem(KEY), queue=[], booted=false;
+  window.fbq=function(){ queue.push(arguments); };
+  function boot(){
+    if (booted) return; booted=true;
+    delete window.fbq; // deja hueco para que el snippet oficial cree el stub real como window.fbq
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    queue.forEach(function(a){ window.fbq.apply(null, a); });
+    queue.length=0;
+  }
+  window.__b2kConsentAccept=function(){ localStorage.setItem(KEY,'yes'); boot(); var b=document.getElementById('cookieBanner'); if(b) b.style.display='none'; };
+  window.__b2kConsentReject=function(){ localStorage.setItem(KEY,'no'); queue.length=0; var b=document.getElementById('cookieBanner'); if(b) b.style.display='none'; };
+  if (consent==='yes') boot();
+  document.addEventListener('DOMContentLoaded', function(){
+    if (!consent){ var b=document.getElementById('cookieBanner'); if(b) b.style.display='flex'; }
+  });
+})();
+fbq('init','1916298258994371');
+fbq('track','PageView');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -48,6 +69,13 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
 </style>
 </head>
 <body>
+<div id="cookieBanner" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#1c2b1e;color:#faf6ef;padding:16px 20px;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font:14px/1.5 'Instrument Sans',system-ui,sans-serif;box-shadow:0 -4px 24px rgba(0,0,0,.25)">
+  <span style="max-width:520px">We use essential cookies to run this site, and — only if you say yes — advertising cookies to measure our Instagram/Facebook ads. <a href="/privacy-policy" style="color:#e8490a;text-decoration:underline">Privacy policy</a></span>
+  <span style="display:flex;gap:10px;flex-shrink:0">
+    <button onclick="window.__b2kConsentReject()" style="padding:9px 18px;border-radius:999px;border:1px solid rgba(250,246,239,.5);background:transparent;color:#faf6ef;font:inherit;font-weight:600;cursor:pointer">Reject</button>
+    <button onclick="window.__b2kConsentAccept()" style="padding:9px 18px;border-radius:999px;border:none;background:#e8490a;color:#fff;font:inherit;font-weight:600;cursor:pointer">Accept</button>
+  </span>
+</div>
 
 <nav>
   <a href="/" class="nav-logo">Bali <span>Moto</span> Adventures</a>
@@ -62,7 +90,7 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
 
 <main>
   <h1>Privacy Policy</h1>
-  <p class="updated">Last updated: June 2026</p>
+  <p class="updated">Last updated: August 2026</p>
 
   <p>Bali Moto Adventures ("we", "us", "our") is committed to protecting your personal data. This policy explains what information we collect, how we use it, and your rights.</p>
 
@@ -75,7 +103,8 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
     <li>Name and phone number (when you message us via WhatsApp)</li>
     <li>Email address (when you submit a contact form or newsletter signup)</li>
     <li>Country of residence and travel dates (provided voluntarily during booking enquiries)</li>
-    <li>Device and browsing data (collected automatically via cookies and analytics tools)</li>
+    <li>Name, email, phone number and trip preferences (when you submit one of our Instagram or Facebook lead forms)</li>
+    <li>Device and browsing data (collected automatically via cookies and analytics tools, only after you accept them — see Section 8)</li>
   </ul>
 
   <h2>3. How We Use Your Data</h2>
@@ -95,7 +124,7 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
   </ul>
 
   <h2>5. WhatsApp Communications</h2>
-  <p>When you contact us via WhatsApp, your messages may be processed by an automated assistant powered by Claude (Anthropic). Your phone number and conversation data are stored in our CRM (Google Sheets) to manage your enquiry. We do not share this data with third parties for marketing purposes.</p>
+  <p>When you contact us via WhatsApp — including after submitting one of our Instagram or Facebook lead forms, which hands your enquiry straight to WhatsApp — your messages may be processed by an automated assistant powered by Claude (Anthropic). Your name, email, phone number and conversation data are stored in our CRM to manage your enquiry. We do not share this data with third parties for marketing purposes.</p>
 
   <h2>6. Data Sharing</h2>
   <p>We do not sell your personal data. We may share it with:</p>
@@ -105,10 +134,11 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
   </ul>
 
   <h2>7. Data Retention</h2>
-  <p>We retain your data for as long as necessary to provide our services and comply with legal obligations. You may request deletion at any time (see Section 9).</p>
+  <p>We keep enquiry and lead data for as long as needed to respond to you and manage a possible booking, and for up to 24 months after your last contact with us if no booking is made, after which it is deleted. You may request earlier deletion at any time (see Section 9).</p>
 
   <h2>8. Cookies</h2>
-  <p>Our website uses cookies for analytics and advertising purposes. By continuing to browse, you consent to their use. You can manage cookies through your browser settings.</p>
+  <p>Essential cookies needed to run the site are always on. Advertising cookies (Meta Pixel) only load after you accept them in the cookie banner shown on your first visit — you can reject them there instead, and change your choice at any time by clearing this site's data in your browser settings.</p>
+  <p><strong>California residents:</strong> under the CCPA/CPRA you have the right to opt out of the "sharing" of your data for cross-context advertising, which is what the Meta Pixel and the audiences built from it are used for. To opt out, reject cookies in the banner, or email <a href="mailto:ride@balimotoadventures.com">ride@balimotoadventures.com</a> with "Do Not Sell or Share My Personal Information" in the subject line.</p>
 
   <h2>9. Your Rights</h2>
   <p>Under applicable data protection law, you have the right to:</p>
