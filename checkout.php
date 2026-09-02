@@ -49,6 +49,24 @@ $data = [
   'client_reference_id'                                  => $ref,
   'metadata[riders]'                                     => $riders,
   'metadata[total_usd]'                                  => $riders * DEPOSIT_USD,
+
+  // Marca de propiedad. La cuenta de Stripe esta COMPARTIDA con Sumba Rental y
+  // BBM, y un webhook de Stripe recibe los checkout.session.completed de TODA la
+  // cuenta, no solo los de la web que creo la sesion. Sin esta marca, una venta
+  // de aqui llega a los demas "sin dueno".
+  //
+  // Paso de verdad el 1-sep-2026: un deposito cobrado por esta pasarela entro en
+  // el webhook de Sumba Rental, se apunto como reserva suya y al cliente le llego
+  // un email confirmandole una moto de alquiler en el aeropuerto de Tambolaka que
+  // nunca habia reservado. Sumba ya filtra por esta marca al ENTRAR; ponerla aqui
+  // cierra el otro lado y deja la identificacion lista para cuando B2K tenga su
+  // propio webhook (a 1-sep-2026 no tiene: cobra y no avisa a nadie).
+  //
+  // Aditivo y seguro: hoy nadie lee esta clave. El bot de B2K descarta lo ajeno
+  // por divisa y el de BBM por la ausencia de `phone` en la metadata, asi que
+  // anadirla no cambia lo que ninguno de los dos ve. `b2k` es el slug del
+  // proyecto en departamentos/bots/prompt.md.
+  'metadata[bot]'                                        => 'b2k',
 ];
 
 $ch = curl_init('https://api.stripe.com/v1/checkout/sessions');
