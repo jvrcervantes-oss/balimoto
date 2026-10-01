@@ -1110,7 +1110,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   try {
     const r = await fetch('data.json?_=' + Date.now());
     if (r.ok) SITE_DATA = await r.json();
-  } catch(e) {}
+  } catch(e) { /* MUDO A PROPOSITO: si data.json no carga, la web se pinta con el contenido por defecto de index.html; no hay nada que avisar al visitante */ }
   applyAll();
   const eye = document.getElementById('hEye');
   const ws = [document.getElementById('hw1'), document.getElementById('hw2'), document.getElementById('hw3')];
