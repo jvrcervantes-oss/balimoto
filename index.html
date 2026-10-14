@@ -336,8 +336,12 @@ nav{position:sticky;top:.8rem;z-index:200;background:#faf6ef;backdrop-filter:blu
 /* NL */
 .nl{background:#0d1a0f;padding:3.5rem 5vw;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
 .nl-txt strong{color:#fff;display:block;font-size:17px;margin-bottom:.3rem;font-family:'Bebas Neue',sans-serif;letter-spacing:.06em}
-.nl-txt{font-size:14px;color:rgba(255,255,255,.45);max-width:340px}
+.nl-txt{font-size:14px;color:rgba(255,255,255,.55);max-width:340px}
+.nl-col{display:flex;flex-direction:column;gap:.6rem;max-width:440px}
 .nl-form{display:flex;gap:.5rem}
+.nl-legal{font-size:12px;line-height:1.55;color:rgba(255,255,255,.6);margin:0}
+.nl-legal a{color:rgba(255,255,255,.85);text-decoration:underline;text-underline-offset:2px}
+.nl-legal a:hover{color:#fff}
 .nl-in{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#fff;padding:13px 20px;font-size:14px;border-radius:100px;width:270px;font-family:inherit;outline:none;transition:border-color .2s}
 .nl-in:focus{border-color:var(--green)}
 .nl-in::placeholder{color:rgba(255,255,255,.28)}
@@ -460,7 +464,7 @@ footer{background:#070e08;color:rgba(255,255,255,.4);padding:4rem 5vw 2rem}
 @media(max-width:768px){.ham-btn{display:flex}}
 @media(max-width:768px){nav{margin:0;border-radius:0;top:0;height:64px;padding:0 1.2rem}}
 @media(prefers-reduced-motion:reduce){.rv,.rvl,.rvs{transition:opacity .3s ease;transform:none!important}.tour-card{transition:none!important;opacity:1;transform:none}.hero-eyebrow::before{transition:none}.masonry-item img,.rev-card,.tour-card,.why-feat-icon{transition:none!important}}
-@media(max-width:600px){.nl-form{flex-direction:column;align-items:stretch}.nl-in{width:100%}.nl-btn{width:100%}}
+@media(max-width:600px){.nl-col{width:100%;max-width:none}.nl-form{flex-direction:column;align-items:stretch}.nl-in{width:100%}.nl-btn{width:100%}}
 
 /* ════════════ CINEMATIC RESTYLE · capa additiva (2026-06-11) ════════════ */
 /* Capa 100% additiva — no modifica ninguna regla anterior. Toda la firma de marca se conserva. */
@@ -868,7 +872,10 @@ fbq('track', 'PageView');
 
 <div class="nl">
   <div class="nl-txt"><strong>Stay in the loop</strong>New routes, early access and exclusive deals.</div>
-  <div class="nl-form"><input class="nl-in" id="nlEmail" type="email" placeholder="your@email.com" autocomplete="email" aria-label="Email address"><button class="nl-btn" id="nlBtn" type="button" onclick="nlSubmit()">Subscribe</button></div><div id="nlMsg" role="status" style="font-size:13px;margin-top:.5rem;color:rgba(255,255,255,.6);display:none"></div>
+  <div class="nl-col">
+  <div class="nl-form"><input class="nl-in" id="nlEmail" type="email" placeholder="your@email.com" autocomplete="email" aria-label="Email address"><button class="nl-btn" id="nlBtn" type="button" onclick="nlSubmit()">Subscribe</button></div><div id="nlMsg" role="status" style="font-size:13px;color:rgba(255,255,255,.6);display:none"></div>
+  <p class="nl-legal">By subscribing you agree to receive occasional emails about our routes and tours. To unsubscribe, email <a href="mailto:ride@balimotoadventures.com">ride@balimotoadventures.com</a>. <a href="/privacy-policy">Privacy policy</a></p>
+  </div>
 </div>
 
 <section id="guides" style="background:var(--cream);padding:5rem 5vw 4rem">
