@@ -34,18 +34,24 @@
   //   texto que solo hablaba de publicidad y no vale: se vuelve a preguntar. El «no» antiguo sí se hereda.
   // · Sin «yes» (rechazo, sin elección o almacenamiento bloqueado) no se pide nada a Google ni a Meta, y
   //   en CADA carga se borran sus cookies de este dominio: las hay de visitas anteriores al aviso.
+  // · La elección caduca a los 12 meses (365 días): su fecha va en la clave hermana b2k_consent_v2_at (ms desde 1970).
+  //   Pasado ese plazo cuenta como «sin elección»: vuelve el aviso y se borran las cookies de medición. Una elección
+  //   sin fecha (las guardadas antes del 14-oct-2026), con una fecha ilegible o del futuro empieza a contar desde esta
+  //   carga: no se vuelve a preguntar a todos de golpe. Lo promete privacy-policy.html §8 («for 12 months»).
   // · [data-b2k-consent-open] (enlace «Cookie settings» del pie) vuelve a enseñar el mismo aviso; Escape lo
   //   cierra sin cambiar nada. Rechazar con la medición ya cargada recarga la página: es la única forma de
   //   que deje de enviar. Lo mismo si el permiso se retiró en otra pestaña o la página vuelve del historial.
-  var KEY='b2k_consent_v2', OLD='b2k_ads_consent', queue=[], cargada=false, booted=false, consent, origen=null;
+  var KEY='b2k_consent_v2', KEY_AT='b2k_consent_v2_at', DURA=365*24*3600*1000, OLD='b2k_ads_consent';
+  var queue=[], cargada=false, booted=false, consent, origen=null, t, ahora;
   function leer(k){
     try { return localStorage.getItem(k); }
     catch(e){ /* MUDO A PROPOSITO: sin almacenamiento (modo privado, bloqueado) cuenta como «sin elección»: se enseña el aviso y no se mide */ return null; }
   }
-  function guardar(v){
-    try { localStorage.setItem(KEY, v); }
+  function guardar(k, v){
+    try { localStorage.setItem(k, v); }
     catch(e){ /* MUDO A PROPOSITO: la elección vale para esta página; solo no se recuerda, y el aviso vuelve a salir en la siguiente */ }
   }
+  function elegir(v){ guardar(KEY, v); guardar(KEY_AT, String(Date.now())); }
   function borrarCookies(){
     // Una cookie solo se borra con el mismo dominio con que se creó: se prueba sin dominio y con cada
     // sufijo del host, con y sin punto delante (cubre balimotoadventures.com y www).
@@ -68,6 +74,11 @@
   }
   consent=leer(KEY);
   if (consent!=='yes' && consent!=='no') consent=(leer(OLD)==='no') ? 'no' : null;
+  if (consent){
+    t=Number(leer(KEY_AT)); ahora=Date.now();
+    if (!(t>0) || t>ahora) guardar(KEY_AT, String(ahora));   // sin fecha, ilegible o del futuro: cuenta desde hoy
+    else if (ahora-t>DURA) consent=null;                    // más de 12 meses: se vuelve a preguntar
+  }
   if (consent!=='yes') borrarCookies();
   // Hasta que se acepte, fbq solo apunta los avisos de carga de la página (init, PageView, ViewContent) en una
   // lista que no sale del navegador. Lo que el visitante hace después sin un «yes» ni se apunta: al aceptar
@@ -79,7 +90,7 @@
     window.dataLayer=window.dataLayer||[];
     window.gtag=function(){ window.dataLayer.push(arguments); };
     window.gtag('js', new Date());
-    window.gtag('config', 'G-TVFVLX45TD');
+    window.gtag('config', 'G-TVFVLX45TD', { cookie_expires: 31536000 });   // _ga y _ga_<id> duran 1 año, no los 2 por defecto
     var g=document.createElement('script'), s0=document.getElementsByTagName('script')[0];
     g.async=true; g.src='https://www.googletagmanager.com/gtag/js?id=G-TVFVLX45TD'; s0.parentNode.insertBefore(g,s0);
     // Meta Pixel
@@ -88,9 +99,9 @@
     queue.forEach(function(a){ window.fbq.apply(null, a); });
     queue.length=0;
   }
-  window.__b2kConsentAccept=function(){ guardar('yes'); consent='yes'; aviso(false); boot(); };
+  window.__b2kConsentAccept=function(){ elegir('yes'); consent='yes'; aviso(false); boot(); };
   window.__b2kConsentReject=function(){
-    guardar('no'); consent='no'; aviso(false); borrarCookies();
+    elegir('no'); consent='no'; aviso(false); borrarCookies();
     if (booted) location.reload();   // ya estaban cargados: sin recargar seguirían enviando
   };
   // Esta página puede seguir midiendo con el permiso ya retirado en otra pestaña, o al volver con «atrás»

@@ -1,0 +1,103 @@
+<!-- Consentimiento de cookies · Google Analytics 4 · Meta Pixel. Ninguno de los dos carga hasta que el
+     visitante acepta en el aviso (#cookieBanner, al principio del body); sin elección o con rechazo no
+     se pide nada a Google ni a Meta. No hay <noscript> del Pixel a propósito: ese beacon no se puede
+     frenar sin JS, así que a quien navega sin JS no se le mide. Ver privacy-policy.html §8. -->
+<script>
+(function(){
+  // Un solo consentimiento para analítica (Google Analytics 4) y publicidad (Meta Pixel): ninguno de los
+  // dos carga hasta que el visitante acepta. Bloque idéntico en todas las páginas públicas y en 404.html.
+  // · Clave b2k_consent_v2 ('yes' | 'no'). Un «yes» de la clave antigua (b2k_ads_consent) se dio bajo un
+  //   texto que solo hablaba de publicidad y no vale: se vuelve a preguntar. El «no» antiguo sí se hereda.
+  // · Sin «yes» (rechazo, sin elección o almacenamiento bloqueado) no se pide nada a Google ni a Meta, y
+  //   en CADA carga se borran sus cookies de este dominio: las hay de visitas anteriores al aviso.
+  // · La elección caduca a los 12 meses (365 días): su fecha va en la clave hermana b2k_consent_v2_at (ms desde 1970).
+  //   Pasado ese plazo cuenta como «sin elección»: vuelve el aviso y se borran las cookies de medición. Una elección
+  //   sin fecha (las guardadas antes del 14-oct-2026), con una fecha ilegible o del futuro empieza a contar desde esta
+  //   carga: no se vuelve a preguntar a todos de golpe. Lo promete privacy-policy.html §8 («for 12 months»).
+  // · [data-b2k-consent-open] (enlace «Cookie settings» del pie) vuelve a enseñar el mismo aviso; Escape lo
+  //   cierra sin cambiar nada. Rechazar con la medición ya cargada recarga la página: es la única forma de
+  //   que deje de enviar. Lo mismo si el permiso se retiró en otra pestaña o la página vuelve del historial.
+  var KEY='b2k_consent_v2', KEY_AT='b2k_consent_v2_at', DURA=365*24*3600*1000, OLD='b2k_ads_consent';
+  var queue=[], cargada=false, booted=false, consent, origen=null, t, ahora;
+  function leer(k){
+    try { return localStorage.getItem(k); }
+    catch(e){ /* MUDO A PROPOSITO: sin almacenamiento (modo privado, bloqueado) cuenta como «sin elección»: se enseña el aviso y no se mide */ return null; }
+  }
+  function guardar(k, v){
+    try { localStorage.setItem(k, v); }
+    catch(e){ /* MUDO A PROPOSITO: la elección vale para esta página; solo no se recuerda, y el aviso vuelve a salir en la siguiente */ }
+  }
+  function elegir(v){ guardar(KEY, v); guardar(KEY_AT, String(Date.now())); }
+  function borrarCookies(){
+    // Una cookie solo se borra con el mismo dominio con que se creó: se prueba sin dominio y con cada
+    // sufijo del host, con y sin punto delante (cubre balimotoadventures.com y www).
+    try {
+      var p=location.hostname.split('.'), doms=[''], i;
+      for (i=0; i<p.length-1; i++){ doms.push('.'+p.slice(i).join('.')); doms.push(p.slice(i).join('.')); }
+      document.cookie.split(';').forEach(function(par){
+        var n=par.split('=')[0].replace(/^\s+|\s+$/g,'');
+        if (!/^(_ga|_gid|_gat|_fbp|_fbc)$|^(_ga_|_gat_|_gcl_)/.test(n)) return;
+        doms.forEach(function(d){ document.cookie=n+'=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'+(d ? '; domain='+d : ''); });
+      });
+    } catch(e){ /* MUDO A PROPOSITO: si el navegador no deja leer ni escribir cookies, tampoco hay cookies de medición que borrar */ }
+  }
+  function aviso(ver, foco){
+    var b=document.getElementById('cookieBanner'), f;
+    if (!b) return;
+    b.style.display=ver ? 'flex' : 'none';
+    if (ver && foco && (f=b.querySelector('button'))) f.focus();
+    if (!ver && origen){ f=origen; origen=null; if (f.focus) f.focus(); }   // el foco vuelve al enlace que lo abrió
+  }
+  consent=leer(KEY);
+  if (consent!=='yes' && consent!=='no') consent=(leer(OLD)==='no') ? 'no' : null;
+  if (consent){
+    t=Number(leer(KEY_AT)); ahora=Date.now();
+    if (!(t>0) || t>ahora) guardar(KEY_AT, String(ahora));   // sin fecha, ilegible o del futuro: cuenta desde hoy
+    else if (ahora-t>DURA) consent=null;                    // más de 12 meses: se vuelve a preguntar
+  }
+  if (consent!=='yes') borrarCookies();
+  // Hasta que se acepte, fbq solo apunta los avisos de carga de la página (init, PageView, ViewContent) en una
+  // lista que no sale del navegador. Lo que el visitante hace después sin un «yes» ni se apunta: al aceptar
+  // se envía la visita a esta página, nunca lo que hizo antes de dar permiso.
+  window.fbq=function(){ if (!cargada) queue.push(arguments); };
+  function boot(){
+    if (booted) return; booted=true;
+    // Google Analytics 4: el gtag.js oficial, cargado aquí (tras aceptar) y no en la cabecera
+    window.dataLayer=window.dataLayer||[];
+    window.gtag=function(){ window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', 'G-TVFVLX45TD', { cookie_expires: 31536000 });   // _ga y _ga_<id> duran 1 año, no los 2 por defecto
+    var g=document.createElement('script'), s0=document.getElementsByTagName('script')[0];
+    g.async=true; g.src='https://www.googletagmanager.com/gtag/js?id=G-TVFVLX45TD'; s0.parentNode.insertBefore(g,s0);
+    // Meta Pixel
+    delete window.fbq; // deja hueco para que el snippet oficial cree el stub real como window.fbq
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    queue.forEach(function(a){ window.fbq.apply(null, a); });
+    queue.length=0;
+  }
+  window.__b2kConsentAccept=function(){ elegir('yes'); consent='yes'; aviso(false); boot(); };
+  window.__b2kConsentReject=function(){
+    elegir('no'); consent='no'; aviso(false); borrarCookies();
+    if (booted) location.reload();   // ya estaban cargados: sin recargar seguirían enviando
+  };
+  // Esta página puede seguir midiendo con el permiso ya retirado en otra pestaña, o al volver con «atrás»
+  // (el navegador la devuelve tal como estaba): si pasa, se recarga.
+  function alDia(){ if (booted && leer(KEY)!=='yes') location.reload(); }
+  window.addEventListener('pageshow', function(e){ if (e.persisted) alDia(); });
+  window.addEventListener('storage', function(e){ if (e.key===KEY || e.key===null) alDia(); });
+  if (consent==='yes') boot();
+  document.addEventListener('DOMContentLoaded', function(){
+    cargada=true;
+    if (!consent) aviso(true);
+  });
+  document.addEventListener('click', function(e){
+    var a=e.target && e.target.closest ? e.target.closest('[data-b2k-consent-open]') : null;
+    if (!a) return;
+    e.preventDefault(); origen=a; aviso(true, true);
+  });
+  document.addEventListener('keydown', function(e){ if (e.key==='Escape' && origen) aviso(false); });
+})();
+fbq('init', '1916298258994371');
+fbq('track', 'PageView');
+</script>
+<!-- Fin del bloque de consentimiento (Google Analytics 4 + Meta Pixel) -->
