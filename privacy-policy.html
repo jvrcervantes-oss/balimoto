@@ -2,14 +2,6 @@
 <!-- unificar:familia=legal -->
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TVFVLX45TD"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-TVFVLX45TD');
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Privacy Policy — Bali Moto Adventures</title>
@@ -23,10 +15,23 @@
 <!-- Meta Pixel Code — gateado por consentimiento real, ver §8 más abajo y el banner del body. -->
 <script>
 (function(){
-  var KEY='b2k_ads_consent', consent=localStorage.getItem(KEY), queue=[], booted=false;
+  // Un solo consentimiento para analítica (Google Analytics 4) y publicidad (Meta Pixel): ninguno de los
+  // dos carga hasta que el visitante acepta. Clave v2: un «yes» de la clave antigua (b2k_ads_consent) se
+  // dio bajo un texto que solo hablaba de publicidad y NO vale para analítica, así que se vuelve a
+  // preguntar; el «no» antiguo sí se hereda (se lee, no se reescribe). Bloque idéntico en las 11 páginas.
+  var KEY='b2k_consent_v2', OLD='b2k_ads_consent', consent=localStorage.getItem(KEY), queue=[], booted=false;
+  if (consent!=='yes' && consent!=='no') consent=(localStorage.getItem(OLD)==='no') ? 'no' : null;
   window.fbq=function(){ queue.push(arguments); };
   function boot(){
     if (booted) return; booted=true;
+    // Google Analytics 4: el gtag.js oficial, cargado aquí (tras aceptar) y no en la cabecera
+    window.dataLayer=window.dataLayer||[];
+    window.gtag=function(){ window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', 'G-TVFVLX45TD');
+    var g=document.createElement('script'), s0=document.getElementsByTagName('script')[0];
+    g.async=true; g.src='https://www.googletagmanager.com/gtag/js?id=G-TVFVLX45TD'; s0.parentNode.insertBefore(g,s0);
+    // Meta Pixel
     delete window.fbq; // deja hueco para que el snippet oficial cree el stub real como window.fbq
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
     queue.forEach(function(a){ window.fbq.apply(null, a); });
@@ -70,7 +75,7 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
 </head>
 <body>
 <div id="cookieBanner" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#1c2b1e;color:#faf6ef;padding:16px 20px;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font:14px/1.5 'Instrument Sans',system-ui,sans-serif;box-shadow:0 -4px 24px rgba(0,0,0,.25)">
-  <span style="max-width:520px">We use essential cookies to run this site, and — only if you say yes — advertising cookies to measure our Instagram/Facebook ads. <a href="/privacy-policy" style="color:#e8490a;text-decoration:underline">Privacy policy</a></span>
+  <span style="max-width:520px">We use essential cookies to run this site, and — only if you say yes — analytics cookies (Google Analytics) to see how the site is used and advertising cookies (Meta Pixel) to measure our Instagram/Facebook ads. <a href="/privacy-policy" style="color:#e8490a;text-decoration:underline">Privacy policy</a></span>
   <span style="display:flex;gap:10px;flex-shrink:0">
     <button onclick="window.__b2kConsentReject()" style="padding:9px 18px;border-radius:999px;border:1px solid rgba(250,246,239,.5);background:transparent;color:#faf6ef;font:inherit;font-weight:600;cursor:pointer">Reject</button>
     <button onclick="window.__b2kConsentAccept()" style="padding:9px 18px;border-radius:999px;border:none;background:#e8490a;color:#fff;font:inherit;font-weight:600;cursor:pointer">Accept</button>
@@ -90,7 +95,7 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
 
 <main>
   <h1>Privacy Policy</h1>
-  <p class="updated">Last updated: August 2026</p>
+  <p class="updated">Last updated: October 2026</p>
 
   <p>Bali Moto Adventures ("we", "us", "our") is committed to protecting your personal data. This policy explains what information we collect, how we use it, and your rights.</p>
 
@@ -119,7 +124,7 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
   <h2>4. Analytics and Tracking</h2>
   <p>We use the following third-party tools to understand how visitors use our website:</p>
   <ul>
-    <li><strong>Google Analytics 4 (GA4)</strong> — collects anonymised usage data. You can opt out via <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Google's opt-out tool</a>.</li>
+    <li><strong>Google Analytics 4 (GA4)</strong> — measures how visitors use the site. It only loads after you accept cookies in our cookie banner (see Section 8); if you reject, it does not run.</li>
     <li><strong>Meta Pixel</strong> — tracks conversions from our Facebook and Instagram ads. Governed by <a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener noreferrer">Meta's Privacy Policy</a>.</li>
   </ul>
 
@@ -137,7 +142,7 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
   <p>We keep enquiry and lead data for as long as needed to respond to you and manage a possible booking, and for up to 24 months after your last contact with us if no booking is made, after which it is deleted. You may request earlier deletion at any time (see Section 9).</p>
 
   <h2>8. Cookies</h2>
-  <p>Essential cookies needed to run the site are always on. Advertising cookies (Meta Pixel) only load after you accept them in the cookie banner shown on your first visit — you can reject them there instead, and change your choice at any time by clearing this site's data in your browser settings.</p>
+  <p>Essential cookies needed to run the site are always on. Analytics cookies (Google Analytics 4) and advertising cookies (Meta Pixel) only load after you accept them in the cookie banner shown on your first visit — you can reject them there instead, and change your choice at any time by clearing this site's data in your browser settings.</p>
   <p><strong>California residents:</strong> under the CCPA/CPRA you have the right to opt out of the "sharing" of your data for cross-context advertising, which is what the Meta Pixel and the audiences built from it are used for. To opt out, reject cookies in the banner, or email <a href="mailto:ride@balimotoadventures.com">ride@balimotoadventures.com</a> with "Do Not Sell or Share My Personal Information" in the subject line.</p>
 
   <h2>9. Your Rights</h2>

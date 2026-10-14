@@ -2,14 +2,6 @@
 <!-- unificar:familia=guide -->
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TVFVLX45TD"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-TVFVLX45TD');
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>7 Islands Bali Motorcycle & Boat Tour — Complete 2026 Guide | Bali Moto Adventures</title>
@@ -37,10 +29,23 @@
      cambio de no rastrear a nadie sin permiso. Ver privacy-policy.html §8. -->
 <script>
 (function(){
-  var KEY='b2k_ads_consent', consent=localStorage.getItem(KEY), queue=[], booted=false;
+  // Un solo consentimiento para analítica (Google Analytics 4) y publicidad (Meta Pixel): ninguno de los
+  // dos carga hasta que el visitante acepta. Clave v2: un «yes» de la clave antigua (b2k_ads_consent) se
+  // dio bajo un texto que solo hablaba de publicidad y NO vale para analítica, así que se vuelve a
+  // preguntar; el «no» antiguo sí se hereda (se lee, no se reescribe). Bloque idéntico en las 11 páginas.
+  var KEY='b2k_consent_v2', OLD='b2k_ads_consent', consent=localStorage.getItem(KEY), queue=[], booted=false;
+  if (consent!=='yes' && consent!=='no') consent=(localStorage.getItem(OLD)==='no') ? 'no' : null;
   window.fbq=function(){ queue.push(arguments); };
   function boot(){
     if (booted) return; booted=true;
+    // Google Analytics 4: el gtag.js oficial, cargado aquí (tras aceptar) y no en la cabecera
+    window.dataLayer=window.dataLayer||[];
+    window.gtag=function(){ window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', 'G-TVFVLX45TD');
+    var g=document.createElement('script'), s0=document.getElementsByTagName('script')[0];
+    g.async=true; g.src='https://www.googletagmanager.com/gtag/js?id=G-TVFVLX45TD'; s0.parentNode.insertBefore(g,s0);
+    // Meta Pixel
     delete window.fbq; // deja hueco para que el snippet oficial cree el stub real como window.fbq
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
     queue.forEach(function(a){ window.fbq.apply(null, a); });
@@ -138,7 +143,7 @@ a{color:inherit;text-decoration:none}
 </head>
 <body>
 <div id="cookieBanner" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#1c2b1e;color:#faf6ef;padding:16px 20px;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font:14px/1.5 'Instrument Sans',system-ui,sans-serif;box-shadow:0 -4px 24px rgba(0,0,0,.25)">
-  <span style="max-width:520px">We use essential cookies to run this site, and — only if you say yes — advertising cookies to measure our Instagram/Facebook ads. <a href="/privacy-policy" style="color:#e8490a;text-decoration:underline">Privacy policy</a></span>
+  <span style="max-width:520px">We use essential cookies to run this site, and — only if you say yes — analytics cookies (Google Analytics) to see how the site is used and advertising cookies (Meta Pixel) to measure our Instagram/Facebook ads. <a href="/privacy-policy" style="color:#e8490a;text-decoration:underline">Privacy policy</a></span>
   <span style="display:flex;gap:10px;flex-shrink:0">
     <button onclick="window.__b2kConsentReject()" style="padding:9px 18px;border-radius:999px;border:1px solid rgba(250,246,239,.5);background:transparent;color:#faf6ef;font:inherit;font-weight:600;cursor:pointer">Reject</button>
     <button onclick="window.__b2kConsentAccept()" style="padding:9px 18px;border-radius:999px;border:none;background:#e8490a;color:#fff;font:inherit;font-weight:600;cursor:pointer">Accept</button>
