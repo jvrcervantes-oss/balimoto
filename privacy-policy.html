@@ -12,16 +12,57 @@
 <link rel="canonical" href="https://balimotoadventures.com/privacy-policy">
 <meta name="robots" content="noindex">
 <meta name="facebook-domain-verification" content="nnhwo33xuwyw68j666nm5vxjjuolqm" />
-<!-- Meta Pixel Code — gateado por consentimiento real, ver §8 más abajo y el banner del body. -->
+<!-- Consentimiento de cookies · Google Analytics 4 · Meta Pixel. Ninguno de los dos carga hasta que el
+     visitante acepta en el aviso (#cookieBanner, al principio del body); sin elección o con rechazo no
+     se pide nada a Google ni a Meta. No hay <noscript> del Pixel a propósito: ese beacon no se puede
+     frenar sin JS, así que a quien navega sin JS no se le mide. Ver privacy-policy.html §8. -->
 <script>
 (function(){
   // Un solo consentimiento para analítica (Google Analytics 4) y publicidad (Meta Pixel): ninguno de los
-  // dos carga hasta que el visitante acepta. Clave v2: un «yes» de la clave antigua (b2k_ads_consent) se
-  // dio bajo un texto que solo hablaba de publicidad y NO vale para analítica, así que se vuelve a
-  // preguntar; el «no» antiguo sí se hereda (se lee, no se reescribe). Bloque idéntico en las 11 páginas.
-  var KEY='b2k_consent_v2', OLD='b2k_ads_consent', consent=localStorage.getItem(KEY), queue=[], booted=false;
-  if (consent!=='yes' && consent!=='no') consent=(localStorage.getItem(OLD)==='no') ? 'no' : null;
-  window.fbq=function(){ queue.push(arguments); };
+  // dos carga hasta que el visitante acepta. Bloque idéntico en todas las páginas públicas y en 404.html.
+  // · Clave b2k_consent_v2 ('yes' | 'no'). Un «yes» de la clave antigua (b2k_ads_consent) se dio bajo un
+  //   texto que solo hablaba de publicidad y no vale: se vuelve a preguntar. El «no» antiguo sí se hereda.
+  // · Sin «yes» (rechazo, sin elección o almacenamiento bloqueado) no se pide nada a Google ni a Meta, y
+  //   en CADA carga se borran sus cookies de este dominio: las hay de visitas anteriores al aviso.
+  // · [data-b2k-consent-open] (enlace «Cookie settings» del pie) vuelve a enseñar el mismo aviso; Escape lo
+  //   cierra sin cambiar nada. Rechazar con la medición ya cargada recarga la página: es la única forma de
+  //   que deje de enviar. Lo mismo si el permiso se retiró en otra pestaña o la página vuelve del historial.
+  var KEY='b2k_consent_v2', OLD='b2k_ads_consent', queue=[], cargada=false, booted=false, consent, origen=null;
+  function leer(k){
+    try { return localStorage.getItem(k); }
+    catch(e){ /* MUDO A PROPOSITO: sin almacenamiento (modo privado, bloqueado) cuenta como «sin elección»: se enseña el aviso y no se mide */ return null; }
+  }
+  function guardar(v){
+    try { localStorage.setItem(KEY, v); }
+    catch(e){ /* MUDO A PROPOSITO: la elección vale para esta página; solo no se recuerda, y el aviso vuelve a salir en la siguiente */ }
+  }
+  function borrarCookies(){
+    // Una cookie solo se borra con el mismo dominio con que se creó: se prueba sin dominio y con cada
+    // sufijo del host, con y sin punto delante (cubre balimotoadventures.com y www).
+    try {
+      var p=location.hostname.split('.'), doms=[''], i;
+      for (i=0; i<p.length-1; i++){ doms.push('.'+p.slice(i).join('.')); doms.push(p.slice(i).join('.')); }
+      document.cookie.split(';').forEach(function(par){
+        var n=par.split('=')[0].replace(/^\s+|\s+$/g,'');
+        if (!/^(_ga|_gid|_gat|_fbp|_fbc)$|^(_ga_|_gat_|_gcl_)/.test(n)) return;
+        doms.forEach(function(d){ document.cookie=n+'=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'+(d ? '; domain='+d : ''); });
+      });
+    } catch(e){ /* MUDO A PROPOSITO: si el navegador no deja leer ni escribir cookies, tampoco hay cookies de medición que borrar */ }
+  }
+  function aviso(ver, foco){
+    var b=document.getElementById('cookieBanner'), f;
+    if (!b) return;
+    b.style.display=ver ? 'flex' : 'none';
+    if (ver && foco && (f=b.querySelector('button'))) f.focus();
+    if (!ver && origen){ f=origen; origen=null; if (f.focus) f.focus(); }   // el foco vuelve al enlace que lo abrió
+  }
+  consent=leer(KEY);
+  if (consent!=='yes' && consent!=='no') consent=(leer(OLD)==='no') ? 'no' : null;
+  if (consent!=='yes') borrarCookies();
+  // Hasta que se acepte, fbq solo apunta los avisos de carga de la página (init, PageView, ViewContent) en una
+  // lista que no sale del navegador. Lo que el visitante hace después sin un «yes» ni se apunta: al aceptar
+  // se envía la visita a esta página, nunca lo que hizo antes de dar permiso.
+  window.fbq=function(){ if (!cargada) queue.push(arguments); };
   function boot(){
     if (booted) return; booted=true;
     // Google Analytics 4: el gtag.js oficial, cargado aquí (tras aceptar) y no en la cabecera
@@ -37,18 +78,32 @@
     queue.forEach(function(a){ window.fbq.apply(null, a); });
     queue.length=0;
   }
-  window.__b2kConsentAccept=function(){ localStorage.setItem(KEY,'yes'); boot(); var b=document.getElementById('cookieBanner'); if(b) b.style.display='none'; };
-  window.__b2kConsentReject=function(){ localStorage.setItem(KEY,'no'); queue.length=0; var b=document.getElementById('cookieBanner'); if(b) b.style.display='none'; };
+  window.__b2kConsentAccept=function(){ guardar('yes'); consent='yes'; aviso(false); boot(); };
+  window.__b2kConsentReject=function(){
+    guardar('no'); consent='no'; aviso(false); borrarCookies();
+    if (booted) location.reload();   // ya estaban cargados: sin recargar seguirían enviando
+  };
+  // Esta página puede seguir midiendo con el permiso ya retirado en otra pestaña, o al volver con «atrás»
+  // (el navegador la devuelve tal como estaba): si pasa, se recarga.
+  function alDia(){ if (booted && leer(KEY)!=='yes') location.reload(); }
+  window.addEventListener('pageshow', function(e){ if (e.persisted) alDia(); });
+  window.addEventListener('storage', function(e){ if (e.key===KEY || e.key===null) alDia(); });
   if (consent==='yes') boot();
   document.addEventListener('DOMContentLoaded', function(){
-    if (!consent){ var b=document.getElementById('cookieBanner'); if(b) b.style.display='flex'; }
+    cargada=true;
+    if (!consent) aviso(true);
   });
+  document.addEventListener('click', function(e){
+    var a=e.target && e.target.closest ? e.target.closest('[data-b2k-consent-open]') : null;
+    if (!a) return;
+    e.preventDefault(); origen=a; aviso(true, true);
+  });
+  document.addEventListener('keydown', function(e){ if (e.key==='Escape' && origen) aviso(false); });
 })();
 fbq('init','1916298258994371');
 fbq('track','PageView');
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/fonts/fonts.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--ink:#1c2b1e;--ink-soft:#3d5c42;--parchment:#f0ece2;--cream:#faf6ef;--orange:#e8490a;--green:#2d7a4a;--sand:#c8d9c0}
@@ -74,7 +129,7 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
 </style>
 </head>
 <body>
-<div id="cookieBanner" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#1c2b1e;color:#faf6ef;padding:16px 20px;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font:14px/1.5 'Instrument Sans',system-ui,sans-serif;box-shadow:0 -4px 24px rgba(0,0,0,.25)">
+<div id="cookieBanner" role="region" aria-label="Cookie consent" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#1c2b1e;color:#faf6ef;padding:16px 20px;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font:14px/1.5 'Instrument Sans',system-ui,sans-serif;box-shadow:0 -4px 24px rgba(0,0,0,.25)">
   <span style="max-width:520px">We use essential cookies to run this site, and — only if you say yes — analytics cookies (Google Analytics) to see how the site is used and advertising cookies (Meta Pixel) to measure our Instagram/Facebook ads. <a href="/privacy-policy" style="color:#e8490a;text-decoration:underline">Privacy policy</a></span>
   <span style="display:flex;gap:10px;flex-shrink:0">
     <button onclick="window.__b2kConsentReject()" style="padding:9px 18px;border-radius:999px;border:1px solid rgba(250,246,239,.5);background:transparent;color:#faf6ef;font:inherit;font-weight:600;cursor:pointer">Reject</button>
@@ -142,8 +197,10 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
   <p>We keep enquiry and lead data for as long as needed to respond to you and manage a possible booking, and for up to 24 months after your last contact with us if no booking is made, after which it is deleted. You may request earlier deletion at any time (see Section 9).</p>
 
   <h2>8. Cookies</h2>
-  <p>Essential cookies needed to run the site are always on. Analytics cookies (Google Analytics 4) and advertising cookies (Meta Pixel) only load after you accept them in the cookie banner shown on your first visit — you can reject them there instead, and change your choice at any time by clearing this site's data in your browser settings.</p>
-  <p><strong>California residents:</strong> under the CCPA/CPRA you have the right to opt out of the "sharing" of your data for cross-context advertising, which is what the Meta Pixel and the audiences built from it are used for. To opt out, reject cookies in the banner, or email <a href="mailto:ride@balimotoadventures.com">ride@balimotoadventures.com</a> with "Do Not Sell or Share My Personal Information" in the subject line.</p>
+  <p>Essential cookies needed to run the site are always on. The site also keeps a few notes in your browser's own storage that identify no one: your cookie choice, and whether a sign-up pop-up has already been shown to you or an itinerary unlocked, so that we do not ask you again. Analytics cookies (Google Analytics 4) and advertising cookies (Meta Pixel) only load after you accept them in the cookie banner shown on your first visit — you can reject them there instead. You can change your choice at any time with the "Cookie settings" link at the bottom of every page: it reopens the banner, so withdrawing your consent is as easy as giving it.</p>
+  <p>If you reject or withdraw your consent, Google Analytics and the Meta Pixel are not loaded and we delete the Google Analytics and Meta Pixel cookies stored under our domain (<code>_ga</code>, <code>_ga_*</code>, <code>_gid</code>, <code>_fbp</code>, <code>_fbc</code>). We cannot delete cookies that Google or Meta keep under their own domains; you can remove those in your browser settings. Withdrawing consent does not affect the lawfulness of what was processed before you withdrew it.</p>
+  <p><strong>Video on our home page:</strong> the video preview is an image served from our own website, and nothing is sent to YouTube while you browse. If you press play, the YouTube player is loaded from Google: Google then receives your IP address and information about your device and browser, and may store cookies or similar data on your device, under <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google's Privacy Policy</a>. We embed the player in YouTube's privacy-enhanced mode. If you prefer not to connect to YouTube, simply do not play the video.</p>
+  <p><strong>California residents:</strong> under the CCPA/CPRA you have the right to opt out of the "sharing" of your data for cross-context advertising, which is what the Meta Pixel and the audiences built from it are used for. To opt out, reject cookies in the banner or at any time through the "Cookie settings" link at the bottom of every page, or email <a href="mailto:ride@balimotoadventures.com">ride@balimotoadventures.com</a> with "Do Not Sell or Share My Personal Information" in the subject line.</p>
 
   <h2>9. Your Rights</h2>
   <p>Under applicable data protection law, you have the right to:</p>
@@ -151,7 +208,7 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
     <li>Access the personal data we hold about you</li>
     <li>Request correction or deletion of your data</li>
     <li>Object to or restrict processing</li>
-    <li>Withdraw consent at any time</li>
+    <li>Withdraw consent at any time (for cookies, use the "Cookie settings" link at the bottom of every page)</li>
   </ul>
   <p>To exercise any of these rights, email us at <a href="mailto:ride@balimotoadventures.com">ride@balimotoadventures.com</a>.</p>
 
@@ -162,8 +219,9 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
 <footer>
   <div class="ft-brand">Bali <span>Moto</span> Adventures</div>
   <span>© 2026 Bali Moto Adventures. All rights reserved.</span>
-  <div style="display:flex;gap:1.5rem">
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem 1.5rem">
     <a href="/privacy-policy">Privacy Policy</a>
+    <a href="#cookieBanner" data-b2k-consent-open>Cookie settings</a>
     <a href="/terms">Terms & Conditions</a>
     <a href="/data-deletion">Data Deletion</a>
     <a href="/accessibility">Accessibility</a>

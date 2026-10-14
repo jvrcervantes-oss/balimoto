@@ -102,8 +102,7 @@
   ]
 }
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/fonts/fonts.css">
 
 <!-- DEFAULT DATA — safe JSON, no JS escaping needed -->
 <script type="application/json" id="defaultData">{"barDate": "4th November 2026", "hw1": "Ride", "hw2": "Indonesia", "hw3": "Your Way", "hSub": "Premium motorcycle expeditions across the world's most breathtaking archipelago. Bali, Komodo, Sumba — real roads, real adventure.", "wa": "62881037978255", "tours": [{"id": "t1", "name": "Bali 2 Komodo", "days": "12", "islands": "", "km": "1,259–1,826", "badge": "Best Seller", "badgeType": "hot", "diff": "Intermediate", "price": "$2,700", "spots": "3 spots left", "desc": "The ride that defines us. Twelve days and three routes — turn around in Sumbawa, or push on to the dragons of Komodo.", "link": "/b2k-tour-bali-komodo", "imgId": "ti0"}, {"id": "t2", "name": "7 Islands Hopping", "days": "13", "islands": "7", "km": "", "badge": "New 2026", "badgeType": "new", "diff": "Intermediate", "price": "$2,050", "spots": "8 spots left", "desc": "13 days of tropical paradise. Adventure mixed with relaxation — turquoise waters, hidden beaches, island roads forever.", "link": "/b2k-tour-7-islands", "imgId": "ti1"}, {"id": "t5", "name": "4 Islands Hopping", "days": "10", "islands": "4", "km": "", "badge": "New 2026", "badgeType": "new", "diff": "Beginner", "price": "$1,100", "spots": "", "desc": "Ten days, one fixed price. Bali's volcanoes and waterfalls, then the cliffs and mantas of the three Nusa islands. On a bike or in a car.", "link": "/b2k-tour-4-islands", "imgId": "ti4"}, {"id": "t3", "name": "Sumba, The Forgotten Island", "days": "12", "islands": "", "km": "", "badge": "Coming Soon", "badgeType": "soon", "diff": "Intermediate", "price": "2026", "spots": "", "desc": "The wildest island in Indonesia. Raw landscapes, traditional villages, and roads almost no one has ridden.", "link": "https://wa.me/62881037978255", "imgId": "ti2"}, {"id": "t4", "name": "Bali 2 Jakarta", "days": "14", "islands": "2", "km": "", "badge": "Coming Soon", "badgeType": "soon", "diff": "Beginner", "price": "2026", "spots": "", "desc": "Cross the Ring of Fire. Fourteen days through Java's volcanic spine — ancient temples, jungle roads and the crossing from paradise to the capital.", "link": "https://wa.me/62881037978255", "imgId": "ti3", "imgSrc": "https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?w=800&q=80&auto=format&fit=crop"}], "gallery": [{"imgId": "gi0", "src": "images/1.webp", "caption": "On the road · Bali"}, {"imgId": "gi1", "src": "images/2.webp", "caption": "Island roads · Indonesia"}, {"imgId": "gi2", "src": "images/3.webp", "caption": "Riders · B2K crew"}, {"imgId": "gi3", "src": "images/4.webp", "caption": "Komodo · Flores"}, {"imgId": "gi4", "src": "images/5.webp", "caption": "Sumbawa roads"}, {"imgId": "gi5", "src": "images/6.webp", "caption": "Lombok · East coast"}, {"imgId": "gi6", "src": "images/7.webp", "caption": "Bali · Temple roads"}, {"imgId": "gi7", "src": "images/8.webp", "caption": "Moyo · Sumbawa"}, {"imgId": "gi8", "src": "images/9.webp", "caption": "The crew · B2K"}], "reviews": [{"q": "Thirteen days, seven islands, zero regrets. I have done trips across Southeast Asia but nothing comes close to this. B2K made it look easy.", "name": "Tyler B.", "detail": "7 Islands Hopping, 2025 · USA", "initials": "TB"}, {"q": "I was skeptical about a guided motorcycle tour but this converted me. Small group, world-class roads, genuinely off-the-beaten-path. Already planning the Komodo route.", "name": "Sarah K.", "detail": "7 Islands Hopping, 2025 · Canada", "initials": "SK"}, {"q": "Did the Bali 2 Komodo route for my 40th birthday. The ferry crossing with the bikes, the Komodo dragons, the empty volcanic roads — I will never forget it.", "name": "James M.", "detail": "Bali 2 Komodo, 2025 · UK", "initials": "JM"}, {"q": "Coming from Australia I was looking for something genuinely adventurous. This delivered. The team knows every road, every stop, every sunset spot.", "name": "Marcus R.", "detail": "Bali 2 Komodo, 2025 · Australia", "initials": "MR"}, {"q": "Third time with B2K and I keep coming back. It does not feel like a tour — it feels like riding with friends who know every hidden road in Indonesia.", "name": "Marco K.", "detail": "Repeat rider · Germany", "initials": "MK"}, {"q": "From Vancouver to Bali — best decision I made last year. The Sumbawa roads are empty and perfect. Already locked in for 2026.", "name": "Chloe D.", "detail": "Bali 2 Komodo, 2025 · Canada", "initials": "CD"}, {"q": "As a rider from Texas I thought I had seen good roads. Indonesia blew my mind. B2K handles everything so you just focus on the ride.", "name": "David W.", "detail": "7 Islands Hopping, 2024 · USA", "initials": "DW"}, {"q": "Sydney to Bali and back with the best two weeks in between. The moment we crested the hill above Labuan Bajo I had tears in my eyes.", "name": "Emma T.", "detail": "Bali 2 Komodo, 2025 · Australia", "initials": "ET"}, {"q": "I was nervous about my riding level but the guide adapted everything perfectly. The landscapes are out of this world and the group energy was incredible.", "name": "Sophie L.", "detail": "7 Islands Hopping, 2025 · France", "initials": "SL"}]}</script>
@@ -250,7 +249,7 @@ nav{position:sticky;top:.8rem;z-index:200;background:#faf6ef;backdrop-filter:blu
 .ve-link:hover{color:var(--orange)}
 .ve-link-dim{color:var(--ink-soft);opacity:.45;pointer-events:none;cursor:default}
 .ve-soon-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(28,43,30,.75);color:rgba(255,255,255,.75);font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.2em;padding:8px 20px;border-radius:4px;white-space:nowrap}
-.ve-rule{height:1px;background:rgba(28,43,30,.1);margin:0 5vw}.ve-diff{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);background:rgba(232,73,10,.07);border:1px solid rgba(232,73,10,.18);border-radius:4px;padding:3px 8px}.diff-beginner{color:#2d7a4a;background:rgba(45,122,74,.08);border-color:rgba(45,122,74,.25)}.diff-intermediate{color:#1a6b9a;background:rgba(26,107,154,.08);border-color:rgba(26,107,154,.25)}.diff-expert{color:#9b1c1c;background:rgba(155,28,28,.08);border-color:rgba(155,28,28,.25)}.ve-vid{padding:0 5vw 5rem}.ve-vid-label{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:1.2rem;display:block}.ve-vid-inner{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#0a140c}.ve-vid-inner iframe{position:absolute;inset:0;width:100%;height:100%;border:none}.ve-vid-cta{font-size:12px;color:var(--ink-soft);margin-top:1rem;display:block;letter-spacing:.04em}
+.ve-rule{height:1px;background:rgba(28,43,30,.1);margin:0 5vw}.ve-diff{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);background:rgba(232,73,10,.07);border:1px solid rgba(232,73,10,.18);border-radius:4px;padding:3px 8px}.diff-beginner{color:#2d7a4a;background:rgba(45,122,74,.08);border-color:rgba(45,122,74,.25)}.diff-intermediate{color:#1a6b9a;background:rgba(26,107,154,.08);border-color:rgba(26,107,154,.25)}.diff-expert{color:#9b1c1c;background:rgba(155,28,28,.08);border-color:rgba(155,28,28,.25)}.ve-vid{padding:0 5vw 5rem}.ve-vid-label{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:1.2rem;display:block}.ve-vid-inner{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#0a140c}.ve-vid-inner iframe{position:absolute;inset:0;width:100%;height:100%;border:none}.ve-vid-cta{font-size:12px;color:var(--ink-soft);margin-top:1rem;display:block;letter-spacing:.04em}.ve-vid-play{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:none;cursor:pointer;display:block}.ve-vid-play img{width:100%;height:100%;object-fit:cover;display:block}.ve-vid-btn{position:absolute;left:50%;top:50%;width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:50%;background:var(--orange);display:grid;place-items:center;transition:background .2s}.ve-vid-btn svg{margin-left:4px}.ve-vid-play:hover .ve-vid-btn{background:var(--orange-dark)}.ve-vid-play:focus-visible{outline:3px solid #ff7a3d;outline-offset:-3px}.ve-vid-note{font-size:13px;line-height:1.5;color:var(--ink-soft);margin-top:.5rem;display:block;max-width:64ch}.ve-vid-note a{color:inherit;text-decoration:underline}@media(max-width:600px){.ve-vid-btn{width:64px;height:64px;margin:-32px 0 0 -32px}}
 @media(max-width:900px){.ve-cards{grid-template-columns:repeat(2,1fr)}.ve-card:nth-child(2),.ve-card:nth-child(4){margin-top:0}.ve-top{gap:2rem}}
 @media(max-width:600px){.ve-cards{grid-template-columns:1fr}.ve-top{flex-direction:column}}
 .par{position:relative;height:45vh;overflow:hidden;display:flex;align-items:center;justify-content:center}
@@ -524,19 +523,57 @@ footer{background:#070e08;color:rgba(255,255,255,.4);padding:4rem 5vw 2rem}
 /* A11Y (EAA): foco visible por teclado en todo elemento interactivo */
 a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid #ff7a3d;outline-offset:3px}
 </style>
-<!-- Meta Pixel Code — gateado por consentimiento real (UK PECR/GDPR + CCPA): no dispara
-     hasta que el visitante acepta en el banner. Se quita el <noscript> de siempre: ese beacon
-     no se puede gatear (no hay JS que lo pare), así que se pierde el ~0% de tráfico sin JS a
-     cambio de no rastrear a nadie sin permiso. Ver privacy-policy.html §8. -->
+<!-- Consentimiento de cookies · Google Analytics 4 · Meta Pixel. Ninguno de los dos carga hasta que el
+     visitante acepta en el aviso (#cookieBanner, al principio del body); sin elección o con rechazo no
+     se pide nada a Google ni a Meta. No hay <noscript> del Pixel a propósito: ese beacon no se puede
+     frenar sin JS, así que a quien navega sin JS no se le mide. Ver privacy-policy.html §8. -->
 <script>
 (function(){
   // Un solo consentimiento para analítica (Google Analytics 4) y publicidad (Meta Pixel): ninguno de los
-  // dos carga hasta que el visitante acepta. Clave v2: un «yes» de la clave antigua (b2k_ads_consent) se
-  // dio bajo un texto que solo hablaba de publicidad y NO vale para analítica, así que se vuelve a
-  // preguntar; el «no» antiguo sí se hereda (se lee, no se reescribe). Bloque idéntico en las 11 páginas.
-  var KEY='b2k_consent_v2', OLD='b2k_ads_consent', consent=localStorage.getItem(KEY), queue=[], booted=false;
-  if (consent!=='yes' && consent!=='no') consent=(localStorage.getItem(OLD)==='no') ? 'no' : null;
-  window.fbq=function(){ queue.push(arguments); };
+  // dos carga hasta que el visitante acepta. Bloque idéntico en todas las páginas públicas y en 404.html.
+  // · Clave b2k_consent_v2 ('yes' | 'no'). Un «yes» de la clave antigua (b2k_ads_consent) se dio bajo un
+  //   texto que solo hablaba de publicidad y no vale: se vuelve a preguntar. El «no» antiguo sí se hereda.
+  // · Sin «yes» (rechazo, sin elección o almacenamiento bloqueado) no se pide nada a Google ni a Meta, y
+  //   en CADA carga se borran sus cookies de este dominio: las hay de visitas anteriores al aviso.
+  // · [data-b2k-consent-open] (enlace «Cookie settings» del pie) vuelve a enseñar el mismo aviso; Escape lo
+  //   cierra sin cambiar nada. Rechazar con la medición ya cargada recarga la página: es la única forma de
+  //   que deje de enviar. Lo mismo si el permiso se retiró en otra pestaña o la página vuelve del historial.
+  var KEY='b2k_consent_v2', OLD='b2k_ads_consent', queue=[], cargada=false, booted=false, consent, origen=null;
+  function leer(k){
+    try { return localStorage.getItem(k); }
+    catch(e){ /* MUDO A PROPOSITO: sin almacenamiento (modo privado, bloqueado) cuenta como «sin elección»: se enseña el aviso y no se mide */ return null; }
+  }
+  function guardar(v){
+    try { localStorage.setItem(KEY, v); }
+    catch(e){ /* MUDO A PROPOSITO: la elección vale para esta página; solo no se recuerda, y el aviso vuelve a salir en la siguiente */ }
+  }
+  function borrarCookies(){
+    // Una cookie solo se borra con el mismo dominio con que se creó: se prueba sin dominio y con cada
+    // sufijo del host, con y sin punto delante (cubre balimotoadventures.com y www).
+    try {
+      var p=location.hostname.split('.'), doms=[''], i;
+      for (i=0; i<p.length-1; i++){ doms.push('.'+p.slice(i).join('.')); doms.push(p.slice(i).join('.')); }
+      document.cookie.split(';').forEach(function(par){
+        var n=par.split('=')[0].replace(/^\s+|\s+$/g,'');
+        if (!/^(_ga|_gid|_gat|_fbp|_fbc)$|^(_ga_|_gat_|_gcl_)/.test(n)) return;
+        doms.forEach(function(d){ document.cookie=n+'=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'+(d ? '; domain='+d : ''); });
+      });
+    } catch(e){ /* MUDO A PROPOSITO: si el navegador no deja leer ni escribir cookies, tampoco hay cookies de medición que borrar */ }
+  }
+  function aviso(ver, foco){
+    var b=document.getElementById('cookieBanner'), f;
+    if (!b) return;
+    b.style.display=ver ? 'flex' : 'none';
+    if (ver && foco && (f=b.querySelector('button'))) f.focus();
+    if (!ver && origen){ f=origen; origen=null; if (f.focus) f.focus(); }   // el foco vuelve al enlace que lo abrió
+  }
+  consent=leer(KEY);
+  if (consent!=='yes' && consent!=='no') consent=(leer(OLD)==='no') ? 'no' : null;
+  if (consent!=='yes') borrarCookies();
+  // Hasta que se acepte, fbq solo apunta los avisos de carga de la página (init, PageView, ViewContent) en una
+  // lista que no sale del navegador. Lo que el visitante hace después sin un «yes» ni se apunta: al aceptar
+  // se envía la visita a esta página, nunca lo que hizo antes de dar permiso.
+  window.fbq=function(){ if (!cargada) queue.push(arguments); };
   function boot(){
     if (booted) return; booted=true;
     // Google Analytics 4: el gtag.js oficial, cargado aquí (tras aceptar) y no en la cabecera
@@ -552,19 +589,34 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
     queue.forEach(function(a){ window.fbq.apply(null, a); });
     queue.length=0;
   }
-  window.__b2kConsentAccept=function(){ localStorage.setItem(KEY,'yes'); boot(); var b=document.getElementById('cookieBanner'); if(b) b.style.display='none'; };
-  window.__b2kConsentReject=function(){ localStorage.setItem(KEY,'no'); queue.length=0; var b=document.getElementById('cookieBanner'); if(b) b.style.display='none'; };
+  window.__b2kConsentAccept=function(){ guardar('yes'); consent='yes'; aviso(false); boot(); };
+  window.__b2kConsentReject=function(){
+    guardar('no'); consent='no'; aviso(false); borrarCookies();
+    if (booted) location.reload();   // ya estaban cargados: sin recargar seguirían enviando
+  };
+  // Esta página puede seguir midiendo con el permiso ya retirado en otra pestaña, o al volver con «atrás»
+  // (el navegador la devuelve tal como estaba): si pasa, se recarga.
+  function alDia(){ if (booted && leer(KEY)!=='yes') location.reload(); }
+  window.addEventListener('pageshow', function(e){ if (e.persisted) alDia(); });
+  window.addEventListener('storage', function(e){ if (e.key===KEY || e.key===null) alDia(); });
   if (consent==='yes') boot();
   document.addEventListener('DOMContentLoaded', function(){
-    if (!consent){ var b=document.getElementById('cookieBanner'); if(b) b.style.display='flex'; }
+    cargada=true;
+    if (!consent) aviso(true);
   });
+  document.addEventListener('click', function(e){
+    var a=e.target && e.target.closest ? e.target.closest('[data-b2k-consent-open]') : null;
+    if (!a) return;
+    e.preventDefault(); origen=a; aviso(true, true);
+  });
+  document.addEventListener('keydown', function(e){ if (e.key==='Escape' && origen) aviso(false); });
 })();
 fbq('init', '1916298258994371');
 fbq('track', 'PageView');
 </script>
-<!-- End Meta Pixel Code --></head>
+<!-- Fin del bloque de consentimiento (Google Analytics 4 + Meta Pixel) --></head>
 <body>
-<div id="cookieBanner" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#1c2b1e;color:#faf6ef;padding:16px 20px;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font:14px/1.5 'Instrument Sans',system-ui,sans-serif;box-shadow:0 -4px 24px rgba(0,0,0,.25)">
+<div id="cookieBanner" role="region" aria-label="Cookie consent" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#1c2b1e;color:#faf6ef;padding:16px 20px;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font:14px/1.5 'Instrument Sans',system-ui,sans-serif;box-shadow:0 -4px 24px rgba(0,0,0,.25)">
   <span style="max-width:520px">We use essential cookies to run this site, and — only if you say yes — analytics cookies (Google Analytics) to see how the site is used and advertising cookies (Meta Pixel) to measure our Instagram/Facebook ads. <a href="/privacy-policy" style="color:#e8490a;text-decoration:underline">Privacy policy</a></span>
   <span style="display:flex;gap:10px;flex-shrink:0">
     <button onclick="window.__b2kConsentReject()" style="padding:9px 18px;border-radius:999px;border:1px solid rgba(250,246,239,.5);background:transparent;color:#faf6ef;font:inherit;font-weight:600;cursor:pointer">Reject</button>
@@ -708,9 +760,16 @@ fbq('track', 'PageView');
   <div class="ve-vid">
     <span class="ve-vid-label">BTM-25 &middot; FILMED IN INDONESIA</span>
     <div class="ve-vid-inner">
-      <iframe src="https://www.youtube-nocookie.com/embed/yXAye1BKC-g?rel=0&modestbranding=1" allow="fullscreen" allowfullscreen loading="lazy" title="Bali Moto Adventures &mdash; Filmed in Indonesia"></iframe>
+      <!-- Fachada: la miniatura es una foto propia (la del grupo de images/hero-7islands.jpg, recortada a 16:9;
+           no es un fotograma del vídeo) y el reproductor de YouTube solo se crea al pulsar
+           (data-accion="reproducir-video", guion al final). Antes del clic no se pide nada a YouTube ni a Google. -->
+      <button type="button" class="ve-vid-play" data-accion="reproducir-video" aria-label="Play video: Bali Moto Adventures, filmed in Indonesia">
+        <img src="images/b2k-video-poster-7islands.webp" width="1280" height="720" alt="The group and their bikes lined up before setting off" loading="lazy" decoding="async">
+        <span class="ve-vid-btn" aria-hidden="true"><svg viewBox="0 0 24 24" width="34" height="34" focusable="false"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span>
+      </button>
     </div>
     <span class="ve-vid-cta">&#9654; Play with sound for the full experience &#9834;</span>
+    <span class="ve-vid-note">Playing this video loads it from YouTube (Google), which receives your IP address and may store data on your device. <a href="/privacy-policy">Privacy policy</a></span>
   </div>
   <div class="ve-rule"></div>
 </section>
@@ -895,7 +954,7 @@ fbq('track', 'PageView');
     <div><p class="ft-col-ttl">Guides</p><div class="ft-links"><a href="/bali-to-komodo-motorcycle-tour">Bali 2 Komodo Guide</a><a href="/7-islands-bali-motorcycle-tour">7 Islands Guide</a><a href="/best-motorcycle-tours-indonesia">Indonesia Guide</a></div></div>
     <div><p class="ft-col-ttl">Contact</p><div class="ft-links"><a href="https://wa.me/62881037978255" target="_blank" rel="noopener noreferrer" id="footerWa">+62 881-0379-78255</a><a href="https://wa.me/6281138309862" target="_blank" rel="noopener noreferrer" class="wa-fixed">+62 811-3830-9862</a><a href="https://www.instagram.com/balimotoadventures/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="mailto:ride@balimotoadventures.com">Email us</a></div></div>
   </div>
-  <div class="ft-bot"><span>© 2026 Bali Moto Adventures. All rights reserved.</span><div style="display:flex;align-items:center;gap:1.25rem"><a href="/privacy-policy" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Privacy Policy</a><a href="/terms" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Terms</a><a href="/data-deletion" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Data Deletion</a><a href="/accessibility" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Accessibility</a><a href="/admin" class="admin-trigger" style="text-decoration:none">⚙ admin</a></div></div>
+  <div class="ft-bot"><span>© 2026 Bali Moto Adventures. All rights reserved.</span><div style="display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1.25rem"><a href="/privacy-policy" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Privacy Policy</a><a href="#cookieBanner" data-b2k-consent-open style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Cookie settings</a><a href="/terms" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Terms</a><a href="/data-deletion" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Data Deletion</a><a href="/accessibility" style="color:rgba(255,255,255,.4);text-decoration:none;font-size:11px">Accessibility</a><a href="/admin" class="admin-trigger" style="text-decoration:none">⚙ admin</a></div></div>
 </footer>
 
 <!-- Hidden reference images for gallery -->
@@ -1203,16 +1262,21 @@ document.addEventListener('DOMContentLoaded', function() {
     fbq('track', 'ViewContent', {content_name: name ? name.textContent : 'Tour'});
   });
 });
-function playVid(){
-  var p=document.getElementById('vidPlayer');
-  p.innerHTML='<iframe src="https://www.youtube.com/embed/yXAye1BKC-g?autoplay=1&rel=0&modestbranding=1" allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>';
-}
-function playVid4(id,cid){
-  var c=document.getElementById(cid);
-  if(!c)return;
-  c.style.cssText='position:relative;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:#000;margin-bottom:1.1rem';
-  c.innerHTML='<iframe src="https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1" allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>';
-}
+// Vídeo de portada (fachada): el reproductor se crea SOLO al pulsar la miniatura, en el modo de privacidad
+// mejorada de YouTube. Antes del clic no hay iframe ni petición a YouTube/Google; lo avisa .ve-vid-note y lo
+// promete privacy-policy.html §8. Se engancha por data-accion, no por texto. Si cambia el dominio del
+// reproductor, cambian a la vez ese párrafo de la política y frame-src en .htaccess.
+document.addEventListener('click', function(e) {
+  var b = e.target && e.target.closest ? e.target.closest('[data-accion="reproducir-video"]') : null;
+  if (!b) return;
+  var f = document.createElement('iframe');
+  f.setAttribute('src', 'https://www.youtube-nocookie.com/embed/yXAye1BKC-g?autoplay=1&rel=0&modestbranding=1');
+  f.setAttribute('title', 'Bali Moto Adventures — Filmed in Indonesia');
+  f.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture; fullscreen');
+  f.setAttribute('allowfullscreen', '');
+  b.parentNode.replaceChild(f, b);
+  f.focus();
+});
 function nlSubmit() {
   var email = document.getElementById('nlEmail').value.trim();
   var msg = document.getElementById('nlMsg');
@@ -1228,7 +1292,7 @@ function nlSubmit() {
       msg.textContent = "You're in! We'll keep you posted.";
       msg.style.color = '#a3f0b8';
       msg.style.display = 'block';
-      btn.textContent = 'Subscribed u2713';
+      btn.textContent = 'Subscribed ✓';
       btn.disabled = false;
     });
 }

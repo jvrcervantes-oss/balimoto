@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<!-- unificar:familia=legal -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page not found — Bali Moto Adventures</title>
+<!-- Página de error propia (14-oct-2026). La sirve .htaccess con `ErrorDocument 404 /404.html` para CUALQUIER
+     dirección que no exista, a cualquier profundidad: por eso aquí todas las rutas son absolutas (/fonts/,
+     /images/, /favicon.ico). Antes respondía la página del alojamiento, que cargaba fuentes de Google y un
+     Analytics ajeno sin preguntar. Menú, pie, aviso de cookies y bloque de consentimiento son los de las
+     páginas legales (familia «legal» de _compartido/): sin «yes» no pide nada a terceros. -->
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/favicon-180.png">
+<meta name="description" content="This page does not exist or has moved. Head back to the Bali Moto Adventures home page or browse our motorcycle tours across Indonesia.">
+<meta name="robots" content="noindex">
+<!-- Consentimiento de cookies · Google Analytics 4 · Meta Pixel. Ninguno de los dos carga hasta que el
+     visitante acepta en el aviso (#cookieBanner, al principio del body); sin elección o con rechazo no
+     se pide nada a Google ni a Meta. No hay <noscript> del Pixel a propósito: ese beacon no se puede
+     frenar sin JS, así que a quien navega sin JS no se le mide. Ver privacy-policy.html §8. -->
+<script>
+(function(){
+  // Un solo consentimiento para analítica (Google Analytics 4) y publicidad (Meta Pixel): ninguno de los
+  // dos carga hasta que el visitante acepta. Bloque idéntico en todas las páginas públicas y en 404.html.
+  // · Clave b2k_consent_v2 ('yes' | 'no'). Un «yes» de la clave antigua (b2k_ads_consent) se dio bajo un
+  //   texto que solo hablaba de publicidad y no vale: se vuelve a preguntar. El «no» antiguo sí se hereda.
+  // · Sin «yes» (rechazo, sin elección o almacenamiento bloqueado) no se pide nada a Google ni a Meta, y
+  //   en CADA carga se borran sus cookies de este dominio: las hay de visitas anteriores al aviso.
+  // · [data-b2k-consent-open] (enlace «Cookie settings» del pie) vuelve a enseñar el mismo aviso; Escape lo
+  //   cierra sin cambiar nada. Rechazar con la medición ya cargada recarga la página: es la única forma de
+  //   que deje de enviar. Lo mismo si el permiso se retiró en otra pestaña o la página vuelve del historial.
+  var KEY='b2k_consent_v2', OLD='b2k_ads_consent', queue=[], cargada=false, booted=false, consent, origen=null;
+  function leer(k){
+    try { return localStorage.getItem(k); }
+    catch(e){ /* MUDO A PROPOSITO: sin almacenamiento (modo privado, bloqueado) cuenta como «sin elección»: se enseña el aviso y no se mide */ return null; }
+  }
+  function guardar(v){
+    try { localStorage.setItem(KEY, v); }
+    catch(e){ /* MUDO A PROPOSITO: la elección vale para esta página; solo no se recuerda, y el aviso vuelve a salir en la siguiente */ }
+  }
+  function borrarCookies(){
+    // Una cookie solo se borra con el mismo dominio con que se creó: se prueba sin dominio y con cada
+    // sufijo del host, con y sin punto delante (cubre balimotoadventures.com y www).
+    try {
+      var p=location.hostname.split('.'), doms=[''], i;
+      for (i=0; i<p.length-1; i++){ doms.push('.'+p.slice(i).join('.')); doms.push(p.slice(i).join('.')); }
+      document.cookie.split(';').forEach(function(par){
+        var n=par.split('=')[0].replace(/^\s+|\s+$/g,'');
+        if (!/^(_ga|_gid|_gat|_fbp|_fbc)$|^(_ga_|_gat_|_gcl_)/.test(n)) return;
+        doms.forEach(function(d){ document.cookie=n+'=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'+(d ? '; domain='+d : ''); });
+      });
+    } catch(e){ /* MUDO A PROPOSITO: si el navegador no deja leer ni escribir cookies, tampoco hay cookies de medición que borrar */ }
+  }
+  function aviso(ver, foco){
+    var b=document.getElementById('cookieBanner'), f;
+    if (!b) return;
+    b.style.display=ver ? 'flex' : 'none';
+    if (ver && foco && (f=b.querySelector('button'))) f.focus();
+    if (!ver && origen){ f=origen; origen=null; if (f.focus) f.focus(); }   // el foco vuelve al enlace que lo abrió
+  }
+  consent=leer(KEY);
+  if (consent!=='yes' && consent!=='no') consent=(leer(OLD)==='no') ? 'no' : null;
+  if (consent!=='yes') borrarCookies();
+  // Hasta que se acepte, fbq solo apunta los avisos de carga de la página (init, PageView, ViewContent) en una
+  // lista que no sale del navegador. Lo que el visitante hace después sin un «yes» ni se apunta: al aceptar
+  // se envía la visita a esta página, nunca lo que hizo antes de dar permiso.
+  window.fbq=function(){ if (!cargada) queue.push(arguments); };
+  function boot(){
+    if (booted) return; booted=true;
+    // Google Analytics 4: el gtag.js oficial, cargado aquí (tras aceptar) y no en la cabecera
+    window.dataLayer=window.dataLayer||[];
+    window.gtag=function(){ window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', 'G-TVFVLX45TD');
+    var g=document.createElement('script'), s0=document.getElementsByTagName('script')[0];
+    g.async=true; g.src='https://www.googletagmanager.com/gtag/js?id=G-TVFVLX45TD'; s0.parentNode.insertBefore(g,s0);
+    // Meta Pixel
+    delete window.fbq; // deja hueco para que el snippet oficial cree el stub real como window.fbq
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    queue.forEach(function(a){ window.fbq.apply(null, a); });
+    queue.length=0;
+  }
+  window.__b2kConsentAccept=function(){ guardar('yes'); consent='yes'; aviso(false); boot(); };
+  window.__b2kConsentReject=function(){
+    guardar('no'); consent='no'; aviso(false); borrarCookies();
+    if (booted) location.reload();   // ya estaban cargados: sin recargar seguirían enviando
+  };
+  // Esta página puede seguir midiendo con el permiso ya retirado en otra pestaña, o al volver con «atrás»
+  // (el navegador la devuelve tal como estaba): si pasa, se recarga.
+  function alDia(){ if (booted && leer(KEY)!=='yes') location.reload(); }
+  window.addEventListener('pageshow', function(e){ if (e.persisted) alDia(); });
+  window.addEventListener('storage', function(e){ if (e.key===KEY || e.key===null) alDia(); });
+  if (consent==='yes') boot();
+  document.addEventListener('DOMContentLoaded', function(){
+    cargada=true;
+    if (!consent) aviso(true);
+  });
+  document.addEventListener('click', function(e){
+    var a=e.target && e.target.closest ? e.target.closest('[data-b2k-consent-open]') : null;
+    if (!a) return;
+    e.preventDefault(); origen=a; aviso(true, true);
+  });
+  document.addEventListener('keydown', function(e){ if (e.key==='Escape' && origen) aviso(false); });
+})();
+fbq('init', '1916298258994371');
+fbq('track', 'PageView');
+</script>
+<!-- Fin del bloque de consentimiento (Google Analytics 4 + Meta Pixel) -->
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#1c2b1e;--ink-soft:#3d5c42;--parchment:#f0ece2;--cream:#faf6ef;--orange:#e8490a;--green:#2d7a4a;--sand:#c8d9c0}
+html{background:var(--cream)}
+body{background:var(--cream);color:var(--ink);font-family:'Instrument Sans',sans-serif;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:64px;background:var(--ink);border-bottom:1px solid rgba(200,217,192,.15)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:.08em;color:#fff;text-decoration:none}.nav-logo span{color:var(--orange)}
+.nav-links{display:flex;align-items:center;gap:2rem}
+.nav-links a{color:rgba(255,255,255,.75);text-decoration:none;font-size:.85rem;font-weight:500;transition:color .2s}.nav-links a:hover{color:#fff}
+.nav-cta{background:var(--orange);color:#fff!important;padding:.45rem 1.1rem;border-radius:4px;font-weight:600!important;transition:background .2s!important}.nav-cta:hover{background:#c03d08!important}
+main{flex:1;width:100%;max-width:760px;margin:0 auto;padding:clamp(3.5rem,10vh,7rem) 5% 5rem;text-align:center}
+.nf-code{font-family:'Bebas Neue',sans-serif;font-size:clamp(6rem,24vw,11rem);line-height:.9;color:var(--orange);letter-spacing:.02em}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,5vw,3.2rem);color:var(--ink);margin:.25rem 0 1rem;line-height:1}
+p{font-size:1rem;line-height:1.75;color:#3a4a3c}
+.nf-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:.75rem;margin:2rem 0 2.5rem}
+.nf-btn{display:inline-flex;align-items:center;min-height:44px;padding:0 1.5rem;border-radius:4px;border:1px solid var(--ink);font-size:.95rem;font-weight:600;text-decoration:none;color:var(--ink);transition:background .2s,color .2s}
+.nf-btn:hover{background:var(--parchment)}
+.nf-btn-p{background:var(--ink);color:#fff}.nf-btn-p:hover{background:var(--ink-soft);color:#fff}
+.nf-tours{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem 1.5rem;margin-top:.75rem}
+.nf-tours a{display:inline-block;padding:.5rem 0;color:var(--green);font-weight:500}
+a:focus-visible,button:focus-visible{outline:2px solid #ff7a3d;outline-offset:3px}
+main a:focus-visible{outline-color:var(--ink)}
+footer{background:var(--ink);color:rgba(255,255,255,.55);padding:2.5rem 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-size:.8rem}
+footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#fff}
+.ft-brand{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;color:#fff;letter-spacing:.08em}.ft-brand span{color:var(--orange)}
+@media(max-width:600px){.nav-links{display:none}footer{flex-direction:column;text-align:center}}
+</style>
+</head>
+<body>
+<div id="cookieBanner" role="region" aria-label="Cookie consent" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#1c2b1e;color:#faf6ef;padding:16px 20px;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font:14px/1.5 'Instrument Sans',system-ui,sans-serif;box-shadow:0 -4px 24px rgba(0,0,0,.25)">
+  <span style="max-width:520px">We use essential cookies to run this site, and — only if you say yes — analytics cookies (Google Analytics) to see how the site is used and advertising cookies (Meta Pixel) to measure our Instagram/Facebook ads. <a href="/privacy-policy" style="color:#e8490a;text-decoration:underline">Privacy policy</a></span>
+  <span style="display:flex;gap:10px;flex-shrink:0">
+    <button onclick="window.__b2kConsentReject()" style="padding:9px 18px;border-radius:999px;border:1px solid rgba(250,246,239,.5);background:transparent;color:#faf6ef;font:inherit;font-weight:600;cursor:pointer">Reject</button>
+    <button onclick="window.__b2kConsentAccept()" style="padding:9px 18px;border-radius:999px;border:none;background:#e8490a;color:#fff;font:inherit;font-weight:600;cursor:pointer">Accept</button>
+  </span>
+</div>
+
+<nav>
+  <a href="/" class="nav-logo">Bali <span>Moto</span> Adventures</a>
+  <div class="nav-links">
+    <a href="/#tours">Tours</a>
+    <a href="/#why">About</a>
+    <a href="/#gallery">Gallery</a>
+    <a href="/#reviews">Reviews</a>
+    <a href="https://wa.me/62881037978255" target="_blank" rel="noopener noreferrer" class="nav-cta">Book Now</a>
+  </div>
+</nav>
+
+<main>
+  <p class="nf-code" aria-hidden="true">404</p>
+  <h1>Page not found</h1>
+  <p>The page you were looking for does not exist or has moved.</p>
+  <div class="nf-actions">
+    <a class="nf-btn nf-btn-p" href="/">Back to home</a>
+    <a class="nf-btn" href="/#tours">See all tours</a>
+  </div>
+  <p>Or go straight to a tour:</p>
+  <ul class="nf-tours">
+    <li><a href="/b2k-tour-bali-komodo">Bali 2 Komodo</a></li>
+    <li><a href="/b2k-tour-7-islands">7 Islands Hopping</a></li>
+    <li><a href="/b2k-tour-4-islands">4 Islands Hopping</a></li>
+  </ul>
+</main>
+
+<footer>
+  <div class="ft-brand">Bali <span>Moto</span> Adventures</div>
+  <span>© 2026 Bali Moto Adventures. All rights reserved.</span>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem 1.5rem">
+    <a href="/privacy-policy">Privacy Policy</a>
+    <a href="#cookieBanner" data-b2k-consent-open>Cookie settings</a>
+    <a href="/terms">Terms & Conditions</a>
+    <a href="/data-deletion">Data Deletion</a>
+    <a href="/accessibility">Accessibility</a>
+  </div>
+</footer>
+
+</body>
+</html>

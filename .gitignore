@@ -10,6 +10,9 @@ data.json
 # Backups locales (cualquier fecha)
 Backup_*/
 Backups/
+# Y cualquier fichero suelto de la raíz cuyo nombre empiece por «Backups»: una copia hecha con la fecha
+# sin expandir se queda fuera de la carpeta, y este repo se publica entero.
+/Backups*
 
 # Exports del CRM (leads/operadores: PII) — el repo es público, nunca al repo
 *.csv
@@ -17,6 +20,9 @@ Backups/
 # Trabajo local — no desplegar
 scripts/
 *.md
+# Páginas de prueba sueltas (p. ej. las del Pixel con y sin aviso de cookies): se quedan en el disco de
+# quien las hizo. Este repo se publica entero, así que versionarlas las pondría en el dominio.
+_test_*.html
 
 # Versiones deprecadas
 Deprecated/

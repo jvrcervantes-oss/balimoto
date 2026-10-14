@@ -13,19 +13,46 @@
   Header always set X-Frame-Options "SAMEORIGIN"
 
   # CSP en modo REPORT-ONLY: no bloquea nada, solo reporta en la consola
-  # del navegador. Inventario de orígenes verificado por grep (15-jul-2026):
+  # del navegador. Inventario de orígenes verificado por grep (15-jul-2026;
+  # fuentes y vídeo revisados el 14-oct-2026). Cada origen tiene un llamador:
   #   script  → GSAP (cdnjs) · GA4 (googletagmanager) · Meta Pixel (connect.facebook.net)
+  #   style   → solo propias: las fuentes salen de /fonts/fonts.css, ya no de Google
+  #   font    → solo propias (/fonts/*.woff2)
   #   connect → frankfurter (divisas) · Apps Script (newsletter) · GA4 · Pixel
-  #   frame   → YouTube (embeds de tours)
-  #   img     → Unsplash (galería) · beacons de Pixel/GA4 · miniaturas YouTube
+  #   frame   → solo www.youtube-nocookie.com: el reproductor del vídeo de portada,
+  #             que index.html crea al pulsar la miniatura (data-accion="reproducir-video")
+  #   img     → Unsplash (galería) · beacons de Pixel/GA4. La miniatura del vídeo es
+  #             nuestra (images/b2k-video-poster-7islands.webp), no de ytimg
+  # GA4 y Pixel solo cargan tras aceptar el aviso de cookies; la CSP los admite
+  # porque no distingue ese momento.
   # PARA PASAR A ENFORCE: navegar el sitio entero (home, tours, checkout,
   # newsletter), revisar violaciones en consola, corregir, y solo entonces
   # renombrar la cabecera a Content-Security-Policy.
-  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://www.facebook.com https://www.google-analytics.com https://i.ytimg.com https://img.youtube.com; connect-src 'self' https://api.frankfurter.app https://script.google.com https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://connect.facebook.net; frame-src https://www.youtube.com https://www.youtube-nocookie.com; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'"
+  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https://images.unsplash.com https://www.facebook.com https://www.google-analytics.com; connect-src 'self' https://api.frankfurter.app https://script.google.com https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://connect.facebook.net; frame-src https://www.youtube-nocookie.com; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'"
 </IfModule>
 
 # ── 2. Sin listado de directorios ──────────────────────────────────
 Options -Indexes
+
+# ── 2.bis Página de error propia (14-oct-2026) ─────────────────────
+# Sin esto, cualquier dirección inexistente la contestaba la página por
+# defecto del alojamiento, que carga Google Fonts, un Google Analytics de
+# otra cuenta y doubleclick sin aviso de cookies. /404.html es nuestra:
+# fuentes locales y nada de terceros sin consentimiento. La ruta va desde
+# la raíz porque se sirve para cualquier profundidad.
+ErrorDocument 404 /404.html
+
+# ── 2.ter Caché de las fuentes propias (14-oct-2026) ───────────────
+# Los woff2 de /fonts/ no cambian nunca con el mismo nombre (una fuente
+# nueva es un fichero nuevo), así que se guardan un año, como hacía Google
+# Fonts. Sin esta regla valen los 7 días que da el alojamiento a todo lo
+# estático. fonts.css se queda en esos 7 días a propósito: es lo que
+# cambiaría si se toca un @font-face.
+<IfModule mod_headers.c>
+  <FilesMatch "\.woff2$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
 
 # ── 3. Ficheros que nunca deben servirse en público ────────────────
 # A02:2025 — "ficheros olvidados" es el hallazgo top de los escáneres.
@@ -89,7 +116,11 @@ RedirectMatch 404 (?i)/(Backups?|Deprecated|masters|MetaLead|_compartido)/
 
   # 2) La URL limpia sirve el fichero real sin que el navegador vea la extension.
   #    ^([^/.]+)$ = solo raiz y sin puntos: data.json, robots.txt y assets no entran.
+  #    /404 queda fuera: si entrara, la pagina de error se serviria con codigo 200
+  #    ("pagina encontrada"). Sin fichero que servir da un 404 de verdad, y
+  #    ErrorDocument pone 404.html con el codigo correcto.
   RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteCond %{REQUEST_URI} !^/404$
   RewriteRule ^([^/.]+)$ $1.html [L]
   RewriteCond %{REQUEST_FILENAME}.php -f
   RewriteRule ^([^/.]+)$ $1.php [L]
