@@ -1305,12 +1305,20 @@ function nlSubmit() {
   }
   btn.disabled = true; btn.textContent = 'Sending...';
   var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTrSJrw6gx8ssV6dKJXP1MDMQpXc4efLuKEcMYqTD5h-w1q_5JfWwA3fMpLRfQzIsb/exec';
+  // no-cors: la respuesta es opaca, pero un fallo de red SÍ rechaza la promesa. Solo se da por apuntado si llegó
+  // (antes, `finally` decía «You're in!» también sin conexión; revisor 14-oct-2026).
   fetch(SCRIPT_URL + '?email=' + encodeURIComponent(email) + '&source=b2k-newsletter', { mode: 'no-cors' })
-    .finally(function() {
+    .then(function() {
       msg.textContent = "You're in! We'll keep you posted.";
       msg.style.color = '#a3f0b8';
-      msg.style.display = 'block';
       btn.textContent = 'Subscribed ✓';
+    }, function() {
+      msg.textContent = "We couldn't sign you up. Please check your connection and try again.";
+      msg.style.color = '';
+      btn.textContent = 'Subscribe';
+    })
+    .then(function() {
+      msg.style.display = 'block';
       btn.disabled = false;
     });
 }

@@ -19,7 +19,8 @@
   #             /vendor/gsap/ desde el 14-oct-2026 (antes cdnjs, que cargaba antes de elegir)
   #   style   → solo propias: las fuentes salen de /fonts/fonts.css, ya no de Google
   #   font    → solo propias (/fonts/*.woff2)
-  #   connect → Apps Script (newsletter) · GA4 · Pixel. El conversor de moneda de los tours usa
+  #   connect → Apps Script (newsletter) · GA4 (region1.google-analytics.com incluido) · Pixel (sus eventos van a
+  #             www.facebook.com por fetch/beacon; revisor 14-oct-2026). El conversor de moneda de los tours usa
   #             tipos fijos desde el 14-oct-2026: ya no se pide el cambio a ningun tercero
   #   frame   → solo www.youtube-nocookie.com: el reproductor del vídeo de portada,
   #             que index.html crea al pulsar la miniatura (data-accion="reproducir-video")
@@ -30,7 +31,7 @@
   # PARA PASAR A ENFORCE: navegar el sitio entero (home, tours, checkout,
   # newsletter), revisar violaciones en consola, corregir, y solo entonces
   # renombrar la cabecera a Content-Security-Policy.
-  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https://www.facebook.com https://www.google-analytics.com; connect-src 'self' https://script.google.com https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://connect.facebook.net; frame-src https://www.youtube-nocookie.com; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'"
+  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https://www.facebook.com https://www.google-analytics.com; connect-src 'self' https://script.google.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://connect.facebook.net https://www.facebook.com; frame-src https://www.youtube-nocookie.com; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'"
 </IfModule>
 
 # ── 2. Sin listado de directorios ──────────────────────────────────
