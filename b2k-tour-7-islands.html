@@ -282,7 +282,9 @@ nav.nav-out{opacity:0;pointer-events:none}
 .bk-from-word{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4)}
 .bk-from-price{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--orange);line-height:1}
 .bk-from-note{font-size:11px;color:rgba(255,255,255,.3)}
+.bk-curr{display:flex;flex-direction:column;gap:.55rem;max-width:300px}
 .bk-curr-tabs{display:flex;gap:4px;flex-wrap:wrap}
+.bk-curr-note{font-size:12px;line-height:1.5;color:rgba(255,255,255,.6);margin:0}
 .bk-curr-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.45);padding:6px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;transition:background .2s,border-color .2s,color .2s;letter-spacing:.05em;font-family:inherit}
 .bk-curr-btn.act{background:var(--orange);border-color:var(--orange);color:#fff}
 .bk-cols{display:grid;grid-template-columns:1fr 380px;gap:3rem;align-items:start}
@@ -1149,11 +1151,14 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
         <span class="bk-from-note">per person &middot; hotels, breakfast &amp; activities</span>
       </div>
     </div>
+    <div class="bk-curr">
     <div class="bk-curr-tabs">
       <button class="bk-curr-btn" data-curr="EUR" onclick="bk7SetCurr('EUR')" aria-pressed="false">&euro; EUR</button>
       <button class="bk-curr-btn act" data-curr="USD" onclick="bk7SetCurr('USD')" aria-pressed="true">$ USD</button>
       <button class="bk-curr-btn" data-curr="AUD" onclick="bk7SetCurr('AUD')" aria-pressed="false">AU$</button>
       <button class="bk-curr-btn" data-curr="CAD" onclick="bk7SetCurr('CAD')" aria-pressed="false">CA$</button>
+    </div>
+    <p class="bk-curr-note">Prices are set and charged in US dollars. Amounts in EUR, AUD and CAD are approximate conversions for reference only.</p>
     </div>
   </div>
 
@@ -1490,22 +1495,13 @@ document.addEventListener('keydown', function(e) {
   };
   var FROM_USD7 = _7p.priceFrom || 2050;
   // Base currency = USD. Las demás monedas se derivan del USD (rates relativos a 1 USD).
+  // Tipos FIJOS a proposito (14-oct-2026): el navegador ya no pide el cambio a un servicio externo (un tercero
+  // que veia la IP de cada visitante y en bali-komodo fallaba por CORS). Se cobra en USD; EUR/AUD/CAD son una
+  // referencia y la pagina lo dice bajo los botones (.bk-curr-note).
   var SYMS = {USD: '$', EUR: '€', AUD: 'AU$', CAD: 'CA$'};
-  var FALLBACK = {USD: 1, EUR: 0.92, AUD: 1.52, CAD: 1.36};
   var rates = {USD: 1, EUR: 0.92, AUD: 1.52, CAD: 1.36};
   var selPkg = 'bike2';
   var selCurr = 'USD';
-
-  fetch('https://api.frankfurter.app/latest?from=USD&to=EUR,AUD,CAD')
-    .then(function(r) { return r.json(); })
-    .then(function(d) {
-      if (d && d.rates) {
-        rates.EUR = d.rates.EUR || FALLBACK.EUR;
-        rates.AUD = d.rates.AUD || FALLBACK.AUD;
-        rates.CAD = d.rates.CAD || FALLBACK.CAD;
-        updateUI7();
-      }
-    }).catch(function() {});
 
   // Redondeo de las monedas convertidas. El precio REAL es el USD self-guided; EUR/AUD/CAD
   // son orientativos, asi que se redondean a 50 y no sale un "3,956" que parece calculado
