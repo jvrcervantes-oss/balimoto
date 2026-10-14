@@ -133,6 +133,13 @@ h2{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.05em;col
 p{font-size:.95rem;line-height:1.75;color:#3a4a3c;margin-bottom:1rem}
 ul{margin:.5rem 0 1rem 1.25rem}
 ul li{font-size:.95rem;line-height:1.75;color:#3a4a3c;margin-bottom:.25rem}
+.tabla{overflow-x:auto;margin:.25rem 0 1.5rem;border:1px solid rgba(28,43,30,.15)}
+.tabla:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.tabla table{border-collapse:collapse;width:100%;min-width:640px;font-size:.85rem;line-height:1.55;color:#3a4a3c}
+.tabla th,.tabla td{text-align:left;vertical-align:top;padding:.6rem .75rem;border-bottom:1px solid rgba(28,43,30,.12)}
+.tabla th{font-weight:600;color:var(--ink);background:var(--parchment)}
+.tabla tbody tr:last-child td{border-bottom:0}
+.tabla code{font-size:.8rem;color:var(--ink);overflow-wrap:anywhere}
 a{color:var(--green)}
 footer{background:var(--ink);color:rgba(255,255,255,.55);padding:2.5rem 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-size:.8rem}
 footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#fff}
@@ -202,6 +209,7 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
   <p>We do not sell your personal data. We may share it with:</p>
   <ul>
     <li>Service providers who help us operate (e.g. payment processors, hosting)</li>
+    <li><strong>Google</strong> (Google Apps Script and Google Sheets), which receives the email address you enter in the newsletter sign-up on our home page, together with the date, the page it came from and your IP address, and stores our list of subscribers for us. Google may process this data on servers outside your country, including in the United States.</li>
     <li>Authorities if required by law</li>
   </ul>
 
@@ -209,7 +217,23 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
   <p>We keep enquiry and lead data for as long as needed to respond to you and manage a possible booking, and for up to 24 months after your last contact with us if no booking is made, after which it is deleted. You may request earlier deletion at any time (see Section 9).</p>
 
   <h2>8. Cookies</h2>
-  <p>Essential cookies needed to run the site are always on. The site also keeps a few notes in your browser's own storage that identify no one: your cookie choice, and whether a sign-up pop-up has already been shown to you or an itinerary unlocked, so that we do not ask you again. Analytics cookies (Google Analytics 4) and advertising cookies (Meta Pixel) only load after you accept them in the cookie banner shown on your first visit — you can reject them there instead. You can change your choice at any time with the "Cookie settings" link at the bottom of every page: it reopens the banner, so withdrawing your consent is as easy as giving it.</p>
+  <p>Our website does not store any cookie on your device unless you accept cookies in our banner, or play the video on our home page (see below). The site also keeps a few notes in your browser's own storage that identify no one: your cookie choice, and whether a sign-up pop-up has already been shown to you or an itinerary unlocked, so that we do not ask you again. Analytics cookies (Google Analytics 4) and advertising cookies (Meta Pixel) only load after you accept them in the cookie banner shown on your first visit — you can reject them there instead. We remember your choice, whether you accept or reject, for 12 months; after that, the banner asks you again. You can change your choice at any time with the "Cookie settings" link at the bottom of every page: it reopens the banner, so withdrawing your consent is as easy as giving it.</p>
+  <p><strong>Cookies and browser storage we use</strong> (durations are counted from the moment the item is set or last updated):</p>
+  <div class="tabla" role="region" aria-label="Cookies and browser storage we use" tabindex="0">
+  <table>
+    <thead>
+      <tr><th>Name</th><th>Provider</th><th>Purpose</th><th>Duration</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>_ga</code></td><td>Google Analytics (Google)</td><td>Analytics cookie, only after you accept: distinguishes one visitor from another so we can count visits and see how the site is used.</td><td>Up to 2 years</td></tr>
+      <tr><td><code>_ga_TVFVLX45TD</code></td><td>Google Analytics (Google)</td><td>Analytics cookie, only after you accept: keeps track of your current visit for the same measurement.</td><td>Up to 2 years</td></tr>
+      <tr><td><code>_fbp</code></td><td>Meta Pixel (Meta)</td><td>Advertising cookie, only after you accept: identifies your browser so that Meta can measure the results of our Facebook and Instagram ads and show our ads to people who have visited this site.</td><td>90 days</td></tr>
+      <tr><td><code>b2k_consent_v2</code>, <code>b2k_consent_v2_at</code></td><td>This website (browser storage)</td><td>Remembers whether you accepted or rejected cookies, so the banner does not appear on every page.</td><td>12 months</td></tr>
+      <tr><td><code>b2k_itinerary_prompted</code>, <code>b2k_itinerary_unlocked</code>, <code>b2k_komodo_prompted</code>, <code>b2k_komodo_unlocked</code></td><td>This website (browser storage)</td><td>Remembers that the itinerary sign-up pop-up was already shown to you, or that you unlocked an itinerary, so we do not ask you again.</td><td>Until you clear this site's data in your browser</td></tr>
+      <tr><td><code>b2k_exit_shown</code>, <code>b2k_komodo_exit_shown</code></td><td>This website (browser storage for the current tab)</td><td>Remembers that a pop-up was already shown during this visit.</td><td>Until you close the tab</td></tr>
+    </tbody>
+  </table>
+  </div>
   <p>If you reject or withdraw your consent, Google Analytics and the Meta Pixel are not loaded and we delete the Google Analytics and Meta Pixel cookies stored under our domain (<code>_ga</code>, <code>_ga_*</code>, <code>_gid</code>, <code>_fbp</code>, <code>_fbc</code>). We cannot delete cookies that Google or Meta keep under their own domains; you can remove those in your browser settings. Withdrawing consent does not affect the lawfulness of what was processed before you withdrew it.</p>
   <p><strong>Video on our home page:</strong> the video preview is an image served from our own website, and nothing is sent to YouTube while you browse. If you press play, the YouTube player is loaded from Google: Google then receives your IP address and information about your device and browser, and may store cookies or similar data on your device, under <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google's Privacy Policy</a>. We embed the player in YouTube's privacy-enhanced mode. If you prefer not to connect to YouTube, simply do not play the video.</p>
   <p><strong>California residents:</strong> under the CCPA/CPRA you have the right to opt out of the "sharing" of your data for cross-context advertising, which is what the Meta Pixel and the audiences built from it are used for. To opt out, reject cookies in the banner or at any time through the "Cookie settings" link at the bottom of every page, or email <a href="mailto:ride@balimotoadventures.com">ride@balimotoadventures.com</a> with "Do Not Sell or Share My Personal Information" in the subject line.</p>
@@ -225,7 +249,7 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none}footer a:hover{color:#f
   <p>To exercise any of these rights, email us at <a href="mailto:ride@balimotoadventures.com">ride@balimotoadventures.com</a>.</p>
 
   <h2>10. Changes to This Policy</h2>
-  <p>We may update this policy from time to time. The latest version will always be available at <a href="https://balimotoadventures.com/privacy-policy">balimotoadventures.com/privacy-policy.html</a>.</p>
+  <p>We may update this policy from time to time. The latest version will always be available at <a href="https://balimotoadventures.com/privacy-policy">balimotoadventures.com/privacy-policy</a>.</p>
 </main>
 
 <footer>
