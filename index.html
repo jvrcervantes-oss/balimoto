@@ -1301,6 +1301,7 @@ function nlSubmit() {
   var btn = document.getElementById('nlBtn');
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     msg.textContent = 'Please enter a valid email.';
+    msg.style.color = 'rgba(255,255,255,.6)';
     msg.style.display = 'block'; return;
   }
   btn.disabled = true; btn.textContent = 'Sending...';
@@ -1314,7 +1315,7 @@ function nlSubmit() {
       btn.textContent = 'Subscribed ✓';
     }, function() {
       msg.textContent = "We couldn't sign you up. Please check your connection and try again.";
-      msg.style.color = '';
+      msg.style.color = 'rgba(255,255,255,.6)';   // el de #nlMsg en linea: '' lo borraba y heredaba la tinta oscura
       btn.textContent = 'Subscribe';
     })
     .then(function() {
